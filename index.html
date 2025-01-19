@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test autora</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            flex-direction: column;
+        }
+        .container {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 30px;
+            width: 320px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #FFEB3B;
+            text-align: center;
+        }
+        p {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #B0B0B0;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            max-width: 280px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background-color: #333;
+            color: #e0e0e0;
+            outline: none;
+            text-align: center;
+        }
+        input:focus {
+            border-color: #FFEB3B;
+        }
+        button {
+            width: 100%;
+            max-width: 280px;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #FFEB3B;
+            color: #121212;
+            border: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #FFCA28;
+        }
+        #result {
+            font-size: 18px;
+            text-align: center;
+            margin-top: 10px;
+            padding: 5px;
+        }
+        .correct {
+            color: #4CAF50;
+        }
+        .incorrect {
+            color: #F44336;
+        }
+        #hint {
+            background-color: #FFEB3B;
+            color: #121212;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            padding: 5px;
+            border-radius: 6px;
+        }
+        #stats {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            width: 320px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        #stats table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #stats th, #stats td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #333;
+        }
+        #stats th {
+            background-color: #FFEB3B;
+            color: #121212;
+        }
+        #stats td {
+            background-color: #333;
+        }
+        .answer-list {
+            cursor: pointer;
+            color: #FFEB3B;
+            text-decoration: underline;
+        }
+        .answer-list:hover {
+            color: #FFCA28;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Test autora</h1>
+    <p id="fact"></p>
+    <input type="text" id="authorInput" placeholder="Napiš správné jméno autora" onkeydown="checkEnter(event)" />
+    <button onclick="checkAnswer()">Zkontrolovat odpověď</button>
+    <button onclick="showHint()">Nápověda</button>
+    <p id="result"></p>
+    <p id="hint" style="display: none;"></p>
+</div>
+
+<div id="stats">
+    <h2>Statistiky</h2>
+    <table>
+        <tr>
+            <th>Správně</th>
+            <th>Špatně</th>
+        </tr>
+        <tr>
+            <td id="correctCount">0</td>
+            <td id="incorrectCount">0</td>
+        </tr>
+    </table>
+    <div id="answersList">
+        <p><strong>Seznam odpovědí:</strong></p>
+        <p><span id="correctAnswers" class="answer-list">Správné odpovědi (0)</span></p>
+        <p><span id="incorrectAnswers" class="answer-list">Špatné odpovědi (0)</span></p>
+    </div>
+</div>
+
+<script>
+    const authors = [
+        {
+            name: "Thomas Mann",
+            facts: [
+                "Německý prozaik židovského původu.",
+                "Po nástupu Hitlera k moci emigroval (do ČSR, Švýcarska, USA).",
+                "Jeho knihy byly v Německu páleny.",
+                "Získal Nobelovu cenu za literaturu (1929)."
+            ],
+            correctAnswer: "Thomas Mann"
+        },
+        {
+            name: "Guillaume Apollinaire",
+            facts: [
+                "Francouzský avantgardní básník, raněn za 1. sv. války, zemřel na španělskou chřipku (1918).",
+                "Zakladatel avantgardy, řazen ke kubismu a futurismu.",
+                "Vymyslel název 'surrealismus'."
+            ],
+            correctAnswer: "Guillaume Apollinaire"
+        },
+        {
+            name: "James Joyce",
+            facts: [
+                "Irský prozaik, dlouho žil ve Francii, ovládal přes 10 jazyků.",
+                "Jeden z hlavních experimentátorů s románovou formou."
+            ],
+            correctAnswer: "James Joyce"
+        },
+        {
+            name: "Franz Kafka",
+            facts: [
+                "Pocházel z pražské židovské rodiny, psal německy.",
+                "Předchůdce existencialismu.",
+                "Jeho hrdinové čelí bezvýchodným situacím a strachu z autority."
+            ],
+            correctAnswer: "Franz Kafka"
+        },
+        {
+            name: "Boris Pasternak",
+            facts: [
+                "Ruský básník a dramatik, jehož tvorba byla ovlivněna symbolismem a futurismem.",
+                "Měl problémy s totalitním režimem, očekával zatčení."
+            ],
+            correctAnswer: "Boris Pasternak"
+        },
+        {
+            name: "Michail Bulgakov",
+            facts: [
+                "Ruský lékař, žurnalista a dramaturg, psal magický realismus."
+            ],
+            correctAnswer: "Michail Bulgakov"
+        },
+        {
+            name: "Erich Maria Remarque",
+            facts: [
+                "Německý prozaik, jako dobrovolník narukoval do 1. sv. války.",
+                "Odešel do exilu, jeho knihy byly nacisty páleny."
+            ],
+            correctAnswer: "Erich Maria Remarque"
+        },
+        {
+            name: "Ernest Hemingway",
+            facts: [
+                "Americký spisovatel, dobrovolník v 1. sv. válce, dopisovatel ze Španělské občanské války, dlouho žil na Kubě.",
+                "Známý 'metodou ledovce'."
+            ],
+            correctAnswer: "Ernest Hemingway"
+        },
+        {
+            name: "John Steinbeck",
+            facts: [
+                "Americký spisovatel, žil v Kalifornii.",
+                "Zpracovával sociální témata, získal Nobelovu cenu za literaturu (1962)."
+            ],
+            correctAnswer: "John Steinbeck"
+        },
+        {
+            name: "George Orwell",
+            facts: [
+                "Vlastním jménem Eric Arthur Blair, anglický novinář narozen v Indii.",
+                "Kritik totalitarismu, protikolonialistický postoj."
+            ],
+            correctAnswer: "George Orwell"
+        }
+    ];
+
+    let correctAnswersCount = 0;
+    let incorrectAnswersCount = 0;
+    let correctAnswersList = [];
+    let incorrectAnswersList = [];
+
+    function getRandomAuthor() {
+        const randomIndex = Math.floor(Math.random() * authors.length);
+        return authors[randomIndex];
+    }
+
+    function getRandomFact() {
+        const randomFactIndex = Math.floor(Math.random() * currentAuthor.facts.length);
+        return currentAuthor.facts[randomFactIndex];
+    }
+
+    let currentAuthor = getRandomAuthor();
+    document.getElementById("fact").textContent = getRandomFact();
+
+    function checkAnswer() {
+        const userInput = document.getElementById("authorInput").value.trim();
+        const result = document.getElementById("result");
+
+        if (userInput === currentAuthor.correctAnswer) {
+            result.textContent = "Správně!";
+            result.className = "correct";
+            correctAnswersCount++;
+            correctAnswersList.push(currentAuthor.correctAnswer);
+        } else {
+            result.textContent = "Špatně! Správný autor je: " + currentAuthor.correctAnswer;
+            result.className = "incorrect";
+            incorrectAnswersCount++;
+            incorrectAnswersList.push(currentAuthor.correctAnswer);
+        }
+
+        document.getElementById("correctCount").textContent = correctAnswersCount;
+        document.getElementById("incorrectCount").textContent = incorrectAnswersCount;
+        document.getElementById("correctAnswers").textContent = "Správné odpovědi (" + correctAnswersCount + ")";
+        document.getElementById("incorrectAnswers").textContent = "Špatné odpovědi (" + incorrectAnswersCount + ")";
+
+        document.getElementById("correctAnswers").onclick = () => showAnswers(correctAnswersList);
+        document.getElementById("incorrectAnswers").onclick = () => showAnswers(incorrectAnswersList);
+
+        currentAuthor = getRandomAuthor();
+        document.getElementById("fact").textContent = getRandomFact();
+        document.getElementById("authorInput").value = "";
+    }
+
+    function showHint() {
+        document.getElementById("hint").style.display = "block";
+        document.getElementById("hint").textContent = "Nápověda: " + currentAuthor.facts.join(", ");
+        checkAnswer();  // Zobrazí novou otázku a přičte skóre do špatně
+    }
+
+    function checkEnter(event) {
+        if (event.key === "Enter") {
+            checkAnswer();
+        }
+    }
+
+    function showAnswers(answersList) {
+        alert("Seznam odpovědí: " + answersList.join(", "));
+    }
+</script>
+
+</body>
+</html>
