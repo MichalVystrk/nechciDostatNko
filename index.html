@@ -236,9 +236,8 @@
             </tr>
         </table>
         <div id="answersList">
-            <p><strong>Seznam odpovědí:</strong></p>
-            <p><span id="correctAnswers" class="answer-list">Správné odpovědi (0)</span></p>
-            <p><span id="incorrectAnswers" class="answer-list">Špatné odpovědi (0)</span></p>
+            <p><strong>Seznam správných odpovědí:</strong></p>
+            <ul id="correctAnswersList"></ul>
         </div>
     </div>
 
@@ -253,37 +252,107 @@
                 name: "Thomas Mann",
                 facts: [
                     "Německý prozaik.",
-                    "Emigroval během nacistického režimu.",
-                    "Získal Nobelovu cenu."
+                    "Židovského původu.",
+                    "Po nástupu Hitlera k moci emigroval.",
+                    "Emigroval do ČSR, Švýcarska, USA.",
+                    "Jeho knihy byly v Německu páleny.",
+                    "Získal Nobelovu cenu za literaturu v roce 1929."
                 ],
-                fullHint: "Německý prozaik židovského původu, který během nacistického režimu emigroval a získal Nobelovu cenu."
+                fullHint: "Německý prozaik židovského původu, který emigroval během nástupu Hitlera k moci a získal Nobelovu cenu za literaturu."
             },
             {
                 name: "Guillaume Apollinaire",
                 facts: [
-                    "Francouzský básník.",
-                    "Představitel avantgardy.",
-                    "Vymyslel surrealismus."
+                    "Francouzský avantgardní básník.",
+                    "Raněn za 1. sv. války.",
+                    "Zemřel na španělskou chřipku v roce 1918.",
+                    "Zakladatel avantgardy.",
+                    "Řazen ke kubismu a futurismu.",
+                    "Vymyslel název 'surrealismus'."
                 ],
-                fullHint: "Francouzský avantgardní básník, který vytvořil pojem surrealismus a byl vlivný ve vývoji moderní poezie."
+                fullHint: "Francouzský avantgardní básník, který byl raněn v první světové válce, zemřel na španělskou chřipku a je zakladatelem surrealismu."
             },
             {
                 name: "James Joyce",
                 facts: [
-                    "Irský spisovatel.",
-                    "Experimentátor s románovou formou."
+                    "Irský prozaik.",
+                    "Dlouho žil ve Francii.",
+                    "Ovládal přes 10 jazyků.",
+                    "Jeden z hlavních experimentátorů s románovou formou."
                 ],
-                fullHint: "Irský spisovatel, známý svou inovativní literární technikou, známý především dílem Ulysses."
+                fullHint: "Irský prozaik, který žil ve Francii a byl známý svou experimentální románovou formou."
             },
             {
                 name: "Franz Kafka",
                 facts: [
-                    "Německy píšící spisovatel.",
-                    "Autor existencialistických děl."
+                    "Pocházel z pražské židovské rodiny.",
+                    "Psal německy.",
+                    "Předchůdce existencialismu.",
+                    "Jeho hrdinové čelí bezvýchodným situacím.",
+                    "Hrdinové mají strach z autority."
                 ],
-                fullHint: "Židovský spisovatel z Prahy, jehož díla se zaměřují na absurdní byrokracii a existenciální úzkosti."
+                fullHint: "Pražský spisovatel židovského původu, jehož díla se zaměřují na existenciální témata a byrokracii."
+            },
+            {
+                name: "Boris Pasternak",
+                facts: [
+                    "Ruský básník a dramatik.",
+                    "Jeho tvorba byla ovlivněna symbolismem a futurismem.",
+                    "Měl problémy s totalitním režimem.",
+                    "Očekával zatčení."
+                ],
+                fullHint: "Ruský spisovatel, jehož díla kritizovala totalitní režimy a byly silně ovlivněny symbolismem."
+            },
+            {
+                name: "Michail Bulgakov",
+                facts: [
+                    "Ruský lékař, žurnalista a dramaturg.",
+                    "Psal magický realismus.",
+                    "Jeho nejznámější dílo je Mistr a Markétka."
+                ],
+                fullHint: "Ruský spisovatel, který proslul svým magickým realismem, zejména díky dílu Mistr a Markétka."
+            },
+            {
+                name: "Erich Maria Remarque",
+                facts: [
+                    "Německý prozaik.",
+                    "Jako dobrovolník narukoval do 1. sv. války.",
+                    "Odešel do exilu.",
+                    "Jeho knihy byly nacisty páleny."
+                ],
+                fullHint: "Německý spisovatel, který se zaměřil na hrůzy války a byl za svou tvorbu perzekvován nacisty."
+            },
+            {
+                name: "Ernest Hemingway",
+                facts: [
+                    "Americký spisovatel.",
+                    "Dopisovatel ze Španělské občanské války.",
+                    "Získal Nobelovu cenu za literaturu v roce 1954."
+                ],
+                fullHint: "Americký spisovatel, známý svým minimalistickým stylem a tématy válečných konfliktů."
+            },
+            {
+                name: "John Steinbeck",
+                facts: [
+                    "Americký spisovatel.",
+                    "Žil v Kalifornii.",
+                    "Zpracovával sociální témata.",
+                    "Získal Nobelovu cenu za literaturu."
+                ],
+                fullHint: "Americký spisovatel, známý pro své kritické pohledy na společenskou nespravedlnost."
+            },
+            {
+                name: "George Orwell",
+                facts: [
+                    "Vlastním jménem Eric Arthur Blair.",
+                    "Anglický novinář narozen v Indii.",
+                    "Kritik totalitarismu.",
+                    "Zastával protikolonialistický postoj."
+                ],
+                fullHint: "Anglický spisovatel, kritik totalitarismu, známý svými dystopickými díly jako 1984."
             }
         ];
+
 
         let previousAuthor = null;  // Sledování předchozího autora
         let correctAnswers = [];
@@ -300,8 +369,13 @@
             return author;
         }
 
+        function getRandomFacts(facts, count) {
+            const shuffled = facts.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
         let currentAuthor = getNextAuthor();
-        document.getElementById("fact").textContent = currentAuthor.facts.join(", ");
+        document.getElementById("fact").textContent = getRandomFacts(currentAuthor.facts, 2).join(", ");
 
         function checkAnswer() {
             const userAnswer = normalizeString(document.getElementById("authorInput").value.trim());
@@ -313,6 +387,11 @@
                 correctAnswers.push(currentAuthor.name);
                 correctCount++;
                 document.getElementById("correctCount").textContent = correctCount;
+
+                // Přidání správné odpovědi do seznamu
+                const listItem = document.createElement("li");
+                listItem.textContent = currentAuthor.name;
+                document.getElementById("correctAnswersList").appendChild(listItem);
             } else {
                 document.getElementById("result").textContent = `Špatně! Správná odpověď: ${currentAuthor.name}`;
                 document.getElementById("result").className = "incorrect";
@@ -321,11 +400,9 @@
                 document.getElementById("incorrectCount").textContent = incorrectCount;
             }
 
-            document.getElementById("correctAnswers").textContent = `Správné odpovědi (${correctAnswers.length})`;
-            document.getElementById("incorrectAnswers").textContent = `Špatné odpovědi (${incorrectAnswers.length})`;
             document.getElementById("authorInput").value = "";
             currentAuthor = getNextAuthor();
-            document.getElementById("fact").textContent = currentAuthor.facts.join(", ");
+            document.getElementById("fact").textContent = getRandomFacts(currentAuthor.facts, 2).join(", ");
         }
 
         function toggleHint() {
