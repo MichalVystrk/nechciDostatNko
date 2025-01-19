@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test autora</title>
     <style>
+        /* Globální styly */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-color: #121212;
             color: #e0e0e0;
             display: flex;
@@ -16,115 +17,190 @@
             margin: 0;
             padding: 0;
             flex-direction: column;
+            box-sizing: border-box;
         }
+
         .container {
             background-color: #1e1e1e;
-            border-radius: 8px;
-            padding: 30px;
-            width: 320px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
+            border-radius: 10px;
+            padding: 40px;
+            width: 360px;
+            max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-align: center;
         }
+
         h1 {
-            font-size: 26px;
+            font-size: 30px;
             margin-bottom: 20px;
             color: #FFEB3B;
-            text-align: center;
         }
+
         p {
-            margin-bottom: 20px;
-            font-size: 16px;
+            font-size: 18px;
+            margin-bottom: 30px;
             color: #B0B0B0;
-            text-align: center;
         }
+
         input {
             width: 100%;
-            max-width: 280px;
+            max-width: 320px;
             padding: 12px;
             margin-bottom: 20px;
             font-size: 16px;
-            border-radius: 6px;
-            border: 1px solid #333;
+            border-radius: 8px;
+            border: 2px solid #333;
             background-color: #333;
             color: #e0e0e0;
             outline: none;
-            text-align: center;
+            transition: border-color 0.3s ease;
         }
+
         input:focus {
             border-color: #FFEB3B;
         }
+
         button {
             width: 100%;
-            max-width: 280px;
-            padding: 12px;
-            font-size: 16px;
+            max-width: 320px;
+            padding: 15px;
+            font-size: 18px;
             cursor: pointer;
             background-color: #FFEB3B;
             color: #121212;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
+            margin-top: 10px;
             transition: background-color 0.3s ease;
-            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
         button:hover {
             background-color: #FFCA28;
         }
-        #result {
-            font-size: 18px;
-            text-align: center;
-            margin-top: 10px;
-            padding: 5px;
+
+        button:active {
+            background-color: #FFB300;
+            box-shadow: none;
         }
+
+        #result {
+            font-size: 20px;
+            margin-top: 15px;
+            padding: 8px;
+            width: 100%;
+        }
+
         .correct {
             color: #4CAF50;
+            font-weight: bold;
         }
+
         .incorrect {
             color: #F44336;
+            font-weight: bold;
         }
+
         #hint {
             background-color: #FFEB3B;
             color: #121212;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 14px;
-            padding: 5px;
-            border-radius: 6px;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
         }
+
+        /* Statistiky */
         #stats {
             background-color: #1e1e1e;
             color: #e0e0e0;
-            padding: 20px;
-            border-radius: 8px;
-            width: 320px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            margin-top: 20px;
+            padding: 30px;
+            border-radius: 10px;
+            width: 360px;
+            max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
+
+        #stats h2 {
+            font-size: 24px;
+            color: #FFEB3B;
+            margin-bottom: 15px;
+        }
+
         #stats table {
             width: 100%;
             border-collapse: collapse;
         }
+
         #stats th, #stats td {
-            padding: 8px;
+            padding: 12px;
             text-align: left;
             border: 1px solid #333;
         }
+
         #stats th {
             background-color: #FFEB3B;
             color: #121212;
         }
+
         #stats td {
             background-color: #333;
         }
+
         .answer-list {
             cursor: pointer;
             color: #FFEB3B;
             text-decoration: underline;
+            margin-top: 10px;
         }
+
         .answer-list:hover {
             color: #FFCA28;
+        }
+
+        /* Animace pro tlačítka */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .button-container button {
+            width: 48%;
+        }
+
+        /* Responsivní design */
+        @media (max-width: 600px) {
+            .container, #stats {
+                width: 100%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            input {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            #result {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -134,10 +210,12 @@
     <h1>Test autora</h1>
     <p id="fact"></p>
     <input type="text" id="authorInput" placeholder="Napiš správné jméno autora" onkeydown="checkEnter(event)" />
-    <button onclick="checkAnswer()">Zkontrolovat odpověď</button>
-    <button onclick="showHint()">Nápověda</button>
+    <div class="button-container">
+        <button onclick="checkAnswer()">Zkontrolovat odpověď</button>
+        <button onclick="showHint()">Nápověda</button>
+    </div>
     <p id="result"></p>
-    <p id="hint" style="display: none;"></p>
+    <p id="hint"></p>
 </div>
 
 <div id="stats">
@@ -160,6 +238,11 @@
 </div>
 
 <script>
+    // Funkce pro odstranění diakritiky a převod na malá písmena
+    function normalizeString(str) {
+        return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
     const authors = [
         {
             name: "Thomas Mann",
@@ -223,8 +306,8 @@
         {
             name: "Ernest Hemingway",
             facts: [
-                "Americký spisovatel, dobrovolník v 1. sv. válce, dopisovatel ze Španělské občanské války, dlouho žil na Kubě.",
-                "Známý 'metodou ledovce'."
+                "Americký spisovatel, dobrovolník v 1. sv. válce.",
+                "Dopisovatel ze Španělské občanské války, dlouho žil na Kubě."
             ],
             correctAnswer: "Ernest Hemingway"
         },
@@ -246,67 +329,49 @@
         }
     ];
 
-    let correctAnswersCount = 0;
-    let incorrectAnswersCount = 0;
-    let correctAnswersList = [];
-    let incorrectAnswersList = [];
+    let currentAuthor = authors[Math.floor(Math.random() * authors.length)];
+    let correctAnswers = [];
+    let incorrectAnswers = [];
+    let correctCount = 0;
+    let incorrectCount = 0;
 
-    function getRandomAuthor() {
-        const randomIndex = Math.floor(Math.random() * authors.length);
-        return authors[randomIndex];
-    }
-
-    function getRandomFact() {
-        const randomFactIndex = Math.floor(Math.random() * currentAuthor.facts.length);
-        return currentAuthor.facts[randomFactIndex];
-    }
-
-    let currentAuthor = getRandomAuthor();
-    document.getElementById("fact").textContent = getRandomFact();
+    document.getElementById("fact").textContent = currentAuthor.facts.join(", ");
 
     function checkAnswer() {
-        const userInput = document.getElementById("authorInput").value.trim();
-        const result = document.getElementById("result");
+        const userAnswer = normalizeString(document.getElementById("authorInput").value.trim());
+        const correctAnswer = normalizeString(currentAuthor.correctAnswer);
 
-        if (userInput === currentAuthor.correctAnswer) {
-            result.textContent = "Správně!";
-            result.className = "correct";
-            correctAnswersCount++;
-            correctAnswersList.push(currentAuthor.correctAnswer);
+        if (userAnswer === correctAnswer) {
+            document.getElementById("result").textContent = "Správně!";
+            document.getElementById("result").className = "correct";
+            correctAnswers.push(currentAuthor.correctAnswer);
+            correctCount++;
+            document.getElementById("correctCount").textContent = correctCount;
         } else {
-            result.textContent = "Špatně! Správný autor je: " + currentAuthor.correctAnswer;
-            result.className = "incorrect";
-            incorrectAnswersCount++;
-            incorrectAnswersList.push(currentAuthor.correctAnswer);
+            document.getElementById("result").textContent = "Špatně!";
+            document.getElementById("result").className = "incorrect";
+            incorrectAnswers.push(userAnswer);
+            incorrectCount++;
+            document.getElementById("incorrectCount").textContent = incorrectCount;
         }
 
-        document.getElementById("correctCount").textContent = correctAnswersCount;
-        document.getElementById("incorrectCount").textContent = incorrectAnswersCount;
-        document.getElementById("correctAnswers").textContent = "Správné odpovědi (" + correctAnswersCount + ")";
-        document.getElementById("incorrectAnswers").textContent = "Špatné odpovědi (" + incorrectAnswersCount + ")";
-
-        document.getElementById("correctAnswers").onclick = () => showAnswers(correctAnswersList);
-        document.getElementById("incorrectAnswers").onclick = () => showAnswers(incorrectAnswersList);
-
-        currentAuthor = getRandomAuthor();
-        document.getElementById("fact").textContent = getRandomFact();
+        document.getElementById("correctAnswers").textContent = `Správné odpovědi (${correctAnswers.length})`;
+        document.getElementById("incorrectAnswers").textContent = `Špatné odpovědi (${incorrectAnswers.length})`;
         document.getElementById("authorInput").value = "";
+        currentAuthor = authors[Math.floor(Math.random() * authors.length)];
+        document.getElementById("fact").textContent = currentAuthor.facts.join(", ");
     }
 
     function showHint() {
         document.getElementById("hint").style.display = "block";
         document.getElementById("hint").textContent = "Nápověda: " + currentAuthor.facts.join(", ");
-        checkAnswer();  // Zobrazí novou otázku a přičte skóre do špatně
+        checkAnswer();
     }
 
     function checkEnter(event) {
         if (event.key === "Enter") {
             checkAnswer();
         }
-    }
-
-    function showAnswers(answersList) {
-        alert("Seznam odpovědí: " + answersList.join(", "));
     }
 </script>
 
