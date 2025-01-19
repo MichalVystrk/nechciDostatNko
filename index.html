@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="cs">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -136,7 +137,8 @@
             border-collapse: collapse;
         }
 
-        #stats th, #stats td {
+        #stats th,
+        #stats td {
             padding: 12px;
             text-align: left;
             border: 1px solid #333;
@@ -175,7 +177,9 @@
 
         /* Responsivní design */
         @media (max-width: 600px) {
-            .container, #stats {
+
+            .container,
+            #stats {
                 width: 100%;
                 padding: 20px;
             }
@@ -204,176 +208,133 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h1>Test autora</h1>
-    <p id="fact"></p>
-    <input type="text" id="authorInput" placeholder="Napiš správné jméno autora" onkeydown="checkEnter(event)" />
-    <div class="button-container">
-        <button onclick="checkAnswer()">Zkontrolovat odpověď</button>
-        <button onclick="showHint()">Nápověda</button>
+    <div class="container">
+        <h1>Test autora</h1>
+        <p id="fact"></p>
+        <input type="text" id="authorInput" placeholder="Napiš správné jméno autora" onkeydown="checkEnter(event)" />
+        <div class="button-container">
+            <button onclick="checkAnswer()">Zkontrolovat odpověď</button>
+            <button onclick="toggleHint()">Nápověda</button>
+        </div>
+        <p id="result"></p>
+        <p id="hint"></p>
     </div>
-    <p id="result"></p>
-    <p id="hint"></p>
-</div>
 
-<div id="stats">
-    <h2>Statistiky</h2>
-    <table>
-        <tr>
-            <th>Správně</th>
-            <th>Špatně</th>
-        </tr>
-        <tr>
-            <td id="correctCount">0</td>
-            <td id="incorrectCount">0</td>
-        </tr>
-    </table>
-    <div id="answersList">
-        <p><strong>Seznam odpovědí:</strong></p>
-        <p><span id="correctAnswers" class="answer-list">Správné odpovědi (0)</span></p>
-        <p><span id="incorrectAnswers" class="answer-list">Špatné odpovědi (0)</span></p>
+    <div id="stats">
+        <h2>Statistiky</h2>
+        <table>
+            <tr>
+                <th>Správně</th>
+                <th>Špatně</th>
+            </tr>
+            <tr>
+                <td id="correctCount">0</td>
+                <td id="incorrectCount">0</td>
+            </tr>
+        </table>
+        <div id="answersList">
+            <p><strong>Seznam odpovědí:</strong></p>
+            <p><span id="correctAnswers" class="answer-list">Správné odpovědi (0)</span></p>
+            <p><span id="incorrectAnswers" class="answer-list">Špatné odpovědi (0)</span></p>
+        </div>
     </div>
-</div>
 
-<script>
-    // Funkce pro odstranění diakritiky a převod na malá písmena
-    function normalizeString(str) {
-        return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    }
-
-    const authors = [
-        {
-            name: "Thomas Mann",
-            facts: [
-                "Německý prozaik židovského původu.",
-                "Po nástupu Hitlera k moci emigroval (do ČSR, Švýcarska, USA).",
-                "Jeho knihy byly v Německu páleny.",
-                "Získal Nobelovu cenu za literaturu (1929)."
-            ],
-            correctAnswer: "Thomas Mann"
-        },
-        {
-            name: "Guillaume Apollinaire",
-            facts: [
-                "Francouzský avantgardní básník, raněn za 1. sv. války, zemřel na španělskou chřipku (1918).",
-                "Zakladatel avantgardy, řazen ke kubismu a futurismu.",
-                "Vymyslel název 'surrealismus'."
-            ],
-            correctAnswer: "Guillaume Apollinaire"
-        },
-        {
-            name: "James Joyce",
-            facts: [
-                "Irský prozaik, dlouho žil ve Francii, ovládal přes 10 jazyků.",
-                "Jeden z hlavních experimentátorů s románovou formou."
-            ],
-            correctAnswer: "James Joyce"
-        },
-        {
-            name: "Franz Kafka",
-            facts: [
-                "Pocházel z pražské židovské rodiny, psal německy.",
-                "Předchůdce existencialismu.",
-                "Jeho hrdinové čelí bezvýchodným situacím a strachu z autority."
-            ],
-            correctAnswer: "Franz Kafka"
-        },
-        {
-            name: "Boris Pasternak",
-            facts: [
-                "Ruský básník a dramatik, jehož tvorba byla ovlivněna symbolismem a futurismem.",
-                "Měl problémy s totalitním režimem, očekával zatčení."
-            ],
-            correctAnswer: "Boris Pasternak"
-        },
-        {
-            name: "Michail Bulgakov",
-            facts: [
-                "Ruský lékař, žurnalista a dramaturg, psal magický realismus."
-            ],
-            correctAnswer: "Michail Bulgakov"
-        },
-        {
-            name: "Erich Maria Remarque",
-            facts: [
-                "Německý prozaik, jako dobrovolník narukoval do 1. sv. války.",
-                "Odešel do exilu, jeho knihy byly nacisty páleny."
-            ],
-            correctAnswer: "Erich Maria Remarque"
-        },
-        {
-            name: "Ernest Hemingway",
-            facts: [
-                "Americký spisovatel, dobrovolník v 1. sv. válce.",
-                "Dopisovatel ze Španělské občanské války, dlouho žil na Kubě."
-            ],
-            correctAnswer: "Ernest Hemingway"
-        },
-        {
-            name: "John Steinbeck",
-            facts: [
-                "Americký spisovatel, žil v Kalifornii.",
-                "Zpracovával sociální témata, získal Nobelovu cenu za literaturu (1962)."
-            ],
-            correctAnswer: "John Steinbeck"
-        },
-        {
-            name: "George Orwell",
-            facts: [
-                "Vlastním jménem Eric Arthur Blair, anglický novinář narozen v Indii.",
-                "Kritik totalitarismu, protikolonialistický postoj."
-            ],
-            correctAnswer: "George Orwell"
-        }
-    ];
-
-    let currentAuthor = authors[Math.floor(Math.random() * authors.length)];
-    let correctAnswers = [];
-    let incorrectAnswers = [];
-    let correctCount = 0;
-    let incorrectCount = 0;
-
-    document.getElementById("fact").textContent = currentAuthor.facts.join(", ");
-
-    function checkAnswer() {
-        const userAnswer = normalizeString(document.getElementById("authorInput").value.trim());
-        const correctAnswer = normalizeString(currentAuthor.correctAnswer);
-
-        if (userAnswer === correctAnswer) {
-            document.getElementById("result").textContent = "Správně!";
-            document.getElementById("result").className = "correct";
-            correctAnswers.push(currentAuthor.correctAnswer);
-            correctCount++;
-            document.getElementById("correctCount").textContent = correctCount;
-        } else {
-            document.getElementById("result").textContent = "Špatně!";
-            document.getElementById("result").className = "incorrect";
-            incorrectAnswers.push(userAnswer);
-            incorrectCount++;
-            document.getElementById("incorrectCount").textContent = incorrectCount;
+    <script>
+        // Funkce pro odstranění diakritiky a převod na malá písmena
+        function normalizeString(str) {
+            return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         }
 
-        document.getElementById("correctAnswers").textContent = `Správné odpovědi (${correctAnswers.length})`;
-        document.getElementById("incorrectAnswers").textContent = `Špatné odpovědi (${incorrectAnswers.length})`;
-        document.getElementById("authorInput").value = "";
-        currentAuthor = authors[Math.floor(Math.random() * authors.length)];
+        const authors = [
+            {
+                name: "Thomas Mann",
+                facts: [
+                    "Německý prozaik.",
+                    "Emigroval během nacistického režimu.",
+                    "Získal Nobelovu cenu."
+                ],
+                fullHint: "Německý prozaik židovského původu, který během nacistického režimu emigroval a získal Nobelovu cenu."
+            },
+            {
+                name: "Guillaume Apollinaire",
+                facts: [
+                    "Francouzský básník.",
+                    "Představitel avantgardy.",
+                    "Vymyslel surrealismus."
+                ],
+                fullHint: "Francouzský avantgardní básník, který vytvořil pojem surrealismus a byl vlivný ve vývoji moderní poezie."
+            },
+            {
+                name: "James Joyce",
+                facts: [
+                    "Irský spisovatel.",
+                    "Experimentátor s románovou formou."
+                ],
+                fullHint: "Irský spisovatel, známý svou inovativní literární technikou, známý především dílem Ulysses."
+            },
+            {
+                name: "Franz Kafka",
+                facts: [
+                    "Německy píšící spisovatel.",
+                    "Autor existencialistických děl."
+                ],
+                fullHint: "Židovský spisovatel z Prahy, jehož díla se zaměřují na absurdní byrokracii a existenciální úzkosti."
+            }
+        ];
+
+        let currentAuthor = authors[Math.floor(Math.random() * authors.length)];
+        let correctAnswers = [];
+        let incorrectAnswers = [];
+        let correctCount = 0;
+        let incorrectCount = 0;
+
         document.getElementById("fact").textContent = currentAuthor.facts.join(", ");
-    }
 
-    function showHint() {
-        document.getElementById("hint").style.display = "block";
-        document.getElementById("hint").textContent = "Nápověda: " + currentAuthor.facts.join(", ");
-        checkAnswer();
-    }
+        function checkAnswer() {
+            const userAnswer = normalizeString(document.getElementById("authorInput").value.trim());
+            const correctAnswer = normalizeString(currentAuthor.name);
 
-    function checkEnter(event) {
-        if (event.key === "Enter") {
-            checkAnswer();
+            if (userAnswer === correctAnswer) {
+                document.getElementById("result").textContent = "Správně!";
+                document.getElementById("result").className = "correct";
+                correctAnswers.push(currentAuthor.name);
+                correctCount++;
+                document.getElementById("correctCount").textContent = correctCount;
+            } else {
+                document.getElementById("result").textContent = `Špatně! Správná odpověď: ${currentAuthor.name}`;
+                document.getElementById("result").className = "incorrect";
+                incorrectAnswers.push(userAnswer);
+                incorrectCount++;
+                document.getElementById("incorrectCount").textContent = incorrectCount;
+            }
+
+            document.getElementById("correctAnswers").textContent = `Správné odpovědi (${correctAnswers.length})`;
+            document.getElementById("incorrectAnswers").textContent = `Špatné odpovědi (${incorrectAnswers.length})`;
+            document.getElementById("authorInput").value = "";
+            currentAuthor = authors[Math.floor(Math.random() * authors.length)];
+            document.getElementById("fact").textContent = currentAuthor.facts.join(", ");
         }
-    }
-</script>
+
+        function toggleHint() {
+            const hintElement = document.getElementById("hint");
+            if (hintElement.style.display === "none" || hintElement.style.display === "") {
+                hintElement.style.display = "block";
+                hintElement.textContent = currentAuthor.fullHint;
+            } else {
+                hintElement.style.display = "none";
+            }
+        }
+
+        function checkEnter(event) {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        }
+    </script>
 
 </body>
+
 </html>
