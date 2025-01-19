@@ -242,184 +242,192 @@
     </div>
 
     <script>
-        // Funkce pro odstranění diakritiky a převod na malá písmena
-        function normalizeString(str) {
-            return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+           // Funkce pro odstranění diakritiky a převod na malá písmena
+    function normalizeString(str) {
+        return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+    
+    const authors = [
+        {
+            name: "Thomas Mann",
+            facts: [
+                "Německý prozaik.",
+                "Židovského původu.",
+                "Po nástupu Hitlera k moci emigroval.",
+                "Emigroval do ČSR, Švýcarska, USA.",
+                "Jeho knihy byly v Německu páleny.",
+                "Získal Nobelovu cenu za literaturu v roce 1929."
+            ],
+            mainWorks: "Hlavní díla: Buddenbrookovi, Smrt v Benátkách, Kouzelný vrch.",
+            fullHint: "Německý prozaik židovského původu, který emigroval během nástupu Hitlera k moci a získal Nobelovu cenu za literaturu."
+        },
+        {
+            name: "Guillaume Apollinaire",
+            facts: [
+                "Francouzský avantgardní básník.",
+                "Raněn za 1. sv. války.",
+                "Zemřel na španělskou chřipku v roce 1918.",
+                "Zakladatel avantgardy.",
+                "Řazen ke kubismu a futurismu.",
+                "Vymyslel název 'surrealismus'."
+            ],
+            mainWorks: "Hlavní díla: Alkoholy (základ moderní poezie, obsahuje Pásmo).",
+            fullHint: "Francouzský avantgardní básník, který byl raněn v první světové válce, zemřel na španělskou chřipku a je zakladatelem surrealismu."
+        },
+        {
+            name: "James Joyce",
+            facts: [
+                "Irský prozaik.",
+                "Dlouho žil ve Francii.",
+                "Ovládal přes 10 jazyků.",
+                "Jeden z hlavních experimentátorů s románovou formou."
+            ],
+            mainWorks: "Hlavní díla: Odysseus (zachycuje jeden den života obyčejného člověka Leopolda Blooma v 18 kapitolách, inspirováno antickou Odyssei).",
+            fullHint: "Irský prozaik, který žil ve Francii a byl známý svou experimentální románovou formou."
+        },
+        {
+            name: "Franz Kafka",
+            facts: [
+                "Pocházel z pražské židovské rodiny.",
+                "Psal německy.",
+                "Předchůdce existencialismu.",
+                "Jeho hrdinové čelí bezvýchodným situacím.",
+                "Hrdinové mají strach z autority."
+            ],
+            mainWorks: "Hlavní díla: Proměna, Proces, Zámek.",
+            fullHint: "Pražský spisovatel židovského původu, jehož díla se zaměřují na existenciální témata a byrokracii."
+        },
+        {
+            name: "Boris Pasternak",
+            facts: [
+                "Ruský básník a dramatik.",
+                "Jeho tvorba byla ovlivněna symbolismem a futurismem.",
+                "Měl problémy s totalitním režimem.",
+                "Očekával zatčení."
+            ],
+            mainWorks: "Hlavní díla: Doktor Živago (osudy humanistického intelektuála v Rusku kolem 1. sv. války a revoluce).",
+            fullHint: "Ruský spisovatel, jehož díla kritizovala totalitní režimy a byly silně ovlivněny symbolismem."
+        },
+        {
+            name: "Michail Bulgakov",
+            facts: [
+                "Ruský lékař, žurnalista a dramaturg.",
+                "Psal magický realismus."
+            ],
+            mainWorks: "Hlavní díla: Mistr a Markétka (prolínání příběhu ďábla v Moskvě za bolševiků a odsouzení Krista Pilátem Pontským).",
+            fullHint: "Ruský spisovatel, který proslul svým magickým realismem, zejména díky dílu Mistr a Markétka."
+        },
+        {
+            name: "Erich Maria Remarque",
+            facts: [
+                "Německý prozaik.",
+                "Jako dobrovolník narukoval do 1. sv. války.",
+                "Odešel do exilu.",
+                "Jeho knihy byly nacisty páleny."
+            ],
+            mainWorks: "Hlavní díla: Na západní frontě klid, Tři kamarádi.",
+            fullHint: "Německý spisovatel, který se zaměřil na hrůzy války a byl za svou tvorbu perzekvován nacisty."
+        },
+        {
+            name: "Ernest Hemingway",
+            facts: [
+                "Americký spisovatel.",
+                "Dopisovatel ze Španělské občanské války.",
+                "Získal Nobelovu cenu za literaturu v roce 1954."
+            ],
+            mainWorks: "Hlavní díla: Sbohem, armádo, Komu zvoní hrana, Stařec a moře.",
+            fullHint: "Americký spisovatel, známý svým minimalistickým stylem a tématy válečných konfliktů."
+        },
+        {
+            name: "John Steinbeck",
+            facts: [
+                "Americký spisovatel.",
+                "Žil v Kalifornii.",
+                "Zpracovával sociální témata.",
+                "Získal Nobelovu cenu za literaturu."
+            ],
+            mainWorks: "Hlavní díla: Hrozny hněvu (osud farmářů za hospodářské krize), O myších a lidech (přátelství dvou dělníků).",
+            fullHint: "Americký spisovatel, známý pro své kritické pohledy na společenskou nespravedlnost."
+        },
+        {
+            name: "George Orwell",
+            facts: [
+                "Vlastním jménem Eric Arthur Blair.",
+                "Anglický novinář narozen v Indii.",
+                "Kritik totalitarismu.",
+                "Zastával protikolonialistický postoj."
+            ],
+            mainWorks: "Hlavní díla: Zvířecí farma (alegorická bajka), 1984 (dystopický román o totalitním státu).",
+            fullHint: "Anglický spisovatel, kritik totalitarismu, známý svými dystopickými díly jako 1984."
         }
-
-        const authors = [
-            {
-                name: "Thomas Mann",
-                facts: [
-                    "Německý prozaik.",
-                    "Židovského původu.",
-                    "Po nástupu Hitlera k moci emigroval.",
-                    "Emigroval do ČSR, Švýcarska, USA.",
-                    "Jeho knihy byly v Německu páleny.",
-                    "Získal Nobelovu cenu za literaturu v roce 1929."
-                ],
-                fullHint: "Německý prozaik židovského původu, který emigroval během nástupu Hitlera k moci a získal Nobelovu cenu za literaturu."
-            },
-            {
-                name: "Guillaume Apollinaire",
-                facts: [
-                    "Francouzský avantgardní básník.",
-                    "Raněn za 1. sv. války.",
-                    "Zemřel na španělskou chřipku v roce 1918.",
-                    "Zakladatel avantgardy.",
-                    "Řazen ke kubismu a futurismu.",
-                    "Vymyslel název 'surrealismus'."
-                ],
-                fullHint: "Francouzský avantgardní básník, který byl raněn v první světové válce, zemřel na španělskou chřipku a je zakladatelem surrealismu."
-            },
-            {
-                name: "James Joyce",
-                facts: [
-                    "Irský prozaik.",
-                    "Dlouho žil ve Francii.",
-                    "Ovládal přes 10 jazyků.",
-                    "Jeden z hlavních experimentátorů s románovou formou."
-                ],
-                fullHint: "Irský prozaik, který žil ve Francii a byl známý svou experimentální románovou formou."
-            },
-            {
-                name: "Franz Kafka",
-                facts: [
-                    "Pocházel z pražské židovské rodiny.",
-                    "Psal německy.",
-                    "Předchůdce existencialismu.",
-                    "Jeho hrdinové čelí bezvýchodným situacím.",
-                    "Hrdinové mají strach z autority."
-                ],
-                fullHint: "Pražský spisovatel židovského původu, jehož díla se zaměřují na existenciální témata a byrokracii."
-            },
-            {
-                name: "Boris Pasternak",
-                facts: [
-                    "Ruský básník a dramatik.",
-                    "Jeho tvorba byla ovlivněna symbolismem a futurismem.",
-                    "Měl problémy s totalitním režimem.",
-                    "Očekával zatčení."
-                ],
-                fullHint: "Ruský spisovatel, jehož díla kritizovala totalitní režimy a byly silně ovlivněny symbolismem."
-            },
-            {
-                name: "Michail Bulgakov",
-                facts: [
-                    "Ruský lékař, žurnalista a dramaturg.",
-                    "Psal magický realismus.",
-                    "Jeho nejznámější dílo je Mistr a Markétka."
-                ],
-                fullHint: "Ruský spisovatel, který proslul svým magickým realismem, zejména díky dílu Mistr a Markétka."
-            },
-            {
-                name: "Erich Maria Remarque",
-                facts: [
-                    "Německý prozaik.",
-                    "Jako dobrovolník narukoval do 1. sv. války.",
-                    "Odešel do exilu.",
-                    "Jeho knihy byly nacisty páleny."
-                ],
-                fullHint: "Německý spisovatel, který se zaměřil na hrůzy války a byl za svou tvorbu perzekvován nacisty."
-            },
-            {
-                name: "Ernest Hemingway",
-                facts: [
-                    "Americký spisovatel.",
-                    "Dopisovatel ze Španělské občanské války.",
-                    "Získal Nobelovu cenu za literaturu v roce 1954."
-                ],
-                fullHint: "Americký spisovatel, známý svým minimalistickým stylem a tématy válečných konfliktů."
-            },
-            {
-                name: "John Steinbeck",
-                facts: [
-                    "Americký spisovatel.",
-                    "Žil v Kalifornii.",
-                    "Zpracovával sociální témata.",
-                    "Získal Nobelovu cenu za literaturu."
-                ],
-                fullHint: "Americký spisovatel, známý pro své kritické pohledy na společenskou nespravedlnost."
-            },
-            {
-                name: "George Orwell",
-                facts: [
-                    "Vlastním jménem Eric Arthur Blair.",
-                    "Anglický novinář narozen v Indii.",
-                    "Kritik totalitarismu.",
-                    "Zastával protikolonialistický postoj."
-                ],
-                fullHint: "Anglický spisovatel, kritik totalitarismu, známý svými dystopickými díly jako 1984."
-            }
-        ];
-
-
-        let previousAuthor = null;  // Sledování předchozího autora
-        let correctAnswers = [];
-        let incorrectAnswers = [];
-        let correctCount = 0;
-        let incorrectCount = 0;
-
-        function getNextAuthor() {
-            let author;
-            do {
-                author = authors[Math.floor(Math.random() * authors.length)];
-            } while (author === previousAuthor);  // Zajistí, že stejný autor nebude dvakrát za sebou
-            previousAuthor = author;
-            return author;
+    ];
+    
+    let previousAuthor = null;  // Sledování předchozího autora
+    let correctAnswers = [];
+    let incorrectAnswers = [];
+    let correctCount = 0;
+    let incorrectCount = 0;
+    
+    function getNextAuthor() {
+        let author;
+        do {
+            author = authors[Math.floor(Math.random() * authors.length)];
+        } while (author === previousAuthor);  // Zajistí, že stejný autor nebude dvakrát za sebou
+        previousAuthor = author;
+        return author;
+    }
+    
+    function getRandomFacts(facts, count) {
+        const shuffled = facts.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+    }
+    
+    let currentAuthor = getNextAuthor();
+    document.getElementById("fact").textContent = getRandomFacts(currentAuthor.facts, 2).concat(currentAuthor.mainWorks).join(", ");
+    
+    function checkAnswer() {
+        const userAnswer = normalizeString(document.getElementById("authorInput").value.trim());
+        const correctAnswer = normalizeString(currentAuthor.name);
+    
+        if (userAnswer === correctAnswer) {
+            document.getElementById("result").textContent = "Správně!";
+            document.getElementById("result").className = "correct";
+            correctAnswers.push(currentAuthor.name);
+            correctCount++;
+            document.getElementById("correctCount").textContent = correctCount;
+    
+            // Přidání správné odpovědi do seznamu
+            const listItem = document.createElement("li");
+            listItem.textContent = currentAuthor.name;
+            document.getElementById("correctAnswersList").appendChild(listItem);
+        } else {
+            document.getElementById("result").textContent = `Špatně! Správná odpověď: ${currentAuthor.name}`;
+            document.getElementById("result").className = "incorrect";
+            incorrectAnswers.push(userAnswer);
+            incorrectCount++;
+            document.getElementById("incorrectCount").textContent = incorrectCount;
         }
-
-        function getRandomFacts(facts, count) {
-            const shuffled = facts.sort(() => 0.5 - Math.random());
-            return shuffled.slice(0, count);
+    
+        document.getElementById("authorInput").value = "";
+        currentAuthor = getNextAuthor();
+        document.getElementById("fact").textContent = getRandomFacts(currentAuthor.facts, 2).concat(currentAuthor.mainWorks).join(", ");
+    }
+    
+    function toggleHint() {
+        const hintElement = document.getElementById("hint");
+        if (hintElement.style.display === "none" || hintElement.style.display === "") {
+            hintElement.style.display = "block";
+            hintElement.textContent = currentAuthor.fullHint;
+        } else {
+            hintElement.style.display = "none";
         }
-
-        let currentAuthor = getNextAuthor();
-        document.getElementById("fact").textContent = getRandomFacts(currentAuthor.facts, 2).join(", ");
-
-        function checkAnswer() {
-            const userAnswer = normalizeString(document.getElementById("authorInput").value.trim());
-            const correctAnswer = normalizeString(currentAuthor.name);
-
-            if (userAnswer === correctAnswer) {
-                document.getElementById("result").textContent = "Správně!";
-                document.getElementById("result").className = "correct";
-                correctAnswers.push(currentAuthor.name);
-                correctCount++;
-                document.getElementById("correctCount").textContent = correctCount;
-
-                // Přidání správné odpovědi do seznamu
-                const listItem = document.createElement("li");
-                listItem.textContent = currentAuthor.name;
-                document.getElementById("correctAnswersList").appendChild(listItem);
-            } else {
-                document.getElementById("result").textContent = `Špatně! Správná odpověď: ${currentAuthor.name}`;
-                document.getElementById("result").className = "incorrect";
-                incorrectAnswers.push(userAnswer);
-                incorrectCount++;
-                document.getElementById("incorrectCount").textContent = incorrectCount;
-            }
-
-            document.getElementById("authorInput").value = "";
-            currentAuthor = getNextAuthor();
-            document.getElementById("fact").textContent = getRandomFacts(currentAuthor.facts, 2).join(", ");
+    }
+    
+    function checkEnter(event) {
+        if (event.key === "Enter") {
+            checkAnswer();
         }
-
-        function toggleHint() {
-            const hintElement = document.getElementById("hint");
-            if (hintElement.style.display === "none" || hintElement.style.display === "") {
-                hintElement.style.display = "block";
-                hintElement.textContent = currentAuthor.fullHint;
-            } else {
-                hintElement.style.display = "none";
-            }
-        }
-
-        function checkEnter(event) {
-            if (event.key === "Enter") {
-                checkAnswer();
-            }
-        }
+    }
     </script>
 
 </body>
