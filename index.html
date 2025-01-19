@@ -285,12 +285,22 @@
             }
         ];
 
-        let currentAuthor = authors[Math.floor(Math.random() * authors.length)];
+        let previousAuthor = null;  // Sledování předchozího autora
         let correctAnswers = [];
         let incorrectAnswers = [];
         let correctCount = 0;
         let incorrectCount = 0;
 
+        function getNextAuthor() {
+            let author;
+            do {
+                author = authors[Math.floor(Math.random() * authors.length)];
+            } while (author === previousAuthor);  // Zajistí, že stejný autor nebude dvakrát za sebou
+            previousAuthor = author;
+            return author;
+        }
+
+        let currentAuthor = getNextAuthor();
         document.getElementById("fact").textContent = currentAuthor.facts.join(", ");
 
         function checkAnswer() {
@@ -314,7 +324,7 @@
             document.getElementById("correctAnswers").textContent = `Správné odpovědi (${correctAnswers.length})`;
             document.getElementById("incorrectAnswers").textContent = `Špatné odpovědi (${incorrectAnswers.length})`;
             document.getElementById("authorInput").value = "";
-            currentAuthor = authors[Math.floor(Math.random() * authors.length)];
+            currentAuthor = getNextAuthor();
             document.getElementById("fact").textContent = currentAuthor.facts.join(", ");
         }
 
