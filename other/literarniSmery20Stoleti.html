@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test literárního směru</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container,
+        #stats {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 360px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h1,
+        h2 {
+            color: #FFEB3B;
+        }
+
+        input,
+        button {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: none;
+        }
+
+        input {
+            background-color: #333;
+            color: #e0e0e0;
+        }
+
+        button {
+            background-color: #FFEB3B;
+            color: #121212;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #FFCA28;
+        }
+
+        .correct {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: #F44336;
+            font-weight: bold;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Test literárního směru</h1>
+        <p id="fact"></p>
+        <input type="text" id="directionInput" placeholder="Napiš název směru" onkeydown="checkEnter(event)">
+        <button onclick="checkAnswer()">Zkontrolovat</button>
+        <p id="result"></p>
+    </div>
+
+    <div id="stats">
+        <h2>Statistiky</h2>
+        <p>Správně: <span id="correctCount">0</span> | Špatně: <span id="incorrectCount">0</span></p>
+    </div>
+
+    <script>
+        function normalizeString(str) {
+            return str.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+        }
+        const directions = [
+            {
+                name: "Česká moderna",
+                facts: [
+                    "v roce 1895 vyšel Manifest České moderny, podepsali ho J.S. Machar, F. X. Šalda, O. Březina, A. Sova, V. Mrštík",
+                    "zavádějí do české kultury moderní umění",
+                    "kritika všeho předešlého v českém umění, kdy kultura byla od dob národního obrození chápána jako služka národa",
+                    "řadíme sem symbolisty, impresionisty, dekadenty, buřiče (anarchisty)",
+                    "Antonín Sova – symbolista, Kdo Vám tam zcuchal tmavé vlasy",
+                    "Otokar Březina – symbolista, Tajemné dálky, Svítání na západě, Stavitelé chrámů"
+                ],
+            },
+            {
+                name: "Generace buřičů",
+                facts: [
+                    "v roce 1896 vyšel Manifest anarchistů českých, Svobodu vidíme jen, kde není autorit – v anarchii!",
+                    "vydávali časopis Nový kult (1897 – 1905)",
+                    "anarche znamená bezvládí, úhlavním nepřítelem je stát",
+                    "odmítají tradiční hodnoty, tedy rodinu, víru v Boha, vlastenectví, a vysmívají se jim",
+                    "oslava svobodného života – bohémský, tulácký",
+                    "Petr Bezruč – Slezské písně",
+                    "Viktor Dyk – Krysař",
+                    "Fráňa Šrámek – Modrý a rudý – Píšou mi psaní",
+                    "Stanislav Kostka Neumann"
+                ],
+            },
+            {
+                name: "Devětsil",
+                facts: [
+                    "sdružení mladých umělců vzniklé 1920, celým názvem Svaz moderní kultury Devětsil",
+                    "hlavním iniciátor a prvním předsedou byl Vladislav Vančura",
+                    "prvním programem bylo proletářské umění, později přešli k poetismu",
+                    "vydávali manifesty a časopisy",
+                    "Vladislav Vančura – Rozmarné léto",
+                    "Jiří Wolker – Těžká hodina",
+                    "Vítězslav Nezval – Edison",
+                    "Jaroslav Seifert – Na vlnách TSF",
+                    "Jiří Voskovec a Jan Werich",
+                    "František Halas"
+                ],
+            },
+            {
+                name: "Skupina 42",
+                facts: [
+                    "básnická skupina pojmenovaná podle roku vzniku, tedy v době Protektorátu Čechy a Morava",
+                    "hlavní inspirací je velkoměsto a především jeho periferie – je tam nejvíce života, ale je odpuzující (hluk, špína)",
+                    "někteří členové měli blízko k existencialismu nebo byli pod jeho vlivem",
+                    "Jiří Kolář – Dny v roce"
+                ],
+            },
+            {
+                name: "Prokletí básníci",
+                facts: [
+                    "francouzští básnící z konce 19. století spojení s modernou – symbolismus, impresionismus, dekadence",
+                    "Charles Baudelaire – Květy zla",
+                    "Arthur Rimbaud – Opilý koráb",
+                    "Paul Verlaine – Romance beze slov"
+                ],
+            },
+            {
+                name: "Lost generation (ztracená generace)",
+                facts: [
+                    "spisovatelé, kteří bojovali v 1. světové válce",
+                    "většinou Američané, kteří pak zůstali v Evropě",
+                    "po hrůzách prožitých během války se neumí vrátit k normálnímu životu",
+                    "Ernest Hemingway – Fiesta; Sbohem, armádo; Komu zvoní hrana",
+                    "Erich Maria Remarque - Na západní frontě klid"
+                ],
+            },
+            {
+                name: "Beat generation (beatnici)",
+                facts: [
+                    "literární směr v americké literatuře vzniklý v 50. letech 20. století",
+                    "beat znamená zbitá, unavená životem",
+                    "distancují se od konzumní společnosti a tradičních hodnot",
+                    "cílem je šokovat střední třídu",
+                    "typický beatnik – tulák, poslouchá jazz, bere drogy, otevřeně hovoří o sexu, pacifista, proti západní civilizaci",
+                    "Jack Kerouac – Na cestě"
+                ],
+            },
+            {
+                name: "Modernismus (v anglosaských zemích používá označení modernismus)",
+                facts: [
+                    "umělecké směry, které vznikly kolem 1. sv. války",
+                    "úplný rozchod s předešlým uměním, začít znovu a jinak, společně s uměním změnit život i člověka",
+                    "často politicky angažovaní, surrealismus s levicí, futurismus s fašismem",
+                    "fauvismus, expresionismus, kubismus, civilismus, futurismus, dadaismus, surrealismus, poetismus"
+                ],
+            },
+            {
+                name: "Expresionismus",
+                facts: [
+                    "expresse znamená výraz, tedy má to být výraz (obraz) našeho nitra",
+                    "hlavními náměty jsou úzkost, osamělost, strach, neschopnost kontaktu s druhým",
+                    "nejznámější a typický je E. Munch - Výkřik"
+                ],
+            },
+            {
+                name: "Dadaismus",
+                facts: [
+                    "vznikl v roce 1916 v Curychu, kam do neutrálního Švýcarska utekli umělci, aby se vyhnuli 1. sv. válce",
+                    "reakce na 1. sv. válku – rozum a technika vedou k zabíjení, proto důraz na náhodu",
+                    "typická dadaistická báseň – rozstříhej text na slova, dej je do pytlíku a náhodným losováním sestav báseň",
+                    "Hugo Ball – báseň Gadji beri bimba",
+                    "Gadji beri bimba glandridi laula lonni cadori gadjama gramma berida bimbala glandri galassassa laulitalomini gadji beri bin blassa glassala laula lonni cadorsu sassala bim gadjama tuffm i zimzalla binban gligla wowolimai bin beri ban o katalominai rhinozerossola hopsamen laulitalomini hoooo gadjama rhinozerossola hopsamen bluku terullala blaulala loooo",
+                    "Marcel Duchamp - Fontána"
+                ],
+            },
+            {
+                name: "Futurismus",
+                facts: [
+                    "latinsky futurus znamená budoucí",
+                    "umění má odpovídat moderní době a rychlému vývoji",
+                    "hlavně oslava lidského pokroku, tedy techniky",
+                    "používali nový jazyk, slova mají být osvobozena z větných vazeb",
+                    "DOPIS „PASSÉISTICKÉHO“ PÁNA MLADÉ KRASAVICI iiiiiiiiiiiiiiillllllllllllllllllllllllllllllllllllllllllllllááááááááááááá + MILUJI tě + - x 29lichotek + luna a potůčky pějí pod stromy…………………ráj mých paží Přijď 3000 měsíčně + prsten štěstí + - X + - s rubíny 8000 + 6000 nicotnosssssssssst botičky. Zítra u mě. Bud‘ rozumnou. Tři AASSss futuristické polibky",
+                ],
+            },
+            {
+                name: "Poetismus",
+                facts: [
+                    "druhý program Devětsilu, řadí se k avantgardním směrům, inspirace G. Apollinairovým Pásmem",
+                    "lyrické, spontánní, fantazijní, hra obrazotvornosti",
+                    "řetězení představ za sebou, časté motivy lidové zábavy (cirkus, kino, varieté, fotbal) a cestování do exotických zemí",
+                    "odmítali politickou angažovanost v umění",
+                    "převládají milostná témata"
+                ],
+            },
+            {
+                name: "Surrealismus",
+                facts: [
+                    "znamená nadrealismus",
+                    "metoda automatického psaní, zkoumá lidské podvědomí, které se odkrývá, když racionálně nekorigujeme",
+                    "pomocí asociace – na základě podobnosti",
+                    "rádi pracují se snem, to, na co myslíme, není ve snu korigováno a sen odráží naše přání, touhy přes den rozumem potlačované",
+                    "S. Dalí – Persistence paměti"
+                ],
+            },
+            {
+                name: "Existencialismus",
+                facts: [
+                    "filozofický a umělecký směr, vznikl v 30. letech 20. století",
+                    "z latinského existentia, což znamená bytí",
+                    "zabývá se bytím člověka v současném světě",
+                    "jako literární směr se vyvinul v 40. letech ve Francii",
+                    "život je neustálá volba, ale žádná není správná",
+                    "člověk je sám a izolovaný, život je plný úzkostí, beznaděje, zoufalství",
+                    "jediná jistota je smrt",
+                    "Albert Camus – Cizinec",
+                    "Jiří Ortem - Ohnice",
+                    "Franz Kafka – spíš měl k existencialismu blízko, Proměna, Zámek, Proces"
+                ],
+            },
+            {
+                name: "Socialistický realismus",
+                facts: [
+                    "oficiální směr komunistických stran",
+                    "umění má potvrzovat ,,správnost“ komunistické ideologie",
+                    "hlavní hrdinové jsou dělníci, kteří bojují za ,,lepší“ zítřky",
+                    "díla jsou schématická (psaná podle schématu) – komunisté jsou dobří a kapitalisté zlí, samozřejmě končí šťastně, tedy zestátněním, překročením plánu, odhalením záškodníka",
+                    "oslavují se komunističtí vůdcové – Stalin, Gottwald",
+                    "jistě zapomenutý ,,tvůrce“"
+                ],
+            },
+            {
+                name: "Magický realismus",
+                facts: [
+                    "umělecký směr, který se vyvinul v Latinské Americe v 2. polovině 20. století",
+                    "prolínají se dva světy, a to skutečný a magický (fantazijní, snový)",
+                    "často mezi nimi neexistují hranice nebo jsou jen těžko postřehnutelné",
+                    "rádi používají mytologické náměty (indiánské, biblické)",
+                    "Gabriel Garcia Marquez- Sto roků samoty",
+                    "Michail Bulgakov- Mistr a Markétka"
+                ],
+            },
+            {
+                name: "Absurdní drama",
+                facts: [
+                    "snaží se zachytit člověka ve dvacátém století a absurditu našich životů",
+                    "nemají souvislý děj",
+                    "jednání postav je nelogické a jazyk je často úplně nesmyslný",
+                    "jazyk ztrácí sdělovací funkci",
+                    "Samuel Beckett- Čekání na Godota",
+                    "Václav Havel- Zahradní slavnost",
+                    "Friedrich Dürrenmatt- Návštěva staré dámy"
+                ],
+            },
+            {
+                name: "Postmodernismus",
+                facts: [
+                    "hovoříme o ní od 60. let 20. století",
+                    "spojeno s globalizací a multikulturní společností, žádná kultura není nadřazená jiné (ani ta naše)",
+                    "vše je relativní, tedy i pravda",
+                    "dílo má mít mnoho rovin a my si vybíráme tu, která nám vyhovuje",
+                    "Umberto Eco- Jméno růže",
+                    "Milan Kundera- Nesnesitelná lehkost bytí",
+                    "Městečko Twin Peaks"
+                ],
+            }
+        ];
+        let previousDirection = null;
+        let currentDirection = null;
+        let correctCount = 0;
+        let incorrectCount = 0;
+
+        function getNextDirection() {
+            let dir;
+            do {
+                dir = directions[Math.floor(Math.random() * directions.length)];
+            } while (dir === previousDirection);
+            previousDirection = dir;
+            return dir;
+        }
+
+        function displayDirectionInfo(dir) {
+        const factElement = document.getElementById("fact");
+        const shuffledFacts = dir.facts.sort(() => 0.5 - Math.random()); // Náhodné seřazení faktů
+        const selectedFacts = shuffledFacts.slice(0, 3); // Vybereme první 3 fakta
+        factElement.innerHTML = '<ul>' + selectedFacts.map(f => `<li>${f}</li>`).join('') + '</ul>';
+    }
+
+        function checkAnswer() {
+            const userAnswer = normalizeString(document.getElementById("directionInput").value.trim());
+            const correctAnswer = normalizeString(currentDirection.name);
+            const result = document.getElementById("result");
+
+            if (userAnswer === correctAnswer) {
+                result.textContent = "Správně!";
+                result.className = "correct";
+                correctCount++;
+                document.getElementById("correctCount").textContent = correctCount;
+            } else {
+                result.textContent = `Špatně! Správná odpověď: ${currentDirection.name}`;
+                result.className = "incorrect";
+                incorrectCount++;
+                document.getElementById("incorrectCount").textContent = incorrectCount;
+            }
+
+            document.getElementById("directionInput").value = "";
+            currentDirection = getNextDirection();
+            displayDirectionInfo(currentDirection);
+        }
+
+        function checkEnter(e) {
+            if (e.key === "Enter") checkAnswer();
+        }
+
+        // Načtení první otázky
+        currentDirection = getNextDirection();
+        displayDirectionInfo(currentDirection);
+    </script>
+</body>
+
+</html>
