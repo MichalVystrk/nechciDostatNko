@@ -11,14 +11,23 @@
             font-family: 'Roboto', sans-serif;
             background-color: #121212;
             color: #e0e0e0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            padding: 0;
-            flex-direction: column;
+            padding: 20px;
             box-sizing: border-box;
+            display: flex;
+            justify-content: center; /* Horizontální zarovnání na střed */
+            align-items: center; /* Vertikální zarovnání na střed */
+            min-height: 100vh; /* Výška stránky */
+        }
+
+        .layout-container {
+            display: flex;
+            flex-direction: row; /* Horizontální rozložení */
+            justify-content: center;
+            align-items: center; /* Vertikální zarovnání na střed */
+            gap: 20px; /* Mezera mezi kontejnery */
+            width: 100%;
+            max-width: 1200px; /* Maximální šířka stránky */
         }
 
         .container {
@@ -28,7 +37,6 @@
             width: 360px;
             max-width: 90%;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            margin-bottom: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -153,91 +161,63 @@
             background-color: #333;
         }
 
-        .answer-list {
-            cursor: pointer;
-            color: #FFEB3B;
-            text-decoration: underline;
-            margin-top: 10px;
-        }
-
-        .answer-list:hover {
-            color: #FFCA28;
-        }
-
-        /* Animace pro tlačítka */
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        .button-container button {
-            width: 48%;
-        }
-
         /* Responsivní design */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
+            .layout-container {
+                flex-direction: column; /* Na mobilních zařízeních pod sebou */
+                align-items: center;
+            }
 
             .container,
             #stats {
                 width: 100%;
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 28px;
-            }
-
-            p {
-                font-size: 16px;
-            }
-
-            input {
-                font-size: 14px;
-                padding: 10px;
-            }
-
-            button {
-                font-size: 16px;
-                padding: 12px;
-            }
-
-            #result {
-                font-size: 18px;
             }
         }
     </style>
 </head>
 
 <body>
-
-    <div class="container">
-        <h1>Test autora</h1>
-        <p id="fact"></p>
-        <input type="text" id="authorInput" placeholder="Napiš správné jméno autora" onkeydown="checkEnter(event)" />
-        <div class="button-container">
-            <button onclick="checkAnswer()">Zkontrolovat odpověď</button>
-            <button onclick="toggleHint()">Nápověda</button>
+    <div class="layout-container">
+        <!-- Nastavení rozsahu autorů -->
+        <div class="container">
+            <h2>Nastavení rozsahu autorů</h2>
+            <label for="startRange">Začátek rozsahu:</label>
+            <input type="number" id="startRange" min="1" max="30" value="1" />
+            <label for="endRange">Konec rozsahu (max: <span id="maxAuthors"></span>):</label>
+            <input type="number" id="endRange" min="1" max="30" value="30" />
+            <button onclick="setAuthorRange()">Nastavit rozsah</button>
         </div>
-        <p id="result"></p>
-        <p id="hint"></p>
-    </div>
 
-    <div id="stats">
-        <h2>Statistiky</h2>
-        <table>
-            <tr>
-                <th>Správně</th>
-                <th>Špatně</th>
-            </tr>
-            <tr>
-                <td id="correctCount">0</td>
-                <td id="incorrectCount">0</td>
-            </tr>
-        </table>
-        <div id="answersList">
-            <p><strong>Seznam správných odpovědí:</strong></p>
-            <ul id="correctAnswersList"></ul>
+        <!-- Test autora -->
+        <div class="container">
+            <h1>Test autora</h1>
+            <p id="fact"></p>
+            <input type="text" id="authorInput" placeholder="Napiš správné jméno autora" onkeydown="checkEnter(event)" />
+            <div class="button-container">
+                <button onclick="checkAnswer()">Zkontrolovat odpověď</button>
+                <button onclick="toggleHint()">Nápověda</button>
+            </div>
+            <p id="result"></p>
+            <p id="hint"></p>
+        </div>
+
+        <!-- Statistiky -->
+        <div id="stats">
+            <h2>Statistiky</h2>
+            <table>
+                <tr>
+                    <th>Správně</th>
+                    <th>Špatně</th>
+                </tr>
+                <tr>
+                    <td id="correctCount">0</td>
+                    <td id="incorrectCount">0</td>
+                </tr>
+            </table>
+            <div id="answersList">
+                <p><strong>Seznam správných odpovědí:</strong></p>
+                <ul id="correctAnswersList"></ul>
+            </div>
         </div>
     </div>
 
@@ -481,11 +461,12 @@
     let incorrectAnswers = [];
     let correctCount = 0;
     let incorrectCount = 0;
+    let selectedAuthors = authors; // Výchozí seznam autorů
     
     function getNextAuthor() {
         let author;
         do {
-            author = authors[Math.floor(Math.random() * authors.length)];
+            author = selectedAuthors[Math.floor(Math.random() * selectedAuthors.length)];
         } while (author === previousAuthor); // Zajistí, že stejný autor nebude dvakrát za sebou
         previousAuthor = author;
         return author;
@@ -563,6 +544,22 @@
             checkAnswer();
         }
     }
+
+    function setAuthorRange() {
+        const start = parseInt(document.getElementById("startRange").value, 10);
+        const end = parseInt(document.getElementById("endRange").value, 10);
+
+        if (start >= 1 && end <= authors.length && start <= end) {
+            selectedAuthors = authors.slice(start - 1, end);
+            currentAuthor = getNextAuthor();
+            displayAuthorInfo(currentAuthor);
+        } else {
+            alert("Zadejte platný rozsah!");
+        }
+    }
+
+    // Nastavení maximálního počtu autorů v popisku
+    document.getElementById("maxAuthors").textContent = authors.length;
     </script>
 
 </body>
