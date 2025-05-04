@@ -270,7 +270,7 @@
         facts: [
             "Odsouzen v procesu s Omladinou za protirakouskou činnost 1893.",
             "Vydával anarchistický časopis Nový kult 1897–1905.",
-            "1929 – vyloučen z KSČ kvůli protestu proti bolševizaci strany.",
+            "1929 – vyloučen z KSČ, protože protestoval proti novému vedení v čele s K. Gottwaldem (bolševizace strany)",
             "Prošel více uměleckých směrů – anarchista, přírodní lyrik, civilismus, proletářská poezie."
         ],
         mainWorks: "Hlavní díla: Kniha lesů, vod a strání.",
@@ -377,7 +377,7 @@
         "Proletářská poezie – Těžká hodina."
     ],
     mainWorks: "Hlavní díla: Host do domu, Těžká hodina.",
-    fullHint: "Český básník, známý svou vitalistickou a proletářskou poezií."
+        fullHint: "Český básník, známý svou vitalistickou a proletářskou poezií."
 },
 {
     name: "Vítězslav Nezval",
@@ -457,6 +457,7 @@
 ];
     
     let previousAuthor = null;  // Sledování předchozího autora
+    let previousAuthorsQueue = []; // Fronta pro sledování posledních 3 autorů
     let correctAnswers = [];
     let incorrectAnswers = [];
     let correctCount = 0;
@@ -464,11 +465,22 @@
     let selectedAuthors = authors; // Výchozí seznam autorů
     
     function getNextAuthor() {
+        if (selectedAuthors.length <= 4) {
+            // Pokud je rozsah 4 nebo méně, povolíme opakování
+            return selectedAuthors[Math.floor(Math.random() * selectedAuthors.length)];
+        }
+
         let author;
         do {
             author = selectedAuthors[Math.floor(Math.random() * selectedAuthors.length)];
-        } while (author === previousAuthor); // Zajistí, že stejný autor nebude dvakrát za sebou
-        previousAuthor = author;
+        } while (previousAuthorsQueue.includes(author)); // Zajistí, že autor není v posledních 3
+
+        // Přidáme autora do fronty a udržujeme maximální délku 3
+        previousAuthorsQueue.push(author);
+        if (previousAuthorsQueue.length > 5) {
+            previousAuthorsQueue.shift(); // Odstraní nejstaršího autora z fronty
+        }
+
         return author;
     }
     
@@ -549,10 +561,12 @@
         const start = parseInt(document.getElementById("startRange").value, 10);
         const end = parseInt(document.getElementById("endRange").value, 10);
 
-        if (start >= 1 && end <= authors.length && start <= end) {
+        if (start >= 1 && end <= authors.length && start < end) {
             selectedAuthors = authors.slice(start - 1, end);
             currentAuthor = getNextAuthor();
             displayAuthorInfo(currentAuthor);
+        } else if (start === end) {
+            alert("Začátek a konec rozsahu se nesmí rovnat!");
         } else {
             alert("Zadejte platný rozsah!");
         }

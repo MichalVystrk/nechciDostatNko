@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Čeští autoři 20. století - Zápisky</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #FFEB3B;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .navigation button {
+            background-color: #FFEB3B;
+            color: #121212;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navigation button:hover {
+            background-color: #FFCA28;
+        }
+
+        .authors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .author {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .author h3 {
+            margin-bottom: 10px;
+            color: #FF5722;
+            font-size: 24px;
+        }
+
+        .author p {
+            margin: 10px 0;
+        }
+
+        .author ul {
+            padding-left: 20px;
+        }
+
+        .author ul li {
+            margin-bottom: 10px;
+            color: #B0B0B0;
+        }
+
+        .author .facts {
+            margin-bottom: 15px;
+        }
+
+        .author .main-works {
+            color: #FFEB3B;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .author h3 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Čeští autoři 20. století</h1>
+    <p style="text-align: center;">Zde jsou zápisky o významných českých autorech 20. století, očíslované pro přehlednost.</p>
+
+    <div class="navigation">
+        <button onclick="scrollToAuthor(1)">Antonín Sova</button>
+        <button onclick="scrollToAuthor(2)">Petr Bezruč</button>
+        <button onclick="scrollToAuthor(3)">Otokar Březina</button>
+        <button onclick="scrollToAuthor(4)">Stanislav Kostka Neumann</button>
+        <button onclick="scrollToAuthor(5)">Viktor Dyk</button>
+        <button onclick="scrollToAuthor(6)">Fráňa Šrámek</button>
+        <button onclick="scrollToAuthor(7)">Ivan Olbracht</button>
+        <button onclick="scrollToAuthor(8)">Jaroslav Hašek</button>
+        <button onclick="scrollToAuthor(9)">Jaroslav Durych</button>
+        <button onclick="scrollToAuthor(10)">Karel Čapek</button>
+        <button onclick="scrollToAuthor(11)">Vladislav Vančura</button>
+        <button onclick="scrollToAuthor(12)">Jaroslav Havlíček</button>
+        <button onclick="scrollToAuthor(13)">Jiří Wolker</button>
+        <button onclick="scrollToAuthor(14)">Vítězslav Nezval</button>
+        <button onclick="scrollToAuthor(15)">Jaroslav Seifert</button>
+        <button onclick="scrollToAuthor(16)">František Halas</button>
+        <button onclick="scrollToAuthor(17)">Vladimír Holan</button>
+        <button onclick="scrollToAuthor(18)">Jan Werich - Jiří Voskovec</button>
+        <button onclick="scrollToAuthor(19)">František Hrubín</button>
+        <button onclick="scrollToAuthor(20)">Jiří Kolář</button>
+    </div>
+
+    <div class="authors-grid">
+        <div id="author-1" class="author">
+            <h3>1. Antonín Sova</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Jeden z nejvýznamnějších představitelů české moderny.</li>
+                    <li>Nejdříve impresionismus – Květy intimních nálad.</li>
+                    <li>Později symbolismus – dost společensky kritický, Soucit a vzdor.</li>
+                    <li>Nejznámější báseň – Kdo Vám tak zcuchal tmavé vlasy.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Květy intimních nálad, Soucit a vzdor.</p>
+        </div>
+
+        <div id="author-2" class="author">
+            <h3>2. Petr Bezruč</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Vlastním jménem Vladimír Vašek.</li>
+                    <li>Narozen v Opavě.</li>
+                    <li>Poštovní úředník v Místku.</li>
+                    <li>Slezské písně – autorství Vladimíra Vaška je sporné.</li>
+                    <li>Básně byly anonymně posílány do časopisu Čas.</li>
+                    <li>Nejznámější sociální balada – Maryčka Magdonová.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Slezské písně.</p>
+        </div>
+
+        <div id="author-3" class="author">
+            <h3>3. Otokar Březina</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Nejvýznamnější představitel českého symbolismu.</li>
+                    <li>Vlastním jménem Václav Jebavý.</li>
+                    <li>Učitel.</li>
+                    <li>Tajemné dálky – báseň Moje matka.</li>
+                    <li>Svítání na západě.</li>
+                    <li>Stavitelé chrámů.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Tajemné dálky, Svítání na západě, Stavitelé chrámů, Ruce.</p>
+        </div>
+
+        <div id="author-4" class="author">
+            <h3>4. Stanislav Kostka Neumann</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Odsouzen v procesu s Omladinou za protirakouskou činnost 1893.</li>
+                    <li>Vydával anarchistický časopis Nový kult 1897–1905.</li>
+                    <li>1929 – vyloučen z KSČ kvůli protestu proti bolševizaci strany.</li>
+                    <li>Prošel více uměleckých směrů – anarchista, přírodní lyrik, civilismus, proletářská poezie.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Kniha lesů, vod a strání.</p>
+        </div>
+
+        <div id="author-5" class="author">
+            <h3>5. Viktor Dyk</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Za protirakouskou činnost vězněn 1916–1917.</li>
+                    <li>Za první republiky poslanec a senátor.</li>
+                    <li>Hlavně spojen s hnutím buřičů (anarchistů).</li>
+                    <li>Krysař – staroněmecká pověst o muži s píšťalou, který odvede z města Hammeln krysy.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Krysař.</p>
+        </div>
+
+        <div id="author-6" class="author">
+            <h3>6. Fráňa Šrámek</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Za protirakouské básně několikrát vězněn.</li>
+                    <li>Anarchista – básnická sbírka Modrý a rudý.</li>
+                    <li>Pak impresionismus – Splav, Stříbrný vítr, Měsíc nad řekou.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Modrý a rudý, Splav, Stříbrný vítr, Měsíc nad řekou.</p>
+        </div>
+
+        <div id="author-7" class="author">
+            <h3>7. Ivan Olbracht</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Levicový novinář.</li>
+                    <li>Za svou komunistickou činnost za první republiky vězněn.</li>
+                    <li>Ve 30. letech 20. stol. pobýval na Podkarpatské Rusi.</li>
+                    <li>1. období tvorby – psychologická témata (O zlých samotářích).</li>
+                    <li>Anna Proletářka – socialistický realismus.</li>
+                    <li>Nikola Šuhaj loupežník – odehrává se na Zakarpatské Ukrajině.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> O zlých samotářích, Anna Proletářka, Nikola Šuhaj loupežník.</p>
+        </div>
+
+        <div id="author-8" class="author">
+            <h3>8. Jaroslav Hašek</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Anarchista, alkoholik, bohémský život, známá pražská figurka.</li>
+                    <li>V hospodě platil svými povídkami.</li>
+                    <li>Osudy dobrého vojáka Švejka za světové války – nejznámější protiválečná satira.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Osudy dobrého vojáka Švejka za světové války.</p>
+        </div>
+
+        <div id="author-9" class="author">
+            <h3>9. Jaroslav Durych</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Vojenský lékař.</li>
+                    <li>Řadíme ke katolickým spisovatelům.</li>
+                    <li>Obdivoval bigotně katolické země, i když tam vládli fašisté.</li>
+                    <li>Vedl polemiky s Karlem Čapkem – jeho humanismus označil za pláč civilisty.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Bloudění, Rekviem.</p>
+        </div>
+
+        <div id="author-10" class="author">
+            <h3>10. Karel Čapek</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Nejvýznamnější český protifašistický novinář a spisovatel.</li>
+                    <li>Bratr Josef – český kubismus.</li>
+                    <li>Pracoval v Lidových novinách.</li>
+                    <li>Řazen k demokratickému a humanistickému proudu.</li>
+                    <li>Mistr povídky – Povídky z jedné a druhé kapsy.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> R.U.R., Krakatit, Válka s mloky, Bílá nemoc, Matka.</p>
+        </div>
+
+        <div id="author-11" class="author">
+            <h3>11. Vladislav Vančura</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Narozen v Háji ve Slezsku.</li>
+                    <li>Zakladatel a první předseda Devětsilu.</li>
+                    <li>1929 vyloučen z KSČ.</li>
+                    <li>Jednoznačně rozpoznatelný svým autorským stylem.</li>
+                    <li>Za heydrichiády popraven nacisty.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Rozmarné léto.</p>
+        </div>
+
+        <div id="author-12" class="author">
+            <h3>12. Jaroslav Havlíček</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Jeden z našich nejlepších autorů psychologického románu.</li>
+                    <li>Pracoval jako úředník a literaturu měl jako koníčka.</li>
+                    <li>Petrolejové lampy – ne moc pěkná chce prožít velkou lásku, ale místo toho si ji vezme syfilitik.</li>
+                    <li>Neviditelný – v bohaté rodině, strýček je přesvědčen o tom, že je neviditelný, a celá rodina tu komedii s ním hraje.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Petrolejové lampy, Neviditelný.</p>
+        </div>
+
+        <div id="author-13" class="author">
+            <h3>13. Jiří Wolker</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Jeden z našich nejznámějších představitelů avantgardy.</li>
+                    <li>Člen Devětsilu.</li>
+                    <li>Zemřel mladý na tuberkulózu, napsal si vlastní epitaf.</li>
+                    <li>Vitalismus – Host do domu.</li>
+                    <li>Proletářská poezie – Těžká hodina.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Host do domu, Těžká hodina.</p>
+        </div>
+
+        <div id="author-14" class="author">
+            <h3>14. Vítězslav Nezval</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Nejvýraznější představitel české avantgardy a organizátor kulturního života.</li>
+                    <li>1. období – poetismus – Podivuhodný kouzelník.</li>
+                    <li>2. období – surrealismus.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Podivuhodný kouzelník.</p>
+        </div>
+
+        <div id="author-15" class="author">
+            <h3>15. Jaroslav Seifert</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Český držitel Nobelovy ceny za literaturu 1984.</li>
+                    <li>Hlavně problémy s komunisty – podepsal Chartu 77.</li>
+                    <li>1. období – proletářská poezie – Město v slzách.</li>
+                    <li>2. období – poetismus – Na vlnách TSF.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Město v slzách, Na vlnách TSF.</p>
+        </div>
+
+        <div id="author-16" class="author">
+            <h3>16. František Halas</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Jeden z nejznámějších českých básníků.</li>
+                    <li>V díle dost tragické motivy – nejčastěji smrt.</li>
+                    <li>Ačkoliv se hlásil ke komunistické ideologii, sami komunisté jeho tvorbu odmítali kvůli údajnému pesimismu.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Torzo naděje.</p>
+        </div>
+
+        <div id="author-17" class="author">
+            <h3>17. Vladimír Holan</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Jeden z nejnáročnějších našich básníků, myšleno na čtenáře.</li>
+                    <li>Žil v ústraní, vlastně nevycházel z bytu, měl trpět agorafobií.</li>
+                    <li>Básník času.</li>
+                    <li>Noc s Hamletem, Terezka Planetová.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Noc s Hamletem, Terezka Planetová.</p>
+        </div>
+
+        <div id="author-18" class="author">
+            <h3>18. Jan Werich – Jiří Voskovec</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Spojeni s Osvobozeným divadlem.</li>
+                    <li>Ze začátku poetistické a dadaistické hry (Vest pocket revue).</li>
+                    <li>Pak přešli k politické satiře – hlavně kritizovali nacismus a sociální nerovnost.</li>
+                    <li>Před Hitlerem utekli do USA, Voskovec se už nevrátil.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Caesar, Kat a blázen, Balada z hadrů.</p>
+        </div>
+
+        <div id="author-19" class="author">
+            <h3>19. František Hrubín</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Velmi melodický básník s písňovou formou.</li>
+                    <li>Nejčastěji milostná lyrika, ale s tragickými prvky.</li>
+                    <li>Romance pro křídlovku, Jobova noc.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Romance pro křídlovku, Jobova noc.</p>
+        </div>
+
+        <div id="author-20" class="author">
+            <h3>20. Jiří Kolář</h3>
+            <div class="facts">
+                <p><strong>Fakta:</strong></p>
+                <ul>
+                    <li>Nejvýznamnější člen Skupiny 42.</li>
+                    <li>Básník a výtvarný umělec – znám hlavně svými kolážemi.</li>
+                    <li>V tvorbě kritizoval komunismus – Dny v roce, Prométheova játra.</li>
+                    <li>V roce 1980 mu nebyl povolen návrat do vlasti a žil trvale ve Francii.</li>
+                </ul>
+            </div>
+            <p class="main-works"><strong>Hlavní díla:</strong> Dny v roce, Prométheova játra.</p>
+        </div>
+    </div>
+
+    <script>
+        function scrollToAuthor(authorId) {
+            const element = document.getElementById(`author-${authorId}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+
+</html>
