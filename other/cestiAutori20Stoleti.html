@@ -114,15 +114,6 @@
             font-weight: bold;
         }
 
-        #hint {
-            background-color: #FFEB3B;
-            color: #121212;
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 8px;
-            display: none;
-        }
-
         /* Statistiky */
         #stats {
             background-color: #1e1e1e;
@@ -173,6 +164,32 @@
                 width: 100%;
             }
         }
+
+        .link-button {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #FFEB3B;
+            color: #121212;
+            padding: 15px;
+            font-size: 18px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: fixed; /* Fix the button to the viewport */
+            bottom: 20px; /* Distance from the bottom */
+            right: 20px; /* Distance from the right */
+        }
+
+        .link-button:hover {
+            background-color: #FFCA28;
+        }
+
+        .link-button:active {
+            background-color: #FFB300;
+            box-shadow: none;
+        }
     </style>
 </head>
 
@@ -195,10 +212,8 @@
             <input type="text" id="authorInput" placeholder="Napiš správné jméno autora" onkeydown="checkEnter(event)" />
             <div class="button-container">
                 <button onclick="checkAnswer()">Zkontrolovat odpověď</button>
-                <button onclick="toggleHint()">Nápověda</button>
             </div>
             <p id="result"></p>
-            <p id="hint"></p>
         </div>
 
         <!-- Statistiky -->
@@ -221,6 +236,9 @@
         </div>
     </div>
 
+    <!-- Zápisky link positioned in the bottom-right corner -->
+    <a href="../zapisky/cestiAutri20StoletiZapisek.html" class="link-button">Zápisky</a>
+
     <script>
            // Funkce pro odstranění diakritiky a převod na malá písmena
     function normalizeString(str) {
@@ -234,10 +252,10 @@
             "Jeden z nejvýznamnějších představitelů české moderny.",
             "Nejdříve impresionismus – Květy intimních nálad.",
             "Později symbolismus – dost společensky kritický, Soucit a vzdor.",
-            "Nejznámější báseň – Kdo Vám tak zcuchal tmavé vlasy."
+            "Nejznámější báseň – Kdo Vám tak zcuchal tmavé vlasy.",
+            "Český básník, představitel moderny, impresionismu a symbolismu, známý svou básní 'Kdo Vám tak zcuchal tmavé vlasy'."
         ],
-        mainWorks: "Hlavní díla: Květy intimních nálad, Soucit a vzdor.",
-        fullHint: "Český básník, představitel moderny, impresionismu a symbolismu, známý svou básní 'Kdo Vám tak zcuchal tmavé vlasy'."
+        mainWorks: "Hlavní díla: Květy intimních nálad, Soucit a vzdor."
     },
     {
         name: "Petr Bezruč",
@@ -247,10 +265,10 @@
             "Poštovní úředník v Místku.",
             "Slezské písně – autorství Vladimíra Vaška je sporné.",
             "Básně byly anonymně posílány do časopisu Čas.",
-            "Nejznámější sociální balada – Maryčka Magdonová."
+            "Nejznámější sociální balada – Maryčka Magdonová.",
+            "Český básník, známý svou sbírkou Slezské písně a sociální baladou Maryčka Magdonová."
         ],
-        mainWorks: "Hlavní díla: Slezské písně.",
-        fullHint: "Český básník, známý svou sbírkou Slezské písně a sociální baladou Maryčka Magdonová."
+        mainWorks: "Hlavní díla: Slezské písně."
     },
     {
         name: "Otokar Březina",
@@ -260,10 +278,10 @@
             "Učitel.",
             "Tajemné dálky – báseň Moje matka.",
             "Svítání na západě.",
-            "Stavitelé chrámů."
+            "Stavitelé chrámů.",
+            "Český básník a symbolista, známý svými sbírkami Tajemné dálky a Stavitelé chrámů."
         ],
-        mainWorks: "Hlavní díla: Tajemné dálky, Svítání na západě, Stavitelé chrámů, Ruce.",
-        fullHint: "Český básník a symbolista, známý svými sbírkami Tajemné dálky a Stavitelé chrámů."
+        mainWorks: "Hlavní díla: Tajemné dálky, Svítání na západě, Stavitelé chrámů, Ruce."
     },
     {
         name: "Stanislav Kostka Neumann",
@@ -271,10 +289,10 @@
             "Odsouzen v procesu s Omladinou za protirakouskou činnost 1893.",
             "Vydával anarchistický časopis Nový kult 1897–1905.",
             "1929 – vyloučen z KSČ, protože protestoval proti novému vedení v čele s K. Gottwaldem (bolševizace strany)",
-            "Prošel více uměleckých směrů – anarchista, přírodní lyrik, civilismus, proletářská poezie."
+            "Prošel více uměleckých směrů – anarchista, přírodní lyrik, civilismus, proletářská poezie.",
+            "Český básník a publicista, známý svou přírodní lyrikou a anarchistickými názory."
         ],
-        mainWorks: "Hlavní díla: Kniha lesů, vod a strání.",
-        fullHint: "Český básník a publicista, známý svou přírodní lyrikou a anarchistickými názory."
+        mainWorks: "Hlavní díla: Kniha lesů, vod a strání."
     },
     {
         name: "Viktor Dyk",
@@ -282,20 +300,20 @@
             "Za protirakouskou činnost vězněn 1916–1917.",
             "Za první republiky poslanec a senátor.",
             "Hlavně spojen s hnutím buřičů (anarchistů).",
-            "Krysař – staroněmecká pověst o muži s píšťalou, který odvede z města Hammeln krysy."
+            "Krysař – staroněmecká pověst o muži s píšťalou, který odvede z města Hammeln krysy.",
+            "Český básník a politik, známý svou pověstí Krysař."
         ],
-        mainWorks: "Hlavní díla: Krysař.",
-        fullHint: "Český básník a politik, známý svou pověstí Krysař."
+        mainWorks: "Hlavní díla: Krysař."
     },
     {
         name: "Fráňa Šrámek",
         facts: [
             "Za protirakouské básně několikrát vězněn.",
             "Anarchista – básnická sbírka Modrý a rudý.",
-            "Pak impresionismus – Splav, Stříbrný vítr, Měsíc nad řekou."
+            "Pak impresionismus – Splav, Stříbrný vítr, Měsíc nad řekou.",
+            "Český básník a dramatik, známý svou impresionistickou a anarchistickou tvorbou."
         ],
-        mainWorks: "Hlavní díla: Modrý a rudý, Splav, Stříbrný vítr, Měsíc nad řekou.",
-        fullHint: "Český básník a dramatik, známý svou impresionistickou a anarchistickou tvorbou."
+        mainWorks: "Hlavní díla: Modrý a rudý, Splav, Stříbrný vítr, Měsíc nad řekou."
     },
     {
         name: "Ivan Olbracht",
@@ -306,20 +324,20 @@
             "Ve 30. letech 20. stol. pobýval na Podkarpatské Rusi.",
             "1. období tvorby – psychologická témata (O zlých samotářích).",
             "Anna Proletářka – socialistický realismus.",
-            "Nikola Šuhaj loupežník – odehrává se na Zakarpatské Ukrajině."
+            "Nikola Šuhaj loupežník – odehrává se na Zakarpatské Ukrajině.",
+            "Český spisovatel, známý svou levicovou tvorbou a dílem Nikola Šuhaj loupežník."
         ],
-        mainWorks: "Hlavní díla: O zlých samotářích, Anna Proletářka, Nikola Šuhaj loupežník.",
-        fullHint: "Český spisovatel, známý svou levicovou tvorbou a dílem Nikola Šuhaj loupežník."
+        mainWorks: "Hlavní díla: O zlých samotářích, Anna Proletářka, Nikola Šuhaj loupežník."
     },
     {
     name: "Jaroslav Hašek",
     facts: [
         "Anarchista, alkoholik, bohémský život, známá pražská figurka.",
         "V hospodě platil svými povídkami.",
-        "Osudy dobrého vojáka Švejka za světové války – nejznámější protiválečná satira."
+        "Osudy dobrého vojáka Švejka za světové války – nejznámější protiválečná satira.",
+        "Český spisovatel, známý svou protiválečnou satirou Osudy dobrého vojáka Švejka."
     ],
-    mainWorks: "Hlavní díla: Osudy dobrého vojáka Švejka za světové války.",
-    fullHint: "Český spisovatel, známý svou protiválečnou satirou Osudy dobrého vojáka Švejka."
+    mainWorks: "Hlavní díla: Osudy dobrého vojáka Švejka za světové války."
 },
 {
     name: "Jaroslav Durych",
@@ -327,10 +345,10 @@
         "Vojenský lékař.",
         "Řadíme ke katolickým spisovatelům.",
         "Obdivoval bigotně katolické země, i když tam vládli fašisté.",
-        "Vedl polemiky s Karlem Čapkem – jeho humanismus označil za pláč civilisty."
+        "Vedl polemiky s Karlem Čapkem – jeho humanismus označil za pláč civilisty.",
+        "Český katolický spisovatel, známý svými díly Bloudění a Rekviem."
     ],
-    mainWorks: "Hlavní díla: Bloudění, Rekviem.",
-    fullHint: "Český katolický spisovatel, známý svými díly Bloudění a Rekviem."
+    mainWorks: "Hlavní díla: Bloudění, Rekviem."
 },
 {
     name: "Karel Čapek",
@@ -339,10 +357,10 @@
         "Bratr Josef – český kubismus.",
         "Pracoval v Lidových novinách.",
         "Řazen k demokratickému a humanistickému proudu.",
-        "Mistr povídky – Povídky z jedné a druhé kapsy."
+        "Mistr povídky – Povídky z jedné a druhé kapsy.",
+        "Český spisovatel, známý svými dramatickými a protifašistickými díly jako Válka s mloky a Bílá nemoc."
     ],
-    mainWorks: "Hlavní díla: R.U.R., Krakatit, Válka s mloky, Bílá nemoc, Matka.",
-    fullHint: "Český spisovatel, známý svými dramatickými a protifašistickými díly jako Válka s mloky a Bílá nemoc."
+    mainWorks: "Hlavní díla: R.U.R., Krakatit, Válka s mloky, Bílá nemoc, Matka."
 },
 {
     name: "Vladislav Vančura",
@@ -351,10 +369,10 @@
         "Zakladatel a první předseda Devětsilu.",
         "1929 vyloučen z KSČ.",
         "Jednoznačně rozpoznatelný svým autorským stylem.",
-        "Za heydrichiády popraven nacisty."
+        "Za heydrichiády popraven nacisty.",
+        "Český spisovatel a dramatik, známý svým poetistickým stylem a dílem Rozmarné léto."
     ],
-    mainWorks: "Hlavní díla: Rozmarné léto.",
-    fullHint: "Český spisovatel a dramatik, známý svým poetistickým stylem a dílem Rozmarné léto."
+    mainWorks: "Hlavní díla: Rozmarné léto."
 },
 {
     name: "Jaroslav Havlíček",
@@ -362,10 +380,10 @@
         "Jeden z našich nejlepších autorů psychologického románu.",
         "Pracoval jako úředník a literaturu měl jako koníčka.",
         "Petrolejové lampy – ne moc pěkná chce prožít velkou lásku, ale místo toho si ji vezme syfilitik.",
-        "Neviditelný – v bohaté rodině, strýček je přesvědčen o tom, že je neviditelný, a celá rodina tu komedii s ním hraje."
+        "Neviditelný – v bohaté rodině, strýček je přesvědčen o tom, že je neviditelný, a celá rodina tu komedii s ním hraje.",
+        "Český spisovatel, známý svými psychologickými romány jako Petrolejové lampy."
     ],
-    mainWorks: "Hlavní díla: Petrolejové lampy, Neviditelný.",
-    fullHint: "Český spisovatel, známý svými psychologickými romány jako Petrolejové lampy."
+    mainWorks: "Hlavní díla: Petrolejové lampy, Neviditelný."
 },
 {
     name: "Jiří Wolker",
@@ -374,20 +392,20 @@
         "Člen Devětsilu.",
         "Zemřel mladý na tuberkulózu, napsal si vlastní epitaf.",
         "Vitalismus – Host do domu.",
-        "Proletářská poezie – Těžká hodina."
+        "Proletářská poezie – Těžká hodina.",
+        "Český básník, známý svou vitalistickou a proletářskou poezií."
     ],
-    mainWorks: "Hlavní díla: Host do domu, Těžká hodina.",
-        fullHint: "Český básník, známý svou vitalistickou a proletářskou poezií."
+    mainWorks: "Hlavní díla: Host do domu, Těžká hodina."
 },
 {
     name: "Vítězslav Nezval",
     facts: [
         "Nejvýraznější představitel české avantgardy a organizátor kulturního života.",
         "1. období – poetismus – Podivuhodný kouzelník.",
-        "2. období – surrealismus."
+        "2. období – surrealismus.",
+        "Český básník a avantgardista, známý svou poetistickou a surrealistickou tvorbou."
     ],
-    mainWorks: "Hlavní díla: Podivuhodný kouzelník.",
-    fullHint: "Český básník a avantgardista, známý svou poetistickou a surrealistickou tvorbou."
+    mainWorks: "Hlavní díla: Podivuhodný kouzelník."
 },
 {
     name: "Jaroslav Seifert",
@@ -395,20 +413,20 @@
         "Český držitel Nobelovy ceny za literaturu 1984.",
         "Hlavně problémy s komunisty – podepsal Chartu 77.",
         "1. období – proletářská poezie – Město v slzách.",
-        "2. období – poetismus – Na vlnách TSF."
+        "2. období – poetismus – Na vlnách TSF.",
+        "Český básník, držitel Nobelovy ceny, známý svou proletářskou a poetistickou poezií."
     ],
-    mainWorks: "Hlavní díla: Město v slzách, Na vlnách TSF.",
-    fullHint: "Český básník, držitel Nobelovy ceny, známý svou proletářskou a poetistickou poezií."
+    mainWorks: "Hlavní díla: Město v slzách, Na vlnách TSF."
 },
 {
     name: "František Halas",
     facts: [
         "Jeden z nejznámějších českých básníků.",
         "V díle dost tragické motivy – nejčastěji smrt.",
-        "Ačkoliv se hlásil ke komunistické ideologii, sami komunisté jeho tvorbu odmítali kvůli údajnému pesimismu."
+        "Ačkoliv se hlásil ke komunistické ideologii, sami komunisté jeho tvorbu odmítali kvůli údajnému pesimismu.",
+        "Český básník, známý svými tragickými motivy a pesimistickým nádechem."
     ],
-    mainWorks: "Hlavní díla: Torzo naděje.",
-    fullHint: "Český básník, známý svými tragickými motivy a pesimistickým nádechem."
+    mainWorks: "Hlavní díla: Torzo naděje."
 },
 {
     name: "Vladimír Holan",
@@ -416,10 +434,10 @@
         "Jeden z nejnáročnějších našich básníků, myšleno na čtenáře.",
         "Žil v ústraní, vlastně nevycházel z bytu, měl trpět agorafobií.",
         "Básník času.",
-        "Noc s Hamletem, Terezka Planetová."
+        "Noc s Hamletem, Terezka Planetová.",
+        "Český básník, známý svou náročnou poezií a dílem Noc s Hamletem."
     ],
-    mainWorks: "Hlavní díla: Noc s Hamletem, Terezka Planetová.",
-    fullHint: "Český básník, známý svou náročnou poezií a dílem Noc s Hamletem."
+    mainWorks: "Hlavní díla: Noc s Hamletem, Terezka Planetová."
 },
 {
     name: "Jan Werich – Jiří Voskovec",
@@ -427,20 +445,20 @@
         "Spojeni s Osvobozeným divadlem.",
         "Ze začátku poetistické a dadaistické hry (Vest pocket revue).",
         "Pak přešli k politické satiře – hlavně kritizovali nacismus a sociální nerovnost.",
-        "Před Hitlerem utekli do USA, Voskovec se už nevrátil."
+        "Před Hitlerem utekli do USA, Voskovec se už nevrátil.",
+        "České duo spojené s Osvobozeným divadlem, známé svou politickou satirou."
     ],
-    mainWorks: "Hlavní díla: Caesar, Kat a blázen, Balada z hadrů.",
-    fullHint: "České duo spojené s Osvobozeným divadlem, známé svou politickou satirou."
+    mainWorks: "Hlavní díla: Caesar, Kat a blázen, Balada z hadrů."
 },
 {
     name: "František Hrubín",
     facts: [
         "Velmi melodický básník s písňovou formou.",
         "Nejčastěji milostná lyrika, ale s tragickými prvky.",
-        "Romance pro křídlovku, Jobova noc."
+        "Romance pro křídlovku, Jobova noc.",
+        "Český básník, známý svou lyrickou poezií a dílem Romance pro křídlovku."
     ],
-    mainWorks: "Hlavní díla: Romance pro křídlovku, Jobova noc.",
-    fullHint: "Český básník, známý svou lyrickou poezií a dílem Romance pro křídlovku."
+    mainWorks: "Hlavní díla: Romance pro křídlovku, Jobova noc."
 },
 {
     name: "Jiří Kolář",
@@ -448,10 +466,10 @@
         "Nejvýznamnější člen Skupiny 42.",
         "Básník a výtvarný umělec – znám hlavně svými kolážemi.",
         "V tvorbě kritizoval komunismus – Dny v roce, Prométheova játra.",
-        "V roce 1980 mu nebyl povolen návrat do vlasti a žil trvale ve Francii."
+        "V roce 1980 mu nebyl povolen návrat do vlasti a žil trvale ve Francii.",
+        "Český básník a výtvarník, známý svými kolážemi a kritikou komunismu."
     ],
-    mainWorks: "Hlavní díla: Dny v roce, Prométheova játra.",
-    fullHint: "Český básník a výtvarník, známý svými kolážemi a kritikou komunismu."
+    mainWorks: "Hlavní díla: Dny v roce, Prométheova játra."
 }
     // Pokračujte podobně pro další autory...
 ];
@@ -539,16 +557,6 @@
         document.getElementById("authorInput").value = "";
         currentAuthor = getNextAuthor();
         displayAuthorInfo(currentAuthor);
-    }
-    
-    function toggleHint() {
-        const hintElement = document.getElementById("hint");
-        if (hintElement.style.display === "none" || hintElement.style.display === "") {
-            hintElement.style.display = "block";
-            hintElement.textContent = currentAuthor.fullHint;
-        } else {
-            hintElement.style.display = "none";
-        }
     }
     
     function checkEnter(event) {
