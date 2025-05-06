@@ -319,9 +319,10 @@
         function checkAnswer() {
             const userAnswer = normalizeString(document.getElementById("directionInput").value.trim());
             const correctAnswer = normalizeString(currentDirection.name);
+            const alternativeAnswer = normalizeString(currentDirection.name.split(" (")[0]); // Jméno bez závorky
             const result = document.getElementById("result");
 
-            if (userAnswer === correctAnswer) {
+            if (userAnswer === correctAnswer || userAnswer === alternativeAnswer) {
                 result.textContent = "Správně!";
                 result.className = "correct";
                 correctCount++;
