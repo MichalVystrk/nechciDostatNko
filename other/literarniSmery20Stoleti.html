@@ -424,6 +424,7 @@
         let correctAnswers = [];
         let incorrectAnswers = [];
         let selectedDirections = directions; // Výchozí seznam směrů
+        let previousDirectionsQueue = []; // Fronta pro sledování předchozích směrů
 
         // Přidáno: Nastavení rozsahu směrů
         function setDirectionRange() {
@@ -447,11 +448,18 @@
         });
 
         function getNextDirection() {
+            const maxQueueLength = Math.ceil(selectedDirections.length / 2); // Dynamická délka fronty
             let dir;
             do {
                 dir = selectedDirections[Math.floor(Math.random() * selectedDirections.length)];
-            } while (dir === previousDirection && selectedDirections.length > 1);
-            previousDirection = dir;
+            } while (previousDirectionsQueue.includes(dir) && selectedDirections.length > 4);
+
+            // Přidáme směr do fronty a udržujeme maximální délku
+            previousDirectionsQueue.push(dir);
+            if (previousDirectionsQueue.length > maxQueueLength) {
+                previousDirectionsQueue.shift(); // Odstraní nejstarší směr z fronty
+            }
+
             return dir;
         }
 
