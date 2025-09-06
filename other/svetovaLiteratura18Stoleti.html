@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Světová literatura do 18. století</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container,
+        #stats {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 360px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h1,
+        h2 {
+            color: #FFEB3B;
+        }
+
+        input,
+        button {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: none;
+        }
+
+        input {
+            background-color: #333;
+            color: #e0e0e0;
+        }
+
+        button {
+            background-color: #FFEB3B;
+            color: #121212;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #FFCA28;
+        }
+
+        .correct {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: #F44336;
+            font-weight: bold;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        #answersList ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #fact ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        /* --- Přidáno pro rozsah směrů --- */
+        .range-container {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 40px;
+            width: 360px;
+            max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .range-container label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #FFEB3B;
+        }
+
+        .range-container input[type="number"] {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 2px solid #333;
+            background-color: #333;
+            color: #e0e0e0;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .range-container input[type="number"]:focus {
+            border-color: #FFEB3B;
+        }
+
+        .range-container button {
+            width: 100%;
+            max-width: 320px;
+            padding: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #FFEB3B;
+            color: #121212;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .range-container button:hover {
+            background-color: #FFCA28;
+        }
+
+        .range-container button:active {
+            background-color: #FFB300;
+            box-shadow: none;
+        }
+
+        /* --- konec přidaného CSS --- */
+
+        /* --- Přidáno pro layout vedle sebe --- */
+        .layout-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        @media (max-width: 768px) {
+            .layout-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .container,
+            #stats,
+            .range-container {
+                width: 100%;
+            }
+        }
+
+        /* --- konec přidaného CSS --- */
+
+        #directionInput {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 220px;
+            max-width: 90%;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout-container">
+        <!-- Přidáno: Nastavení rozsahu -->
+        <div class="range-container">
+            <h2>Nastavení rozsahu</h2>
+            <label for="startRange">Začátek rozsahu:</label>
+            <input type="number" id="startRange" min="1" max="18" value="1" />
+            <label for="endRange">Konec rozsahu (max: <span id="maxDirections"></span>):</label>
+            <input type="number" id="endRange" min="1" max="18" value="18" />
+            <button onclick="setDirectionRange()">Nastavit rozsah</button>
+        </div>
+
+        <div class="container">
+            <h1>Test</h1>
+            <p id="fact"></p>
+            <input type="text" id="directionInput" placeholder="Womp Womp" onkeydown="checkEnter(event)">
+            <button onclick="checkAnswer()">Zkontrolovat</button>
+            <p id="result"></p>
+        </div>
+
+        <div id="stats">
+            <h2>Statistiky</h2>
+            <table>
+                <tr>
+                    <th>Správně</th>
+                    <th>Špatně</th>
+                </tr>
+                <tr>
+                    <td id="correctCount">0</td>
+                    <td id="incorrectCount">0</td>
+                </tr>
+            </table>
+            <div id="answersList">
+                <p><strong>Seznam správných odpovědí:</strong></p>
+                <ul id="correctAnswersList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function normalizeString(str) {
+            return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+        const directions = [
+            {
+                name: "Epos o Gilgamešovi",
+                facts: [
+                    "nejstarší literární památka světa, starší jen náboženské a úřední záznamy, hrdinský epos, klínové písmo na hliněných destičkách, sumerská literatura (Mezopotámie)",
+                    "leitmotiv (hlavní motiv) - hledání nesmrtelnosti",
+                    "Gilgameš (ze 2/3 bůh) vládne v Uruku, nakonec pochopí, že nesmrtelnost je v lidských činech",
+                    "další postavy: Enkidu (jeho přítel), Iškar (bohyně lásky), Utanapištim (přežil jako jediný potopu světa)"
+                ],
+            },
+            {
+                name: "Bible (Starý zákon a Nový zákon)",
+                facts: [
+                    "hebrejská literatura, základní kniha křesťanství, nejpřekládanější kniha vůbec",
+                    "Starý zákon přináší dějiny židovského národa a základy 1. monoteistického náboženství, tedy judaismu",
+                    "psáno hebrejsky, něco aramejsky, obsahuje 5 knih Mojžíšových, proroky (Ezechiel, Eliáš, Jeremiáš) a spisy (Žalmy, Jób, Přísloví, Kazatel, Píseň písní)",
+                    "překlad do řečtiny Septuaginta",
+                    "Nový zákon psán řecky, zahrnuje příchod mesiáše Ježíše, čtyři evangelisty (Matouš, Marek, Lukáš, Jan), Skutky apoštolů, Epištoly (Pavel, Petr a další) a Apokalypsu (Zjevení svatého Jana)"
+                ],
+            },
+            {
+                name: "Homér",
+                facts: [
+                    "antické Řecko, asi vymyšlený bájný pěvec a údajný autor prvních evropských (antických) hrdinských eposů Ilias a Odyssea",
+                    "Ilias vypráví krátkou epizodu z trojské války (Achilles, Agamemnon, Briseovna, Patroklos, Hektor, Priamos)",
+                    "Odyssea popisuje návrat Odyssea z trojské války, setkání s kyklopy, Kirké, sirénami, Skyllou a Charybdis, Kalypsó, Penelopou a Telemachem"
+                ],
+            },
+            {
+                name: "Ezop",
+                facts: [
+                    "asi 6. stol. př.nl., antické Řecko, historicky nedoložený, prý otrok",
+                    "autor bajek postavených na alegorii (jinotaj, skrytý význam)",
+                    "ezopský jazyk – něco jiného říkám a něco jiného myslím"
+                ],
+            },
+            {
+                name: "Sofokles",
+                facts: [
+                    "antické Řecko, klasik řeckého dramatu společně s Aischylem a Euripidem",
+                    "zavedl třetího herce, zachovalo se jen 7 her",
+                    "člověk se má řídit odvěkými zákony",
+                    "Král Oidipus – zabije svého otce a ožení se se svou matkou, když to zjistí, oslepí se"
+                ],
+            },
+            {
+                name: "Ovidius",
+                facts: [
+                    "antický Řím, Publius Ovidius Naso",
+                    "nejznámější básník milostné poezie",
+                    "neoblíben u císaře Octaviana, poslán do vyhnanství",
+                    "Listy milostné – pomyslné dopisy slavných milostných dvojic (Penelopa - Odysseus, Briseovna - Achilles, Medea - Iason, Dido - Aeneas)",
+                    "Proměny – 250 řeckých a římských bájí s motivem proměny"
+                ],
+            },
+            {
+                name: "Píseň o Rolandovi",
+                facts: [
+                    "středověký francouzský hrdinský epos patřící mezi chansons de geste (písně o činech)",
+                    "vypráví výpravu Karla Velikého proti Saracénům (Maurům) na Pyrenejský poloostrov",
+                    "Roland bojuje proti nepřátelům křesťanské víry a je oddán svému králi, opovrhuje smrtí"
+                ],
+            },
+            {
+                name: "Dante Alighieri",
+                facts: [
+                    "1265–1321, z Florencie",
+                    "uzavírá středověk a otevírá renesanci (novověk)",
+                    "Božská komedie má 3 části – Peklo, Očistec, Ráj; každá část má 33 zpěvů + předzpěv = 100",
+                    "provází ho Vergilius a Beatrice (jeho láska)",
+                    "do každé části umístil řadu historických postav (některé papeže do pekla)",
+                    "obdiv k antice",
+                    "napsáno toskánštinou, která se později stala spisovným jazykem",
+                    "měla být souhrnem veškeré vzdělanosti té doby"
+                ],
+            },
+            {
+                name: "Francesco Petrarca",
+                facts: [
+                    "1307–1374, z Florencie",
+                    "čistá renesance, jeho láska (Laura) a city jsou obsahem básní",
+                    "dopisoval si s Karlem IV., byl v Praze a vyzýval ho k sjednocení Itálie",
+                    "Sonety Lauře (Zpěvník) – sonet na každý den (366)",
+                    "sonet (znělka) – typický pro milostnou poezii",
+                    "4 strofy (4 4 3 3), tedy 14 veršů"
+                ],
+            },
+            {
+                name: "Giovanni Boccaccio",
+                facts: [
+                    "1313–1375, z Florencie",
+                    "jeden z prvních, kdo pochopil význam Božské komedie a propagoval ji (přidal do názvu Božská)",
+                    "Dekameron – deka = 10, hemera = den",
+                    "100 novel s milostným a erotickým tématem",
+                    "10 mladých lidí po deset dnů, každý den 10 příběhů",
+                    "vlastně definoval a ustálil novelu jako literární útvar"
+                ],
+            },
+            {
+                name: "François Villon",
+                facts: [
+                    "15. stol.",
+                    "tvorba dost pesimistická",
+                    "vystudoval Sorbonu (pařížskou univerzitu)",
+                    "dost divoký život – alkohol, ženy, žil na okraji – loupeže",
+                    "vychoval ho kněz, jehož jméno pak přijal (že by otec)",
+                    "villonská balada – 3 strofy",
+                    "nejznámější oxymóron – Já u pramene jsem a žízní hynu",
+                    "nevíme, jak skončil jeho život",
+                    "Malý testament (Odkaz)",
+                    "Velký testament (Závěť)"
+                ],
+            },
+            {
+                name: "Miguel de Cervantes",
+                facts: [
+                    "1547–1616",
+                    "dobrodružný život – ve válce s Turky přišel o ruku; byl v otroctví, pak vykoupen",
+                    "Důmyslný rytíř don Quijote de la Mancha – postavy: Sancho Panza, Dulcinea, Rocinante, větrné mlýny"
+                ],
+            },
+            {
+                name: "William Shakespeare",
+                facts: [
+                    "1564–1616",
+                    "autorství sporné – některé názory, že psal někdo jiný",
+                    "nejlepší dramatik všech dob, napsal 37 her",
+                    "divadlo – Globe Theatre",
+                    "typicky renesanční hrdinové, sami si podle svých vlastností (žárlivost, chamtivost) určují osud, jsou rozporuplní; i záporné postavy mají své klady",
+                    "tragédie – Romeo a Julie, Hamlet, Othello, Král Lear, Macbeth",
+                    "komedie – Sen noci svatojánské, Zkrocení zlé ženy",
+                    "blankvers – pětistopý jamb, 10–11 slabik, nerýmovaný",
+                    "nejvýznamnější překladatel do češtiny Martin Hilský"
+                ],
+            },
+            {
+                name: "Molière",
+                facts: [
+                    "1622–1673",
+                    "vlastním jménem Jean-Baptiste Poquelin, pseudonym, aby nedělal rodině ostudu; divadlo bylo bráno za něco podřadného",
+                    "snažil se napsat velkou tragédii, bez úspěchu",
+                    "psal komedie, vycházel z commedie dell'arte",
+                    "velmi satirický, hlavně proti církvi; chráněn francouzským králem Ludvíkem XIV.",
+                    "zemřel téměř na jevišti při poslední hře Zdraný nemocný",
+                    "známá díla: Lakomec (Harpagon miluje víc své peníze než děti, sluha ukradne kasičku a vrátí ji, až když povolí sňatek potomků), Zdravý nemocný, Misantrop, Tartuffe"
+                ],
+            },
+            {
+                name: "Daniel Defoe",
+                facts: [
+                    "1660–1731",
+                    "sám si přidal k jménu De-",
+                    "politicky aktivní, psal anonymní pamflety",
+                    "hlavní dílo: dobrodružný román Robinson Crusoe (Život a zvláštní podivná dobrodružství Robinsona Crusoea, námořníka z Yorku)",
+                    "podle osudů Alexandra Selkirka",
+                    "28 let na pustém ostrově, vše si vybuduje, postava Pátek",
+                    "další díla: Moll Flandersová"
+                ],
+            },
+            {
+                name: "Jonathan Swift",
+                facts: [
+                    "1667–1745",
+                    "narozen v Dublinu, Angličan",
+                    "skeptik, sekretář, děkan, zemřel jako pomatený",
+                    "člen Škrabáckého sdružení, které vymýšlelo fiktivní osvícence",
+                    "Gulliverovy cesty – čtyři díly",
+                    "popisy: mezi trpaslíky; Laputa – vznášející se ostrov; Hvajninimové – učení koně, lidé žijí jako prasata; mezi obry"
+                ],
+            },
+            {
+                name: "Voltaire",
+                facts: [
+                    "1694–1778",
+                    "nejvýznamnější představitel francouzského osvícenství",
+                    "vlastním jménem Francois Marie Arouet",
+                    "za své názory vězněn, pobýval v Anglii a Prusku",
+                    "přední zastánce tolerance k jiným názorům – nesouhlasím s tím, co říkáte, ale budu do smrti bránit vaše právo to říkat",
+                    "díla: Filosofické listy o Angličanech, Pojednání o snášenlivosti, Candide neboli optimismus (filosofický román)",
+                    "Candide věří, že tento svět je nejlepší ze všech možných světů, přesto zažívá jednu pohromu za druhou"
+                ],
+            },
+            {
+                name: "Johann Wolfgang Goethe",
+                facts: [
+                    "1749–1832",
+                    "řazen k preromantismu a ke skupině Sturm und Drang (bouře a vzdor)",
+                    "působil ve Výmaru, malé vévodství",
+                    "pro úspěch nazýván Olympanem",
+                    "často pobýval v Karlových Varech",
+                    "zabýval se uměním i přírodními vědami, řídil divadlo",
+                    "díla: Utrpení mladého Werthera (milostný román v dopisech, který způsobil řadu sebevražd a ovlivnil módu žluté vesty), Faust (dvoudílná veršovaná tragédie)",
+                    "Faust po získání štěstí by měl propadnout peklu, pomáhá ale lidem a nakonec jde do ráje"
+                ],
+            },
+
+        ];
+        let previousDirection = null;
+        let currentDirection = null;
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let correctAnswers = [];
+        let incorrectAnswers = [];
+        let selectedDirections = directions; // Výchozí seznam směrů
+        let previousDirectionsQueue = []; // Fronta pro sledování předchozích směrů
+
+        // Přidáno: Nastavení rozsahu směrů
+        function setDirectionRange() {
+            const start = parseInt(document.getElementById("startRange").value, 10);
+            const end = parseInt(document.getElementById("endRange").value, 10);
+
+            if (start >= 1 && end <= directions.length && start < end) {
+                selectedDirections = directions.slice(start - 1, end);
+                currentDirection = getNextDirection();
+                displayDirectionInfo(currentDirection);
+            } else if (start === end) {
+                alert("Začátek a konec rozsahu se nesmí rovnat!");
+            } else {
+                alert("Zadejte platný rozsah!");
+            }
+        }
+
+        // Nastavení maximálního počtu směrů v popisku
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("maxDirections").textContent = directions.length;
+        });
+
+        function getNextDirection() {
+            const maxQueueLength = Math.ceil(selectedDirections.length / 2); // Dynamická délka fronty
+            let dir;
+            do {
+                dir = selectedDirections[Math.floor(Math.random() * selectedDirections.length)];
+            } while (previousDirectionsQueue.includes(dir) && selectedDirections.length > 4);
+
+            // Přidáme směr do fronty a udržujeme maximální délku
+            previousDirectionsQueue.push(dir);
+            if (previousDirectionsQueue.length > maxQueueLength) {
+                previousDirectionsQueue.shift(); // Odstraní nejstarší směr z fronty
+            }
+
+            return dir;
+        }
+
+        function getRandomFacts(facts, count) {
+            const shuffled = facts.slice().sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function displayDirectionInfo(dir) {
+            const factElement = document.getElementById("fact");
+            factElement.innerHTML = ""; // Vyčistí předchozí obsah
+
+            // Vytvoří seznam faktů
+            const factList = document.createElement("ul");
+            const randomFacts = getRandomFacts(dir.facts, 3);
+            randomFacts.forEach(fact => {
+                const listItem = document.createElement("li");
+                listItem.textContent = fact;
+                factList.appendChild(listItem);
+            });
+
+            // Přidá hlavní díla jako poslední položku, pokud existují
+            if (dir.mainWorks) {
+                const mainWorksItem = document.createElement("li");
+                mainWorksItem.textContent = dir.mainWorks;
+                factList.appendChild(mainWorksItem);
+            }
+            factElement.appendChild(factList);
+        }
+
+        function checkAnswer() {
+            const userAnswer = normalizeString(document.getElementById("directionInput").value.trim());
+            const correctAnswer = normalizeString(currentDirection.name);
+            const alternativeAnswer = normalizeString(currentDirection.name.split(" (")[0]); // Jméno bez závorky
+            const result = document.getElementById("result");
+
+            if (userAnswer === correctAnswer || userAnswer === alternativeAnswer) {
+                result.textContent = "Správně!";
+                result.className = "correct";
+                correctAnswers.push(currentDirection.name);
+                correctCount++;
+                document.getElementById("correctCount").textContent = correctCount;
+
+                // Přidání správné odpovědi do seznamu
+                const listItem = document.createElement("li");
+                listItem.textContent = currentDirection.name;
+                document.getElementById("correctAnswersList").appendChild(listItem);
+            } else {
+                result.textContent = `Špatně! Správná odpověď: ${currentDirection.name}`;
+                result.className = "incorrect";
+                incorrectAnswers.push(userAnswer);
+                incorrectCount++;
+                document.getElementById("incorrectCount").textContent = incorrectCount;
+            }
+
+            document.getElementById("directionInput").value = "";
+            currentDirection = getNextDirection();
+            displayDirectionInfo(currentDirection);
+        }
+
+        function checkEnter(e) {
+            if (e.key === "Enter") checkAnswer();
+        }
+
+        // Načtení první otázky
+        currentDirection = getNextDirection();
+        displayDirectionInfo(currentDirection);
+    </script>
+</body>
+
+</html>
