@@ -519,7 +519,7 @@
 
             // Vytvoří seznam faktů
             const factList = document.createElement("ul");
-            const randomFacts = getRandomFacts(dir.facts, );
+            const randomFacts = getRandomFacts(dir.facts, 2);
             randomFacts.forEach(fact => {
                 const listItem = document.createElement("li");
                 listItem.textContent = fact;
