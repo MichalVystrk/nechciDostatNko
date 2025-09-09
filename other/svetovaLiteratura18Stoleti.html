@@ -196,6 +196,31 @@
             max-width: 90%;
             text-align: center;
         }
+
+        .back-button {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            background-color: #FFEB3B;
+            color: #121212;
+            padding: 15px 24px;
+            font-size: 18px;
+            font-weight: bolder;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            background-color: #FFCA28;
+        }
+
+        .back-button:active {
+            background-color: #FFB300;
+            box-shadow: none;
+        }
     </style>
 </head>
 
@@ -237,7 +262,7 @@
             </div>
         </div>
     </div>
-
+    <a href="../index.html" class="back-button">Zpět na úvod</a>
     <script>
         function normalizeString(str) {
             return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
