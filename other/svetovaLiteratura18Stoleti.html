@@ -511,12 +511,9 @@
             },
 
         ];
-        let previousDirection = null;
         let currentDirection = null;
         let correctCount = 0;
         let incorrectCount = 0;
-        let correctAnswers = [];
-        let incorrectAnswers = [];
         let selectedDirections = directions; // Výchozí seznam směrů
         let previousDirectionsQueue = []; // Fronta pro sledování předchozích směrů
 
@@ -593,18 +590,11 @@
             if (userAnswer === correctAnswer || userAnswer === alternativeAnswer) {
                 result.textContent = "Správně!";
                 result.className = "correct";
-                correctAnswers.push(currentDirection.name);
                 correctCount++;
                 document.getElementById("correctCount").textContent = correctCount;
-
-                // Přidání správné odpovědi do seznamu
-                const listItem = document.createElement("li");
-                listItem.textContent = currentDirection.name;
-                document.getElementById("correctAnswersList").appendChild(listItem);
             } else {
                 result.textContent = `Špatně! Správná odpověď: ${currentDirection.name}`;
                 result.className = "incorrect";
-                incorrectAnswers.push(userAnswer);
                 incorrectCount++;
                 document.getElementById("incorrectCount").textContent = incorrectCount;
             }
