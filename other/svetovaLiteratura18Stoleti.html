@@ -258,6 +258,8 @@
             <label for="endRange">Konec rozsahu (max: <span id="maxDirections"></span>):</label>
             <input type="number" id="endRange" min="1" max="18" value="18" />
             <button onclick="setDirectionRange()">Nastavit rozsah</button>
+            <label for="factCount" style="margin-top:30px;">Počet odrážek:</label>
+            <input type="number" id="factCount" min="1" max="10" value="2" style="width:80px; margin-bottom:10px;" />
         </div>
 
         <div class="container">
@@ -516,6 +518,7 @@
         let incorrectCount = 0;
         let selectedDirections = directions; // Výchozí seznam směrů
         let previousDirectionsQueue = []; // Fronta pro sledování předchozích směrů
+        let factCount = 2;
 
         // Přidáno: Nastavení rozsahu směrů
         function setDirectionRange() {
@@ -559,20 +562,24 @@
             return shuffled.slice(0, count);
         }
 
+        document.getElementById("factCount").addEventListener("input", function(e) {
+            let val = parseInt(e.target.value, 10);
+            if (val >= 1 && val <= 10) {
+                factCount = val;
+                displayDirectionInfo(currentDirection);
+            }
+        });
+
         function displayDirectionInfo(dir) {
             const factElement = document.getElementById("fact");
-            factElement.innerHTML = ""; // Vyčistí předchozí obsah
-
-            // Vytvoří seznam faktů
+            factElement.innerHTML = "";
             const factList = document.createElement("ul");
-            const randomFacts = getRandomFacts(dir.facts, 2);
+            const randomFacts = getRandomFacts(dir.facts, factCount);
             randomFacts.forEach(fact => {
                 const listItem = document.createElement("li");
                 listItem.textContent = fact;
                 factList.appendChild(listItem);
             });
-
-            // Přidá hlavní díla jako poslední položku, pokud existují
             if (dir.mainWorks) {
                 const mainWorksItem = document.createElement("li");
                 mainWorksItem.textContent = dir.mainWorks;
