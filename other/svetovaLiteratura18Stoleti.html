@@ -593,9 +593,26 @@
                 correctCount++;
                 document.getElementById("correctCount").textContent = correctCount;
 
-                const listItem = document.createElement("li");
-                listItem.textContent = currentDirection.name;
-                document.getElementById("correctAnswersList").appendChild(listItem);
+                // --- Změna: přidání/aktualizace počtu správných odpovědí ---
+                const correctList = document.getElementById("correctAnswersList");
+                let found = false;
+                for (let li of correctList.children) {
+                    if (li.dataset.name === currentDirection.name) {
+                        let count = parseInt(li.dataset.count, 10) + 1;
+                        li.dataset.count = count;
+                        li.textContent = `${currentDirection.name} (${count}×)`;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `${currentDirection.name} (1×)`;
+                    listItem.dataset.name = currentDirection.name;
+                    listItem.dataset.count = "1";
+                    correctList.appendChild(listItem);
+                }
+                // --- konec změny ---
             } else {
                 result.textContent = `Špatně! Správná odpověď: ${currentDirection.name}`;
                 result.className = "incorrect";
