@@ -388,7 +388,7 @@
                     "už čistá renesance, jeho láska (Laura) a city jsou obsahem básní",
                     "dopisoval si s Karlem IV., byl v Praze a vyzýval ho k sjednocení Itálie",
                     "Sonety Lauře (Zpěvník) – sonet na každý den (366)",
-                    "sonet (znělka) – typický pro milostnou poezii",
+                    "sonet (znělka) – typicky pro milostnou poezii",
                     "4 strofy (4 4 3 3), tedy 14 veršů"
                 ],
             },
@@ -592,6 +592,10 @@
                 result.className = "correct";
                 correctCount++;
                 document.getElementById("correctCount").textContent = correctCount;
+
+                const listItem = document.createElement("li");
+                listItem.textContent = currentDirection.name;
+                document.getElementById("correctAnswersList").appendChild(listItem);
             } else {
                 result.textContent = `Špatně! Správná odpověď: ${currentDirection.name}`;
                 result.className = "incorrect";
