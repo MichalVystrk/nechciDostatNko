@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Světová literatura do 18. století</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container,
+        #stats {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 360px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h1,
+        h2 {
+            color: #FFEB3B;
+        }
+
+        input,
+        button {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: none;
+        }
+
+        input {
+            background-color: #333;
+            color: #e0e0e0;
+        }
+
+        button {
+            background-color: #FFEB3B;
+            color: #121212;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #FFCA28;
+        }
+
+        .correct {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: #F44336;
+            font-weight: bold;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        #answersList ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #fact ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        /* --- Přidáno pro rozsah směrů --- */
+        .range-container {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 40px;
+            width: 360px;
+            max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .range-container label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #FFEB3B;
+        }
+
+        .range-container input[type="number"] {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 2px solid #333;
+            background-color: #333;
+            color: #e0e0e0;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .range-container input[type="number"]:focus {
+            border-color: #FFEB3B;
+        }
+
+        .range-container button {
+            width: 100%;
+            max-width: 320px;
+            padding: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #FFEB3B;
+            color: #121212;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .range-container button:hover {
+            background-color: #FFCA28;
+        }
+
+        .range-container button:active {
+            background-color: #FFB300;
+            box-shadow: none;
+        }
+
+        /* --- konec přidaného CSS --- */
+
+        /* --- Přidáno pro layout vedle sebe --- */
+        .layout-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+
+            .layout-container {
+                flex-direction: column;
+                align-items: center;
+                width: 100vw;
+                min-width: 0;
+                padding: 0 5vw;
+                box-sizing: border-box;
+            }
+
+            .container,
+            #stats,
+            .range-container {
+                width: 100%;
+                min-width: 0;
+                margin-bottom: 20px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .range-container {
+                margin-top: 0;
+                margin-bottom: 20px;
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+        /* --- konec přidaného CSS --- */
+
+        #directionInput {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 220px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .back-button {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            background-color: #FFEB3B;
+            color: #121212;
+            padding: 15px 24px;
+            font-size: 18px;
+            font-weight: bolder;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            background-color: #FFCA28;
+        }
+
+        .back-button:active {
+            background-color: #FFB300;
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout-container">
+        <!-- Přidáno: Nastavení rozsahu -->
+        <div class="range-container">
+            <h2>Nastavení rozsahu</h2>
+            <label for="startRange">Začátek rozsahu:</label>
+            <input type="number" id="startRange" min="1" max="12" value="1" />
+            <label for="endRange">Konec rozsahu (max: <span id="maxDirections"></span>):</label>
+            <input type="number" id="endRange" min="1" max="12" value="12" />
+            <button onclick="setDirectionRange()">Nastavit rozsah</button>
+            <label for="factCount" style="margin-top:30px;">Počet odrážek:</label>
+            <input type="number" id="factCount" min="1" max="10" value="2" style="width:80px; margin-bottom:10px;" />
+        </div>
+
+        <div class="container">
+            <h1>Test</h1>
+            <p id="fact"></p>
+            <input type="text" id="directionInput" placeholder="Womp Womp" onkeydown="checkEnter(event)">
+            <button onclick="checkAnswer()">Zkontrolovat</button>
+            <p id="result"></p>
+        </div>
+
+        <div id="stats">
+            <h2>Statistiky</h2>
+            <table>
+                <tr>
+                    <th>Správně</th>
+                    <th>Špatně</th>
+                </tr>
+                <tr>
+                    <td id="correctCount">0</td>
+                    <td id="incorrectCount">0</td>
+                </tr>
+            </table>
+            <div id="answersList">
+                <p><strong>Seznam správných odpovědí:</strong></p>
+                <ul id="correctAnswersList"></ul>
+            </div>
+        </div>
+    </div>
+    <a href="../index.html" class="back-button">Zpět na úvod</a>
+    <script>
+        function normalizeString(str) {
+            return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+        const directions = [
+            {
+                name: "Konstantin a Metoděj",
+                facts: [
+                    "863 přišli z Byzantské říše šířit křesťanství v slovanském jazyce na Velkou Moravu a vychovávat kněze",
+                    "vytvořili staroslověnštinu (jazyk) a hlaholici (písmo), z ní pak vznikla cyrilice a pak azbuka",
+                    "stálé spory se zastánci latinské liturgie",
+                    "stálé spory se zastánci latinské liturgie",
+                    "Přeložili do staroslověnštiny Nový zákon, prý celý Starý zákon (ale asi ne), zákoníky",
+                    "napsali Proglas – předzpěv, když přeložili evangelia",
+                    "jejich žáci napsali – Život Konstantinův",
+                    "po smrti Metoděje (886) jejich žáci vyhnáni a odešli do Čech, Bulharska a jinde",
+                ],
+            },
+            {
+                name: "Kristiánova legenda",
+                facts: [
+                    "vznikla v 2. pol. 10. stol., ale někteří tvrdí 12. stol. ",
+                    "je to vlastně trojlegenda – Cyril a Metoděj + sv. Václav + sv. Ludmila – obsah snad každý zná",
+                    "otevřeně se hlásí k staroslověnské tradici, která není např. u Kosmy vůbec zmíněna",
+                ],
+            },
+            {
+                name: "Hospodine, pomiluj ny",
+                facts: [
+                    "tradice připisuje autorství sv. Vojtěchovi, nelze dokázat ani vyvrátit",
+                    "jediná staroslověnská literární památka, která přežila zánik staroslověnštiny",
+                    "zpívali ji i mimo kostel, takže byla hodně populární"
+                ],
+            },
+            {
+                name: "Kosmas",
+                facts: [
+                    "celkem vzdělaný, studoval v Lutychu, byl kněz",
+                    "asi 1045 – 1125 ",
+                    "Chronika Boemorum – psána latinsky, prózou, oslava Přemyslovců a pražského biskupství",
+                    "zamlčel staroslověnskou tradici",
+                    "rozdělil na 3 části - bájné vypravování starců",
+                    "očitých svědků",
+                    "co sám zažil ",
+                ],
+            },
+            {
+                name: "Alexandreida",
+                facts: [
+                    "tzv. dvorský epos, nejdřív vznikl ve 12. stol. ve Francii, napsáno latinsky, pak přepracován do většiny národních jazyků, základem je boj proti Peršanům",
+                    "staročeská – vznikla kolem 1300",
+                    "zachovalo se 3/5 textu",
+                    "má alegorický význam, v Alexandrovi bychom měli poznat Přemysla Otakara II. nebo Václava II.",
+                    "recitovala se pro šlechtu, což trvalo i 14 hodin",
+],
+            },
+            {
+                name: "Kronika tak řečeného Dalimila",
+                facts: [
+                    "nevíme, kdo napsal, ale protože se název už vžil, tak necháváme ",
+                    "zachovaná celá, rýmovaná",
+                    "od příchodu praotce Čecha až ke korunovaci Jana Lucemburského (1310)",
+                    "vyzvedává českou šlechtu a vyzývá k odporu k Němcům",
+],
+            },
+            {
+                name: "Mastičkář",
+                facts: [
+                    "staročeské drama z 14. stol.",
+                    "satira, patří mezi velikonoční hry",
+                    "po ukřižování Krista jdou ženy nakoupit vonné masti, aby namazaly jeho tělo",
+                    "mastičkářův pomocník (Rubín) dvojsmyslně vychvaluje mistrovy (Severín) léčivé masti",
+],
+            },
+            {
+                name: "Podkoní a žák",
+                facts: [
+                    "vzniklo kolem 1400",
+                    "patří mezi básnické spory",
+                    "v hospodě se potkají dva looseři, oba jsou chudí a vlastně lžou sobě i tomu druhému, že se to zlepší",
+                    "nakonec se porvou",
+],
+            },
+            {
+                name: "Jan Hus",
+                facts: [
+                    "* 1370 – 6. 7. 1415",
+                    "kázal v Betlémské kapli na Starém Městě",
+                    "jako rektor Karlovy univerzity se zasadil o vydání Dekretu kutnohorského",
+                    "pro svou kritiku církve a snahu ji reformovat byl v Kostnici upálen",
+                    "hlavní část jeho učení byla kritika svatokupectví, tedy kupčení se svátostmi (úřady, odpuštění)",
+                    "latinsky psané – De ecclesia( O církvi), De sex erroribus (O šesti bludech)",
+                    "česky psané – Knížky o svatokupectví, Postila",
+ ],
+            },
+            {
+                name: "Václav Hájek z Libočan",
+                facts: [
+                    "1523 - 1553",
+                    "česká renesance",
+                    "katolický kněz",
+                    "Kronika česká – až do národního obrození nejpopulárnější česká kniha",
+                    "od příchodu praotce Čecha (podle Hájka 644) až do nástupu Habsburků na český trůn 1526",
+                    "výborný vypravěč, ale část si vymyslel  ",
+                    "obrana katolictví",
+                ],
+            },
+            {
+                name: "Jan Amos Komenský",
+                facts: [
+                    "1592 – 1670",
+                    "jeden z nejznámějších a nejvlivnějších Čechů v dějinách",
+                    "trochu nadneseně zakladatel pedagogiky a didaktiky",
+                    "člen jednoty bratrské (protestant), musel odejít 1628 do exilu a pak budoval školství v různých evropských státech (Anglie, Švédsko, Uhry), pohřben v Naardenu (Nizozemí)",
+                    "latinsky psané – Didaktika magna (Velká didaktika)",
+                    "Orbis pictus (Svět v obrazech)",
+                    "česky psané – Labyrint světa a ráj srdce",
+                    "Kšaft umírající matky Jednoty bratrské",
+                ],
+            },
+            {
+                name: "Bedřich Bridel",
+                facts: [
+                    "1619 – 1680",
+                    "nejznámější představitel českého baroka",
+                    "jezuita, během morové epidemie v Kutné Hoře (1680) se dobrovolně přihlásil, že tam bude zaopatřovat mrtvé (sic!)",
+                    "nejznámější – Co Bůh? Člověk? - veršovaná",
+                    "na kontrastu vybudovaná skladba na téma lidské ubohosti a Boží dokonalosti",
+                    "uspořádal vánoční písně do kancionálu Jesličky "
+                ],
+            },
+
+        ];
+        let currentDirection = null;
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let selectedDirections = directions; // Výchozí seznam směrů
+        let previousDirectionsQueue = []; // Fronta pro sledování předchozích směrů
+        let factCount = 2;
+
+        // Přidáno: Nastavení rozsahu směrů
+        function setDirectionRange() {
+            const start = parseInt(document.getElementById("startRange").value, 10);
+            const end = parseInt(document.getElementById("endRange").value, 10);
+
+            if (start >= 1 && end <= directions.length && start < end) {
+                selectedDirections = directions.slice(start - 1, end);
+                currentDirection = getNextDirection();
+                displayDirectionInfo(currentDirection);
+            } else if (start === end) {
+                alert("Začátek a konec rozsahu se nesmí rovnat!");
+            } else {
+                alert("Zadejte platný rozsah!");
+            }
+        }
+
+        // Nastavení maximálního počtu směrů v popisku
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("maxDirections").textContent = directions.length;
+        });
+
+        function getNextDirection() {
+            const maxQueueLength = Math.ceil(selectedDirections.length / 2); // Dynamická délka fronty
+            let dir;
+            do {
+                dir = selectedDirections[Math.floor(Math.random() * selectedDirections.length)];
+            } while (previousDirectionsQueue.includes(dir) && selectedDirections.length > 4);
+
+            // Přidáme směr do fronty a udržujeme maximální délku
+            previousDirectionsQueue.push(dir);
+            if (previousDirectionsQueue.length > maxQueueLength) {
+                previousDirectionsQueue.shift(); // Odstraní nejstarší směr z fronty
+            }
+
+            return dir;
+        }
+
+        function getRandomFacts(facts, count) {
+            const shuffled = facts.slice().sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        document.getElementById("factCount").addEventListener("input", function (e) {
+            let val = parseInt(e.target.value, 10);
+            if (val >= 1 && val <= 10) {
+                factCount = val;
+                displayDirectionInfo(currentDirection);
+            }
+        });
+
+        function displayDirectionInfo(dir) {
+            const factElement = document.getElementById("fact");
+            factElement.innerHTML = "";
+            const factList = document.createElement("ul");
+            const randomFacts = getRandomFacts(dir.facts, factCount);
+            randomFacts.forEach(fact => {
+                const listItem = document.createElement("li");
+                listItem.textContent = fact;
+                factList.appendChild(listItem);
+            });
+            if (dir.mainWorks) {
+                const mainWorksItem = document.createElement("li");
+                mainWorksItem.textContent = dir.mainWorks;
+                factList.appendChild(mainWorksItem);
+            }
+            factElement.appendChild(factList);
+        }
+
+        function checkAnswer() {
+            const userAnswer = normalizeString(document.getElementById("directionInput").value.trim());
+            const correctAnswer = normalizeString(currentDirection.name);
+            const alternativeAnswer = normalizeString(currentDirection.name.split(" (")[0]); // Jméno bez závorky
+            const result = document.getElementById("result");
+
+            if (userAnswer === correctAnswer || userAnswer === alternativeAnswer) {
+                result.textContent = "Správně!";
+                result.className = "correct";
+                correctCount++;
+                document.getElementById("correctCount").textContent = correctCount;
+
+                // --- Změna: přidání/aktualizace počtu správných odpovědí ---
+                const correctList = document.getElementById("correctAnswersList");
+                let found = false;
+                for (let li of correctList.children) {
+                    if (li.dataset.name === currentDirection.name) {
+                        let count = parseInt(li.dataset.count, 10) + 1;
+                        li.dataset.count = count;
+                        li.textContent = `${currentDirection.name} (${count}×)`;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `${currentDirection.name} (1×)`;
+                    listItem.dataset.name = currentDirection.name;
+                    listItem.dataset.count = "1";
+                    correctList.appendChild(listItem);
+                }
+                // --- konec změny ---
+            } else {
+                result.textContent = `Špatně! Správná odpověď: ${currentDirection.name}`;
+                result.className = "incorrect";
+                incorrectCount++;
+                document.getElementById("incorrectCount").textContent = incorrectCount;
+            }
+
+            document.getElementById("directionInput").value = "";
+            currentDirection = getNextDirection();
+            displayDirectionInfo(currentDirection);
+        }
+
+        function checkEnter(e) {
+            if (e.key === "Enter") checkAnswer();
+        }
+
+        // Načtení první otázky
+        currentDirection = getNextDirection();
+        displayDirectionInfo(currentDirection);
+    </script>
+</body>
+
+</html>
