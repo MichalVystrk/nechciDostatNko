@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Čeští autoři 20. století</title>
+    <style>
+        /* Globální styly */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center; /* Horizontální zarovnání na střed */
+            align-items: center; /* Vertikální zarovnání na střed */
+            min-height: 100vh; /* Výška stránky */
+        }
+
+        .layout-container {
+            display: flex;
+            flex-direction: row; /* Horizontální rozložení */
+            justify-content: center;
+            align-items: center; /* Vertikální zarovnání na střed */
+            gap: 20px; /* Mezera mezi kontejnery */
+            width: 100%;
+            max-width: 1200px; /* Maximální šířka stránky */
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 40px;
+            width: 360px;
+            max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: #FFEB3B;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #B0B0B0;
+        }
+
+        input {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 2px solid #333;
+            background-color: #333;
+            color: #e0e0e0;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #FFEB3B;
+        }
+
+        button {
+            width: 100%;
+            max-width: 320px;
+            padding: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #FFEB3B;
+            color: #121212;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #FFCA28;
+        }
+
+        button:active {
+            background-color: #FFB300;
+            box-shadow: none;
+        }
+
+        #result {
+            font-size: 20px;
+            margin-top: 15px;
+            padding: 8px;
+            width: 100%;
+        }
+
+        .correct {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: #F44336;
+            font-weight: bold;
+        }
+
+        /* Statistiky */
+        #stats {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            padding: 30px;
+            border-radius: 10px;
+            width: 360px;
+            max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        #stats h2 {
+            font-size: 24px;
+            color: #FFEB3B;
+            margin-bottom: 15px;
+        }
+
+        #stats table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #stats th,
+        #stats td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #333;
+        }
+
+        #stats th {
+            background-color: #FFEB3B;
+            color: #121212;
+        }
+
+        #stats td {
+            background-color: #333;
+        }
+
+        /* Responsivní design */
+        @media (max-width: 768px) {
+            .layout-container {
+                flex-direction: column; /* Na mobilních zařízeních pod sebou */
+                align-items: center;
+            }
+
+            .container,
+            #stats {
+                width: 100%;
+            }
+        }
+
+        .link-button {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #FFEB3B;
+            color: #121212;
+            padding: 15px;
+            font-size: 18px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: fixed; /* Fix the button to the viewport */
+            bottom: 20px; /* Distance from the bottom */
+            right: 20px; /* Distance from the right */
+        }
+
+        .link-button:hover {
+            background-color: #FFCA28;
+        }
+
+        .link-button:active {
+            background-color: #FFB300;
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout-container">
+        <!-- Nastavení rozsahu autorů -->
+        <div class="container">
+            <h2>Nastavení rozsahu autorů</h2>
+            <label for="startRange">Začátek rozsahu:</label>
+            <input type="number" id="startRange" min="1" max="20" value="1" />
+            <label for="endRange">Konec rozsahu (max: <span id="maxAuthors"></span>):</label>
+            <input type="number" id="endRange" min="1" max="20" value="20" />
+            <button onclick="setAuthorRange()">Nastavit rozsah</button>
+        </div>
+
+        <!-- Test autora -->
+        <div class="container">
+            <h1>Test autora</h1>
+            <p id="fact"></p>
+            <input type="text" id="authorInput" placeholder="Napiš správné jméno autora" onkeydown="checkEnter(event)" />
+            <div class="button-container">
+                <button onclick="checkAnswer()">Zkontrolovat odpověď</button>
+            </div>
+            <p id="result"></p>
+        </div>
+
+        <!-- Statistiky -->
+        <div id="stats">
+            <h2>Statistiky</h2>
+            <table>
+                <tr>
+                    <th>Správně</th>
+                    <th>Špatně</th>
+                </tr>
+                <tr>
+                    <td id="correctCount">0</td>
+                    <td id="incorrectCount">0</td>
+                </tr>
+            </table>
+            <div id="answersList">
+                <p><strong>Seznam správných odpovědí:</strong></p>
+                <ul id="correctAnswersList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Zápisky link positioned in the bottom-right corner -->
+    <a href="../zapisky/cestiAutri20StoletiZapisek.html" class="link-button">Zápisky</a>
+
+    <script>
+           // Funkce pro odstranění diakritiky a převod na malá písmena
+    function normalizeString(str) {
+        return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+    
+    const authors = [
+    {
+        name: "Antonín Sova",
+        facts: [
+            "Jeden z nejvýznamnějších představitelů české moderny.",
+            "Nejdříve impresionismus – Květy intimních nálad.",
+            "Později symbolismus – dost společensky kritický, Soucit a vzdor.",
+            "Nejznámější báseň – Kdo Vám tak zcuchal tmavé vlasy.",
+        ]
+    },
+    {
+        name: "Petr Bezruč",
+        facts: [
+            "Vlastním jménem Vladimír Vašek.",
+            "Narozen v Opavě.",
+            "Poštovní úředník v Místku.",
+            "Slezské písně – autorství Vladimíra Vaška je sporné.",
+            "Básně byly anonymně posílány do časopisu Čas.",
+            "Nejznámější sociální balada – Maryčka Magdonová – otec (ožrala) umřel, matka taky, musí se starat o sourozence, je zatčena, když sbírá dřevo v cizím lese, z hanby v bezvýchodné situaci spáchá sebevraždu",
+        ]
+    },
+    {
+        name: "Otokar Březina",
+        facts: [
+            "Nejvýznamnější představitel českého symbolismu.",
+            "Vlastním jménem Václav Jebavý.",
+            "Učitel.",
+            "Tajemné dálky – báseň Moje matka.",
+            "Svítání na západě.",
+            "Stavitelé chrámů.",
+        ],
+    },
+    {
+        name: "Stanislav Kostka Neumann",
+        facts: [
+            "Odsouzen v procesu s Omladinou za protirakouskou činnost 1893.",
+            "Vydával anarchistický časopis Nový kult 1897–1905.",
+            "1929 – vyloučen z KSČ, protože protestoval proti novému vedení v čele s K. Gottwaldem (bolševizace strany)",
+            "Prošel více uměleckých směrů – anarchista, přírodní lyrik, civilismus, proletářská poezie.",
+        ],
+    },
+    {
+        name: "Viktor Dyk",
+        facts: [
+            "Za protirakouskou činnost vězněn 1916–1917.",
+            "Za první republiky poslanec a senátor.",
+            "Hlavně spojen s hnutím buřičů (anarchistů).",
+            "Krysař – staroněmecká pověst o muži s píšťalou, který odvede z města Hammeln krysy.",
+        ],
+    },
+    {
+        name: "Fráňa Šrámek",
+        facts: [
+            "Za protirakouské básně několikrát vězněn.",
+            "Anarchista – básnická sbírka Modrý a rudý.",
+            "Pak impresionismus – Splav, Stříbrný vítr, Měsíc nad řekou.",
+        ],
+    },
+    {
+        name: "Ivan Olbracht",
+        facts: [
+            "Levicový novinář.",
+            "Za svou komunistickou činnost za první republiky vězněn.",
+            "Z KSČ 1929 vyloučen kvůli protestu proti bolševizaci strany.",
+            "Ve 30. letech 20. stol. pobýval na Podkarpatské Rusi.",
+            "1. období tvorby – psychologická témata (O zlých samotářích).",
+            "Anna Proletářka – socialistický realismus.",
+            "Nikola Šuhaj loupežník – odehrává se na Zakarpatské Ukrajině.",
+        ],
+    },
+    {
+    name: "Jaroslav Hašek",
+    facts: [
+        "Anarchista, alkoholik, bohémský život, známá pražská figurka.",
+        "V hospodě platil svými povídkami.",
+        "Osudy dobrého vojáka Švejka za světové války – nejznámější protiválečná satira.",
+    ],
+},
+{
+    name: "Jaroslav Durych",
+    facts: [
+        "Vojenský lékař.",
+        "Řadíme ke katolickým spisovatelům.",
+        "Obdivoval bigotně katolické země, i když tam vládli fašisté.",
+        "Vedl polemiky s Karlem Čapkem – jeho humanismus označil za pláč civilisty.",
+        "Dílo – bojovně katolické s častými metaforami (Bloudění, Rekviem), odehrává se kolem bitvy na Bílé hoře, tedy kolem třicetileté války "
+    ],
+},
+{
+    name: "Karel Čapek",
+    facts: [
+        "Nejvýznamnější český protifašistický novinář a spisovatel.",
+        "Bratr Josef – český kubismus.",
+        "Pracoval v Lidových novinách.",
+        "Řazen k demokratickému a humanistickému proudu.",
+        "Mistr povídky – Povídky z jedné a druhé kapsy.",
+        "Dramatické a románové utopie – R. U. R., Krakatit",
+        "Protifašistická tvorba – Válka s mloky (mloci začnou zabírat Zemi – fašisté), Bílá nemoc (rozšíří se smrtelná nemoc, Maršál chce válku, lékař Galén objeví protilék, ale vydá ho, jen když nebudou válčit), Matka",
+    ],
+},
+{
+    name: "Vladislav Vančura",
+    facts: [
+        "Narozen v Háji ve Slezsku.",
+        "Zakladatel a první předseda Devětsilu.",
+        "1929 vyloučen z KSČ.",
+        "Jednoznačně rozpoznatelný svým autorským stylem.",
+        "spojen s poetismem – Rozmarné léto – do maloměsta (Krokovy Vary) přijede kouzelník s krásnou pomocnicí, jednoduchý příběh, ale s češtinou, která je víc než ham ham.",
+        "Za heydrichiády popraven nacisty.",
+    ],
+},
+{
+    name: "Jaroslav Havlíček",
+    facts: [
+        "Jeden z našich nejlepších autorů psychologického románu.",
+        "Pracoval jako úředník a literaturu měl jako koníčka.",
+        "Petrolejové lampy – ne moc pěkná chce prožít velkou lásku, ale místo toho si ji vezme syfilitik.",
+        "Neviditelný – v bohaté rodině, strýček je přesvědčen o tom, že je neviditelný, a celá rodina tu komedii s ním hraje.",
+    ],
+},
+{
+    name: "Jiří Wolker",
+    facts: [
+        "Jeden z našich nejznámějších představitelů avantgardy.",
+        "Člen Devětsilu.",
+        "Zemřel mladý na tuberkulózu, napsal si vlastní epitaf.",
+        "Vitalismus – Host do domu – optimistická poezie, co nás v životě všechno dobré čeká, nejznámější báseň Poštovní schránka",
+        "Proletářská poezie – Těžká hodina – hlavně sociální balady – Balada o nenarozeném dítěti, Balada o snu",
+    ],
+},
+{
+    name: "Vítězslav Nezval",
+    facts: [
+        "Nejvýraznější představitel české avantgardy a organizátor kulturního života.",
+        "1. období – poetismus – Podivuhodný kouzelník.",
+        "2. období – surrealismus.",
+    ],
+},
+{
+    name: "Jaroslav Seifert",
+    facts: [
+        "Český držitel Nobelovy ceny za literaturu 1984.",
+        "Hlavně problémy s komunisty – podepsal Chartu 77.",
+        "1. období – proletářská poezie – Město v slzách.",
+        "2. období – poetismus – Na vlnách TSF.",
+        "Pak různá tvorba – většinou intimní poezie"
+    ],
+},
+{
+    name: "František Halas",
+    facts: [
+        "Jeden z nejznámějších českých básníků.",
+        "V díle dost tragické motivy – nejčastěji smrt.",
+        "Ačkoliv se hlásil ke komunistické ideologii, sami komunisté jeho tvorbu odmítali kvůli údajnému pesimismu.",
+    ],
+},
+{
+    name: "Vladimír Holan",
+    facts: [
+        "Jeden z nejnáročnějších našich básníků, myšleno na čtenáře.",
+        "Žil v ústraní, vlastně nevycházel z bytu, měl trpět agorafobií.",
+        "Básník času.",
+        "Noc s Hamletem, Terezka Planetová.",
+        "Být není lehké, lehká jsou jen hovna."
+    ],
+},
+{
+    name: "Jan Werich a Jiří Voskovec",
+    facts: [
+        "Spojeni s Osvobozeným divadlem.",
+        "ze začátku poetistické a dadaistické hry (Vest pocket revue), hráli jazz, mezi dějstvími hovořili na forbíně s diváky",
+        "pak přešli k politické satiře – hlavně kritizovali nacismus a sociální nerovnost (Caesar, Kat a blázen, Balada z hadrů – variace na život renesančního básníka Francois Villona, který bojoval proti nespravedlivé společnosti)",
+        "Před Hitlerem utekli do USA, Voskovec se už nevrátil.",
+    ],
+},
+{
+    name: "František Hrubín",
+    facts: [
+        "Velmi melodický básník s písňovou formou.",
+        "Nejčastěji milostná lyrika, ale s tragickými prvky.",
+        "Romance pro křídlovku, Jobova noc."
+    ],
+},
+{
+    name: "Jiří Kolář",
+    facts: [
+        "Nejvýznamnější člen Skupiny 42.",
+        "Básník a výtvarný umělec – znám hlavně svými kolážemi.",
+        "V tvorbě kritizoval komunismus – Dny v roce, Prométheova játra.",
+        "V roce 1980 mu nebyl povolen návrat do vlasti a žil trvale ve Francii.",
+    ],
+}
+    // Pokračujte podobně pro další autory...
+];
+    
+    let previousAuthor = null;  // Sledování předchozího autora
+    let previousAuthorsQueue = []; // Fronta pro sledování předchozích autorů
+    let correctAnswers = [];
+    let incorrectAnswers = [];
+    let correctCount = 0;
+    let incorrectCount = 0;
+    let selectedAuthors = authors; // Výchozí seznam autorů
+    
+    function getNextAuthor() {
+        const maxQueueLength = Math.ceil(selectedAuthors.length / 2); // Dynamická délka fronty
+        let author;
+        do {
+            author = selectedAuthors[Math.floor(Math.random() * selectedAuthors.length)];
+        } while (previousAuthorsQueue.includes(author)); // Zajistí, že autor není v posledních
+
+        // Přidáme autora do fronty a udržujeme maximální délku
+        previousAuthorsQueue.push(author);
+        if (previousAuthorsQueue.length > maxQueueLength) {
+            previousAuthorsQueue.shift(); // Odstraní nejstaršího autora z fronty
+        }
+
+        return author;
+    }
+    
+    function getRandomFacts(facts, count) {
+        const shuffled = facts.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+    }
+    
+    let currentAuthor = getNextAuthor();
+    displayAuthorInfo(currentAuthor);
+    
+    function displayAuthorInfo(author) {
+        const factElement = document.getElementById("fact");
+        factElement.innerHTML = ""; // Vyčistí předchozí obsah
+    
+        // Vytvoří seznam faktů
+        const factList = document.createElement("ul");
+        const randomFacts = getRandomFacts(author.facts, 3);
+        randomFacts.forEach(fact => {
+            const listItem = document.createElement("li");
+            listItem.textContent = fact;
+            factList.appendChild(listItem);
+        });
+    
+        // Přidá hlavní díla jako poslední položku
+        const mainWorksItem = document.createElement("li");
+        mainWorksItem.textContent = author.mainWorks;
+        factList.appendChild(mainWorksItem);
+    
+        factElement.appendChild(factList);
+    }
+    
+    function checkAnswer() {
+        const userAnswer = normalizeString(document.getElementById("authorInput").value.trim());
+        const correctAnswer = normalizeString(currentAuthor.name);
+    
+        if (userAnswer === correctAnswer) {
+            document.getElementById("result").textContent = "Správně!";
+            document.getElementById("result").className = "correct";
+            correctAnswers.push(currentAuthor.name);
+            correctCount++;
+            document.getElementById("correctCount").textContent = correctCount;
+    
+            // Přidání správné odpovědi do seznamu
+            const listItem = document.createElement("li");
+            listItem.textContent = currentAuthor.name;
+            document.getElementById("correctAnswersList").appendChild(listItem);
+        } else {
+            document.getElementById("result").textContent = `Špatně! Správná odpověď: ${currentAuthor.name}`;
+            document.getElementById("result").className = "incorrect";
+            incorrectAnswers.push(userAnswer);
+            incorrectCount++;
+            document.getElementById("incorrectCount").textContent = incorrectCount;
+        }
+    
+        document.getElementById("authorInput").value = "";
+        currentAuthor = getNextAuthor();
+        displayAuthorInfo(currentAuthor);
+    }
+    
+    function checkEnter(event) {
+        if (event.key === "Enter") {
+            checkAnswer();
+        }
+    }
+
+    function setAuthorRange() {
+        const start = parseInt(document.getElementById("startRange").value, 10);
+        const end = parseInt(document.getElementById("endRange").value, 10);
+
+        if (start >= 1 && end <= authors.length && start < end) {
+            selectedAuthors = authors.slice(start - 1, end);
+            currentAuthor = getNextAuthor();
+            displayAuthorInfo(currentAuthor);
+        } else if (start === end) {
+            alert("Začátek a konec rozsahu se nesmí rovnat!");
+        } else {
+            alert("Zadejte platný rozsah!");
+        }
+    }
+
+    // Nastavení maximálního počtu autorů v popisku
+    document.getElementById("maxAuthors").textContent = authors.length;
+    </script>
+
+</body>
+
+</html>

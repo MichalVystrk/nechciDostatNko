@@ -4,33 +4,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Čeští autoři 20. století</title>
+    <title>Čeští autoři 19. století</title>
     <style>
-        /* Globální styly */
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #121212;
             color: #e0e0e0;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
             display: flex;
-            justify-content: center; /* Horizontální zarovnání na střed */
-            align-items: center; /* Vertikální zarovnání na střed */
-            min-height: 100vh; /* Výška stránky */
-        }
-
-        .layout-container {
-            display: flex;
-            flex-direction: row; /* Horizontální rozložení */
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            align-items: center; /* Vertikální zarovnání na střed */
-            gap: 20px; /* Mezera mezi kontejnery */
-            width: 100%;
-            max-width: 1200px; /* Maximální šířka stránky */
+            height: 100vh;
+            margin: 0;
         }
 
-        .container {
+        .container,
+        #stats {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 360px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h1,
+        h2 {
+            color: #FFEB3B;
+        }
+
+        input,
+        button {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: none;
+        }
+
+        input {
+            background-color: #333;
+            color: #e0e0e0;
+        }
+
+        button {
+            background-color: #FFEB3B;
+            color: #121212;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #FFCA28;
+        }
+
+        .correct {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: #F44336;
+            font-weight: bold;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        #answersList ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #fact ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        /* --- Přidáno pro rozsah směrů --- */
+        .range-container {
             background-color: #1e1e1e;
             border-radius: 10px;
             padding: 40px;
@@ -41,21 +110,16 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            margin-bottom: 20px;
         }
 
-        h1 {
-            font-size: 30px;
-            margin-bottom: 20px;
+        .range-container label {
+            margin-top: 10px;
+            margin-bottom: 5px;
             color: #FFEB3B;
         }
 
-        p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: #B0B0B0;
-        }
-
-        input {
+        .range-container input[type="number"] {
             width: 100%;
             max-width: 320px;
             padding: 12px;
@@ -69,11 +133,11 @@
             transition: border-color 0.3s ease;
         }
 
-        input:focus {
+        .range-container input[type="number"]:focus {
             border-color: #FFEB3B;
         }
 
-        button {
+        .range-container button {
             width: 100%;
             max-width: 320px;
             padding: 15px;
@@ -88,105 +152,96 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        button:hover {
+        .range-container button:hover {
             background-color: #FFCA28;
         }
 
-        button:active {
+        .range-container button:active {
             background-color: #FFB300;
             box-shadow: none;
         }
 
-        #result {
-            font-size: 20px;
-            margin-top: 15px;
-            padding: 8px;
+        /* --- konec přidaného CSS --- */
+
+        /* --- Přidáno pro layout vedle sebe --- */
+        .layout-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
             width: 100%;
+            max-width: 1200px;
         }
 
-        .correct {
-            color: #4CAF50;
-            font-weight: bold;
-        }
-
-        .incorrect {
-            color: #F44336;
-            font-weight: bold;
-        }
-
-        /* Statistiky */
-        #stats {
-            background-color: #1e1e1e;
-            color: #e0e0e0;
-            padding: 30px;
-            border-radius: 10px;
-            width: 360px;
-            max-width: 90%;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        #stats h2 {
-            font-size: 24px;
-            color: #FFEB3B;
-            margin-bottom: 15px;
-        }
-
-        #stats table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        #stats th,
-        #stats td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #333;
-        }
-
-        #stats th {
-            background-color: #FFEB3B;
-            color: #121212;
-        }
-
-        #stats td {
-            background-color: #333;
-        }
-
-        /* Responsivní design */
         @media (max-width: 768px) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+
             .layout-container {
-                flex-direction: column; /* Na mobilních zařízeních pod sebou */
+                flex-direction: column;
                 align-items: center;
+                width: 100vw;
+                min-width: 0;
+                padding: 0 5vw;
+                box-sizing: border-box;
             }
 
             .container,
-            #stats {
+            #stats,
+            .range-container {
                 width: 100%;
+                min-width: 0;
+                margin-bottom: 20px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .range-container {
+                margin-top: 0;
+                margin-bottom: 20px;
+                position: relative;
+                z-index: 2;
             }
         }
 
-        .link-button {
-            display: inline-block;
-            text-decoration: none;
-            background-color: #FFEB3B;
-            color: #121212;
-            padding: 15px;
-            font-size: 18px;
+        /* --- konec přidaného CSS --- */
+
+        #directionInput {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 220px;
+            max-width: 90%;
             text-align: center;
-            border-radius: 8px;
-            margin-top: 10px;
-            transition: background-color 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            position: fixed; /* Fix the button to the viewport */
-            bottom: 20px; /* Distance from the bottom */
-            right: 20px; /* Distance from the right */
         }
 
-        .link-button:hover {
+        .back-button {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            background-color: #FFEB3B;
+            color: #121212;
+            padding: 15px 24px;
+            font-size: 18px;
+            font-weight: bolder;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+            z-index: 100;
+        }
+
+        .back-button:hover {
             background-color: #FFCA28;
         }
 
-        .link-button:active {
+        .back-button:active {
             background-color: #FFB300;
             box-shadow: none;
         }
@@ -195,28 +250,28 @@
 
 <body>
     <div class="layout-container">
-        <!-- Nastavení rozsahu autorů -->
-        <div class="container">
-            <h2>Nastavení rozsahu autorů</h2>
+        <!-- Přidáno: Nastavení rozsahu -->
+        <div class="range-container">
+            <h2>Nastavení rozsahu</h2>
             <label for="startRange">Začátek rozsahu:</label>
-            <input type="number" id="startRange" min="1" max="20" value="1" />
-            <label for="endRange">Konec rozsahu (max: <span id="maxAuthors"></span>):</label>
-            <input type="number" id="endRange" min="1" max="20" value="20" />
-            <button onclick="setAuthorRange()">Nastavit rozsah</button>
+            <input type="number" id="startRange" min="1" max="16" value="1" />
+            <span id="startName" style="color:#FFEB3B;font-weight:bold;display:block;margin-bottom:10px;"></span>
+            <label for="endRange">Konec rozsahu (max: <span id="maxDirections"></span>):</label>
+            <input type="number" id="endRange" min="1" max="16" value="16" />
+            <span id="endName" style="color:#FFEB3B;font-weight:bold;display:block;margin-bottom:10px;"></span>
+            <button onclick="setDirectionRange()">Nastavit rozsah</button>
+            <label for="factCount" style="margin-top:30px;">Počet odrážek:</label>
+            <input type="number" id="factCount" min="1" max="10" value="2" style="width:80px; margin-bottom:10px;" />
         </div>
 
-        <!-- Test autora -->
         <div class="container">
-            <h1>Test autora</h1>
+            <h1>Test</h1>
             <p id="fact"></p>
-            <input type="text" id="authorInput" placeholder="Napiš správné jméno autora" onkeydown="checkEnter(event)" />
-            <div class="button-container">
-                <button onclick="checkAnswer()">Zkontrolovat odpověď</button>
-            </div>
+            <input type="text" id="directionInput" placeholder="Womp Womp" onkeydown="checkEnter(event)">
+            <button onclick="checkAnswer()">Zkontrolovat</button>
             <p id="result"></p>
         </div>
 
-        <!-- Statistiky -->
         <div id="stats">
             <h2>Statistiky</h2>
             <table>
@@ -235,337 +290,315 @@
             </div>
         </div>
     </div>
-
-    <!-- Zápisky link positioned in the bottom-right corner -->
-    <a href="../zapisky/cestiAutri20StoletiZapisek.html" class="link-button">Zápisky</a>
-
+    <a href="../index.html" class="back-button">Zpět na úvod</a>
     <script>
-           // Funkce pro odstranění diakritiky a převod na malá písmena
-    function normalizeString(str) {
-        return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    }
-    
-    const authors = [
-    {
-        name: "Antonín Sova",
-        facts: [
-            "Jeden z nejvýznamnějších představitelů české moderny.",
-            "Nejdříve impresionismus – Květy intimních nálad.",
-            "Později symbolismus – dost společensky kritický, Soucit a vzdor.",
-            "Nejznámější báseň – Kdo Vám tak zcuchal tmavé vlasy.",
-        ],
-        mainWorks: "Hlavní díla: Květy intimních nálad, Soucit a vzdor."
-    },
-    {
-        name: "Petr Bezruč",
-        facts: [
-            "Vlastním jménem Vladimír Vašek.",
-            "Narozen v Opavě.",
-            "Poštovní úředník v Místku.",
-            "Slezské písně – autorství Vladimíra Vaška je sporné.",
-            "Básně byly anonymně posílány do časopisu Čas.",
-            "Nejznámější sociální balada – Maryčka Magdonová – otec (ožrala) umřel, matka taky, musí se starat o sourozence, je zatčena, když sbírá dřevo v cizím lese, z hanby v bezvýchodné situaci spáchá sebevraždu",
-        ],
-        mainWorks: "Hlavní díla: Slezské písně."
-    },
-    {
-        name: "Otokar Březina",
-        facts: [
-            "Nejvýznamnější představitel českého symbolismu.",
-            "Vlastním jménem Václav Jebavý.",
-            "Učitel.",
-            "Tajemné dálky – báseň Moje matka.",
-            "Svítání na západě.",
-            "Stavitelé chrámů.",
-        ],
-        mainWorks: "Hlavní díla: Tajemné dálky, Svítání na západě, Stavitelé chrámů, Ruce."
-    },
-    {
-        name: "Stanislav Kostka Neumann",
-        facts: [
-            "Odsouzen v procesu s Omladinou za protirakouskou činnost 1893.",
-            "Vydával anarchistický časopis Nový kult 1897–1905.",
-            "1929 – vyloučen z KSČ, protože protestoval proti novému vedení v čele s K. Gottwaldem (bolševizace strany)",
-            "Prošel více uměleckých směrů – anarchista, přírodní lyrik, civilismus, proletářská poezie.",
-        ],
-        mainWorks: "Hlavní díla: Kniha lesů, vod a strání."
-    },
-    {
-        name: "Viktor Dyk",
-        facts: [
-            "Za protirakouskou činnost vězněn 1916–1917.",
-            "Za první republiky poslanec a senátor.",
-            "Hlavně spojen s hnutím buřičů (anarchistů).",
-            "Krysař – staroněmecká pověst o muži s píšťalou, který odvede z města Hammeln krysy.",
-        ],
-        mainWorks: "Hlavní díla: Krysař."
-    },
-    {
-        name: "Fráňa Šrámek",
-        facts: [
-            "Za protirakouské básně několikrát vězněn.",
-            "Anarchista – básnická sbírka Modrý a rudý.",
-            "Pak impresionismus – Splav, Stříbrný vítr, Měsíc nad řekou.",
-        ],
-        mainWorks: "Hlavní díla: Modrý a rudý, Splav, Stříbrný vítr, Měsíc nad řekou."
-    },
-    {
-        name: "Ivan Olbracht",
-        facts: [
-            "Levicový novinář.",
-            "Za svou komunistickou činnost za první republiky vězněn.",
-            "Z KSČ 1929 vyloučen kvůli protestu proti bolševizaci strany.",
-            "Ve 30. letech 20. stol. pobýval na Podkarpatské Rusi.",
-            "1. období tvorby – psychologická témata (O zlých samotářích).",
-            "Anna Proletářka – socialistický realismus.",
-            "Nikola Šuhaj loupežník – odehrává se na Zakarpatské Ukrajině.",
-        ],
-        mainWorks: "Hlavní díla: O zlých samotářích, Anna Proletářka, Nikola Šuhaj loupežník."
-    },
-    {
-    name: "Jaroslav Hašek",
-    facts: [
-        "Anarchista, alkoholik, bohémský život, známá pražská figurka.",
-        "V hospodě platil svými povídkami.",
-        "Osudy dobrého vojáka Švejka za světové války – nejznámější protiválečná satira.",
-    ],
-    mainWorks: "Hlavní díla: Osudy dobrého vojáka Švejka za světové války."
-},
-{
-    name: "Jaroslav Durych",
-    facts: [
-        "Vojenský lékař.",
-        "Řadíme ke katolickým spisovatelům.",
-        "Obdivoval bigotně katolické země, i když tam vládli fašisté.",
-        "Vedl polemiky s Karlem Čapkem – jeho humanismus označil za pláč civilisty.",
-        "Dílo – bojovně katolické s častými metaforami (Bloudění, Rekviem), odehrává se kolem bitvy na Bílé hoře, tedy kolem třicetileté války "
-    ],
-    mainWorks: "Hlavní díla: Bloudění, Rekviem."
-},
-{
-    name: "Karel Čapek",
-    facts: [
-        "Nejvýznamnější český protifašistický novinář a spisovatel.",
-        "Bratr Josef – český kubismus.",
-        "Pracoval v Lidových novinách.",
-        "Řazen k demokratickému a humanistickému proudu.",
-        "Mistr povídky – Povídky z jedné a druhé kapsy.",
-        "Dramatické a románové utopie – R. U. R., Krakatit",
-        "Protifašistická tvorba – Válka s mloky (mloci začnou zabírat Zemi – fašisté), Bílá nemoc (rozšíří se smrtelná nemoc, Maršál chce válku, lékař Galén objeví protilék, ale vydá ho, jen když nebudou válčit), Matka",
-    ],
-    mainWorks: "Hlavní díla: R.U.R., Krakatit, Válka s mloky, Bílá nemoc, Matka."
-},
-{
-    name: "Vladislav Vančura",
-    facts: [
-        "Narozen v Háji ve Slezsku.",
-        "Zakladatel a první předseda Devětsilu.",
-        "1929 vyloučen z KSČ.",
-        "Jednoznačně rozpoznatelný svým autorským stylem.",
-        "spojen s poetismem – Rozmarné léto – do maloměsta (Krokovy Vary) přijede kouzelník s krásnou pomocnicí, jednoduchý příběh, ale s češtinou, která je víc než ham ham.",
-        "Za heydrichiády popraven nacisty.",
-    ],
-    mainWorks: "Hlavní díla: Rozmarné léto."
-},
-{
-    name: "Jaroslav Havlíček",
-    facts: [
-        "Jeden z našich nejlepších autorů psychologického románu.",
-        "Pracoval jako úředník a literaturu měl jako koníčka.",
-        "Petrolejové lampy – ne moc pěkná chce prožít velkou lásku, ale místo toho si ji vezme syfilitik.",
-        "Neviditelný – v bohaté rodině, strýček je přesvědčen o tom, že je neviditelný, a celá rodina tu komedii s ním hraje.",
-    ],
-    mainWorks: "Hlavní díla: Petrolejové lampy, Neviditelný."
-},
-{
-    name: "Jiří Wolker",
-    facts: [
-        "Jeden z našich nejznámějších představitelů avantgardy.",
-        "Člen Devětsilu.",
-        "Zemřel mladý na tuberkulózu, napsal si vlastní epitaf.",
-        "Vitalismus – Host do domu – optimistická poezie, co nás v životě všechno dobré čeká, nejznámější báseň Poštovní schránka",
-        "Proletářská poezie – Těžká hodina – hlavně sociální balady – Balada o nenarozeném dítěti, Balada o snu",
-    ],
-    mainWorks: "Hlavní díla: Host do domu, Těžká hodina."
-},
-{
-    name: "Vítězslav Nezval",
-    facts: [
-        "Nejvýraznější představitel české avantgardy a organizátor kulturního života.",
-        "1. období – poetismus – Podivuhodný kouzelník.",
-        "2. období – surrealismus.",
-    ],
-    mainWorks: "Hlavní díla: Podivuhodný kouzelník."
-},
-{
-    name: "Jaroslav Seifert",
-    facts: [
-        "Český držitel Nobelovy ceny za literaturu 1984.",
-        "Hlavně problémy s komunisty – podepsal Chartu 77.",
-        "1. období – proletářská poezie – Město v slzách.",
-        "2. období – poetismus – Na vlnách TSF.",
-        "Pak různá tvorba – většinou intimní poezie"
-    ],
-    mainWorks: "Hlavní díla: Město v slzách, Na vlnách TSF."
-},
-{
-    name: "František Halas",
-    facts: [
-        "Jeden z nejznámějších českých básníků.",
-        "V díle dost tragické motivy – nejčastěji smrt.",
-        "Ačkoliv se hlásil ke komunistické ideologii, sami komunisté jeho tvorbu odmítali kvůli údajnému pesimismu.",
-    ],
-    mainWorks: "Hlavní díla: Torzo naděje."
-},
-{
-    name: "Vladimír Holan",
-    facts: [
-        "Jeden z nejnáročnějších našich básníků, myšleno na čtenáře.",
-        "Žil v ústraní, vlastně nevycházel z bytu, měl trpět agorafobií.",
-        "Básník času.",
-        "Noc s Hamletem, Terezka Planetová.",
-        "Být není lehké, lehká jsou jen hovna."
-    ],
-    mainWorks: "Hlavní díla: Noc s Hamletem, Terezka Planetová."
-},
-{
-    name: "Jan Werich a Jiří Voskovec",
-    facts: [
-        "Spojeni s Osvobozeným divadlem.",
-        "ze začátku poetistické a dadaistické hry (Vest pocket revue), hráli jazz, mezi dějstvími hovořili na forbíně s diváky",
-        "pak přešli k politické satiře – hlavně kritizovali nacismus a sociální nerovnost (Caesar, Kat a blázen, Balada z hadrů – variace na život renesančního básníka Francois Villona, který bojoval proti nespravedlivé společnosti)",
-        "Před Hitlerem utekli do USA, Voskovec se už nevrátil.",
-    ],
-    mainWorks: "Hlavní díla: Caesar, Kat a blázen, Balada z hadrů."
-},
-{
-    name: "František Hrubín",
-    facts: [
-        "Velmi melodický básník s písňovou formou.",
-        "Nejčastěji milostná lyrika, ale s tragickými prvky.",
-        "Romance pro křídlovku, Jobova noc."
-    ],
-    mainWorks: "Hlavní díla: Romance pro křídlovku, Jobova noc."
-},
-{
-    name: "Jiří Kolář",
-    facts: [
-        "Nejvýznamnější člen Skupiny 42.",
-        "Básník a výtvarný umělec – znám hlavně svými kolážemi.",
-        "V tvorbě kritizoval komunismus – Dny v roce, Prométheova játra.",
-        "V roce 1980 mu nebyl povolen návrat do vlasti a žil trvale ve Francii.",
-    ],
-    mainWorks: "Hlavní díla: Dny v roce, Prométheova játra."
-}
-    // Pokračujte podobně pro další autory...
-];
-    
-    let previousAuthor = null;  // Sledování předchozího autora
-    let previousAuthorsQueue = []; // Fronta pro sledování předchozích autorů
-    let correctAnswers = [];
-    let incorrectAnswers = [];
-    let correctCount = 0;
-    let incorrectCount = 0;
-    let selectedAuthors = authors; // Výchozí seznam autorů
-    
-    function getNextAuthor() {
-        const maxQueueLength = Math.ceil(selectedAuthors.length / 2); // Dynamická délka fronty
-        let author;
-        do {
-            author = selectedAuthors[Math.floor(Math.random() * selectedAuthors.length)];
-        } while (previousAuthorsQueue.includes(author)); // Zajistí, že autor není v posledních
+        function normalizeString(str) {
+            return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+        const directions = [
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },   
+            {
+                name: "",
+                facts: [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",      
+                ],
+            },
+        ];
+        let currentDirection = null;
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let selectedDirections = directions; // Výchozí seznam směrů
+        let previousDirectionsQueue = []; // Fronta pro sledování předchozích směrů
+        let factCount = 2;
 
-        // Přidáme autora do fronty a udržujeme maximální délku
-        previousAuthorsQueue.push(author);
-        if (previousAuthorsQueue.length > maxQueueLength) {
-            previousAuthorsQueue.shift(); // Odstraní nejstaršího autora z fronty
+        // Přidáno: Nastavení rozsahu směrů
+        function setDirectionRange() {
+            const start = parseInt(document.getElementById("startRange").value, 10);
+            const end = parseInt(document.getElementById("endRange").value, 10);
+
+            if (start >= 1 && end <= directions.length && start < end) {
+                selectedDirections = directions.slice(start - 1, end);
+                currentDirection = getNextDirection();
+                displayDirectionInfo(currentDirection);
+            } else if (start === end) {
+                alert("Začátek a konec rozsahu se nesmí rovnat!");
+            } else {
+                alert("Zadejte platný rozsah!");
+            }
         }
 
-        return author;
-    }
-    
-    function getRandomFacts(facts, count) {
-        const shuffled = facts.sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, count);
-    }
-    
-    let currentAuthor = getNextAuthor();
-    displayAuthorInfo(currentAuthor);
-    
-    function displayAuthorInfo(author) {
-        const factElement = document.getElementById("fact");
-        factElement.innerHTML = ""; // Vyčistí předchozí obsah
-    
-        // Vytvoří seznam faktů
-        const factList = document.createElement("ul");
-        const randomFacts = getRandomFacts(author.facts, 3);
-        randomFacts.forEach(fact => {
-            const listItem = document.createElement("li");
-            listItem.textContent = fact;
-            factList.appendChild(listItem);
+        function updateRangeNames() {
+            const start = parseInt(document.getElementById("startRange").value, 10);
+            const end = parseInt(document.getElementById("endRange").value, 10);
+            const startName = (directions[start-1] && directions[start-1].name) ? directions[start-1].name : "";
+            const endName = (directions[end-1] && directions[end-1].name) ? directions[end-1].name : "";
+            document.getElementById("startName").textContent = startName ? `${startName}` : "";
+            document.getElementById("endName").textContent = endName ? `${endName}` : "";
+        }
+        document.getElementById("startRange").addEventListener("input", updateRangeNames);
+        document.getElementById("endRange").addEventListener("input", updateRangeNames);
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("maxDirections").textContent = directions.length;
+            updateRangeNames();
         });
-    
-        // Přidá hlavní díla jako poslední položku
-        const mainWorksItem = document.createElement("li");
-        mainWorksItem.textContent = author.mainWorks;
-        factList.appendChild(mainWorksItem);
-    
-        factElement.appendChild(factList);
-    }
-    
-    function checkAnswer() {
-        const userAnswer = normalizeString(document.getElementById("authorInput").value.trim());
-        const correctAnswer = normalizeString(currentAuthor.name);
-    
-        if (userAnswer === correctAnswer) {
-            document.getElementById("result").textContent = "Správně!";
-            document.getElementById("result").className = "correct";
-            correctAnswers.push(currentAuthor.name);
-            correctCount++;
-            document.getElementById("correctCount").textContent = correctCount;
-    
-            // Přidání správné odpovědi do seznamu
-            const listItem = document.createElement("li");
-            listItem.textContent = currentAuthor.name;
-            document.getElementById("correctAnswersList").appendChild(listItem);
-        } else {
-            document.getElementById("result").textContent = `Špatně! Správná odpověď: ${currentAuthor.name}`;
-            document.getElementById("result").className = "incorrect";
-            incorrectAnswers.push(userAnswer);
-            incorrectCount++;
-            document.getElementById("incorrectCount").textContent = incorrectCount;
-        }
-    
-        document.getElementById("authorInput").value = "";
-        currentAuthor = getNextAuthor();
-        displayAuthorInfo(currentAuthor);
-    }
-    
-    function checkEnter(event) {
-        if (event.key === "Enter") {
-            checkAnswer();
-        }
-    }
 
-    function setAuthorRange() {
-        const start = parseInt(document.getElementById("startRange").value, 10);
-        const end = parseInt(document.getElementById("endRange").value, 10);
+        // Nastavení maximálního počtu směrů v popisku
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("maxDirections").textContent = directions.length;
+        });
 
-        if (start >= 1 && end <= authors.length && start < end) {
-            selectedAuthors = authors.slice(start - 1, end);
-            currentAuthor = getNextAuthor();
-            displayAuthorInfo(currentAuthor);
-        } else if (start === end) {
-            alert("Začátek a konec rozsahu se nesmí rovnat!");
-        } else {
-            alert("Zadejte platný rozsah!");
+        function getNextDirection() {
+            const maxQueueLength = Math.ceil(selectedDirections.length / 2); // Dynamická délka fronty
+            let dir;
+            do {
+                dir = selectedDirections[Math.floor(Math.random() * selectedDirections.length)];
+            } while (previousDirectionsQueue.includes(dir) && selectedDirections.length > 4);
+
+            // Přidáme směr do fronty a udržujeme maximální délku
+            previousDirectionsQueue.push(dir);
+            if (previousDirectionsQueue.length > maxQueueLength) {
+                previousDirectionsQueue.shift(); // Odstraní nejstarší směr z fronty
+            }
+
+            return dir;
         }
-    }
 
-    // Nastavení maximálního počtu autorů v popisku
-    document.getElementById("maxAuthors").textContent = authors.length;
+        function getRandomFacts(facts, count) {
+            const shuffled = facts.slice().sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        document.getElementById("factCount").addEventListener("input", function(e) {
+            let val = parseInt(e.target.value, 10);
+            if (val >= 1 && val <= 10) {
+                factCount = val;
+                displayDirectionInfo(currentDirection);
+            }
+        });
+
+        function displayDirectionInfo(dir) {
+            const factElement = document.getElementById("fact");
+            factElement.innerHTML = "";
+            const factList = document.createElement("ul");
+            const randomFacts = getRandomFacts(dir.facts, factCount);
+            randomFacts.forEach(fact => {
+                const listItem = document.createElement("li");
+                listItem.textContent = fact;
+                factList.appendChild(listItem);
+            });
+            if (dir.mainWorks) {
+                const mainWorksItem = document.createElement("li");
+                mainWorksItem.textContent = dir.mainWorks;
+                factList.appendChild(mainWorksItem);
+            }
+            factElement.appendChild(factList);
+        }
+
+        function checkAnswer() {
+            const userAnswer = normalizeString(document.getElementById("directionInput").value.trim());
+            const correctAnswer = normalizeString(currentDirection.name);
+            const alternativeAnswer = normalizeString(currentDirection.name.split(" (")[0]); // Jméno bez závorky
+            const result = document.getElementById("result");
+
+            if (userAnswer === correctAnswer || userAnswer === alternativeAnswer) {
+                result.textContent = "Správně!";
+                result.className = "correct";
+                correctCount++;
+                document.getElementById("correctCount").textContent = correctCount;
+
+                // --- Změna: přidání/aktualizace počtu správných odpovědí ---
+                const correctList = document.getElementById("correctAnswersList");
+                let found = false;
+                for (let li of correctList.children) {
+                    if (li.dataset.name === currentDirection.name) {
+                        let count = parseInt(li.dataset.count, 10) + 1;
+                        li.dataset.count = count;
+                        li.textContent = `${currentDirection.name} (${count}×)`;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `${currentDirection.name} (1×)`;
+                    listItem.dataset.name = currentDirection.name;
+                    listItem.dataset.count = "1";
+                    correctList.appendChild(listItem);
+                }
+                // --- konec změny ---
+            } else {
+                result.textContent = `Špatně! Správná odpověď: ${currentDirection.name}`;
+                result.className = "incorrect";
+                incorrectCount++;
+                document.getElementById("incorrectCount").textContent = incorrectCount;
+            }
+
+            document.getElementById("directionInput").value = "";
+            currentDirection = getNextDirection();
+            displayDirectionInfo(currentDirection);
+        }
+
+        function checkEnter(e) {
+            if (e.key === "Enter") checkAnswer();
+        }
+
+        // Načtení první otázky
+        currentDirection = getNextDirection();
+        displayDirectionInfo(currentDirection);
     </script>
-
 </body>
 
 </html>
