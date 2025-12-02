@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Světoví spisovatelé do 19. století</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container,
+        #stats {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 360px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h1,
+        h2 {
+            color: #FFEB3B;
+        }
+
+        input,
+        button {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: none;
+        }
+
+        input {
+            background-color: #333;
+            color: #e0e0e0;
+        }
+
+        button {
+            background-color: #FFEB3B;
+            color: #121212;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #FFCA28;
+        }
+
+        .correct {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: #F44336;
+            font-weight: bold;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        #answersList ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #fact ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        /* --- Přidáno pro rozsah směrů --- */
+        .range-container {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 40px;
+            width: 360px;
+            max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .range-container label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #FFEB3B;
+        }
+
+        .range-container input[type="number"] {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 2px solid #333;
+            background-color: #333;
+            color: #e0e0e0;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .range-container input[type="number"]:focus {
+            border-color: #FFEB3B;
+        }
+
+        .range-container button {
+            width: 100%;
+            max-width: 320px;
+            padding: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #FFEB3B;
+            color: #121212;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .range-container button:hover {
+            background-color: #FFCA28;
+        }
+
+        .range-container button:active {
+            background-color: #FFB300;
+            box-shadow: none;
+        }
+
+        /* --- konec přidaného CSS --- */
+
+        /* --- Přidáno pro layout vedle sebe --- */
+        .layout-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+
+            .layout-container {
+                flex-direction: column;
+                align-items: center;
+                width: 100vw;
+                min-width: 0;
+                padding: 0 5vw;
+                box-sizing: border-box;
+            }
+
+            .container,
+            #stats,
+            .range-container {
+                width: 100%;
+                min-width: 0;
+                margin-bottom: 20px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .range-container {
+                margin-top: 0;
+                margin-bottom: 20px;
+                position: relative;
+                z-index: 2;
+            }
+        }
+
+        /* --- konec přidaného CSS --- */
+
+        #directionInput {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 220px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .back-button {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            background-color: #FFEB3B;
+            color: #121212;
+            padding: 15px 24px;
+            font-size: 18px;
+            font-weight: bolder;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            background-color: #FFCA28;
+        }
+
+        .back-button:active {
+            background-color: #FFB300;
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout-container">
+        <!-- Přidáno: Nastavení rozsahu -->
+        <div class="range-container">
+            <h2>Nastavení rozsahu</h2>
+            <label for="startRange">Začátek rozsahu:</label>
+            <input type="number" id="startRange" min="1" max="21" value="1" />
+            <span id="startName" style="color:#FFEB3B;font-weight:bold;display:block;margin-bottom:10px;"></span>
+            <label for="endRange">Konec rozsahu (max: <span id="maxDirections"></span>):</label>
+            <input type="number" id="endRange" min="1" max="21" value="21" />
+            <span id="endName" style="color:#FFEB3B;font-weight:bold;display:block;margin-bottom:10px;"></span>
+            <button onclick="setDirectionRange()">Nastavit rozsah</button>
+            <label for="factCount" style="margin-top:30px;">Počet odrážek:</label>
+            <input type="number" id="factCount" min="1" max="10" value="2" style="width:80px; margin-bottom:10px;" />
+        </div>
+
+        <div class="container">
+            <h1>Test</h1>
+            <p id="fact"></p>
+            <input type="text" id="directionInput" placeholder="Womp Womp" onkeydown="checkEnter(event)">
+            <button onclick="checkAnswer()">Zkontrolovat</button>
+            <p id="result"></p>
+        </div>
+
+        <div id="stats">
+            <h2>Statistiky</h2>
+            <table>
+                <tr>
+                    <th>Správně</th>
+                    <th>Špatně</th>
+                </tr>
+                <tr>
+                    <td id="correctCount">0</td>
+                    <td id="incorrectCount">0</td>
+                </tr>
+            </table>
+            <div id="answersList">
+                <p><strong>Seznam správných odpovědí:</strong></p>
+                <ul id="correctAnswersList"></ul>
+            </div>
+        </div>
+    </div>
+    <a href="../index.html" class="back-button">Zpět na úvod</a>
+    <script>
+        function normalizeString(str) {
+            return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+        const directions = [
+            {
+                name: "Antika",
+                facts: [
+                    "kultura Řecka a Říma",
+                    "v centru pozornosti stojí člověk, i bohové (mytologie) mají dobré a zlé lidské vlastnosti",
+                    "vzniklo drama, Sofokles zavedl 3. herce - král Oidipus",
+                    "hrdinské eposy (Homér - Ilias, Odysseia)",
+                    "bajky (Ezop)",
+                    "milostná poezie - Publius Ovidius Naso - Proměny - 250 řeckých a římských bájí s motivem proměny sepsanýcn do básní",
+                ]
+            },
+            {
+                name: "Středověk",
+                facts: [
+                    "476 - 1492 našeho letopočtu",
+                    "umění spojeno s křesťanstvím, v hlavním zájmu stojí Bůh (Bible), svatí (legendy - Život Konstantina a Metoděje, Kristiánova legenda - druhá polovina 10. století, o sv. Václavu) motlidby, náboženské písně (Hospodine, pomiluj ny), spása",
+                    "vedke cárjevbá vzniká i světská literatura (hrdinské eposy - píseň o Rolandovi, Alexandreida), kroniky (Kosmova Kronika česká - psána latinsky z 12. století, Kronika tak řečeného Dalimila - od příchodu praotce Čecha ke korunovaci Jana Lucemburského 1310)",
+                    "básnické spory - Podkoní a žák - kolem roku 1400, hádají se, kdo je na tom líp",
+                    "drama - Mastičkář - komedie, parodie velikonočních her",
+                    "ke konci středověku vystupují církevní reformátoři - Jan Hus",
+                    ]
+            },
+            {
+                name: "Renesance a humanismus",
+                facts: [
+                    "14. - 16. století, vznikla v Itálii",
+                    "znovuzrození antiky, znovu je věnován hlavní zájem člověku (středověk = Bůh)",
+                    "píše se milostná poezie, zachycuje se člověk (Michelangelo - socha Davida)",
+                    "Dante Alighieri - Božská komedie",
+                    "Francesco Petrarca - Sonety Lauře - 366 milostných básní",
+                    "Giovanni Boccaccio – Dekameron – 100 erotických novel",
+                    "Francois Villon – villonská balada, kritik společnosti",
+                    "Miguel de Cervantes – Důmyslný rytíř Don Quijote de la Mancha – parodie rytířských románů",
+                    "William Shakespeare – nejlepší dramatik ",
+                    "česká renesance byla zpožděná a vypadala trochu jinak; bez zábavné (o ženských) části, měla naučný charakter – cestopisy a kroniky – Václav Hájek z Libočan - Kronika česká",
+                ]
+            },
+            {
+                name: "Baroko",
+                facts: [
+                    "druhá polovina 16. - 18. století, vzniklo v Itálii",
+                    "hlavním tématem je zase Bůh, tedy náboženství, spása člověka, motiv pomíjivosti a marnosti",
+                    "typické útvary - legendy, duchovní písně (kancionály), kazatelství",
+                    "nedokonalost člověka je konfrontována s Boží dokonalostí (Bedřich Břidel - Co Bůh? Člověk?)",
+                    "Jan Amos Komenský - jako člen jednoty bratrské musel odejít do exilu, evropský známa postava díky pedagogické činnosti",
+                ]
+            },
+            {
+                name: "Honoré de Balzac",
+                facts: [
+                    "asi nejznámější představitel francouzského realismu",
+                    "dlouho mu trvalo, než se umělecky prosadil",
+                    "Lidská komedie – cyklus románů, přes sto, které mají zachytit všechny možné lidské typy a společenské vrstvy",
+                    "Otec Goriot – rozdá svým dětem majetek a ony se na něj pak vykašlou, umírá v naprosté chudobě, mladý student Evžen Rastignac je nejdříve okouzlen chováním Goriotových dcer, ale později se stane bezohledným kariéristou"
+                ]
+            },
+            {
+                name: "Victor Hugo",
+                facts: [
+                    "nejvýznamnější francouzský představitel romantismu, básník, prozaik i dramatik",
+                    "na protest proti vládě Napoleona III. žil skoro 20 let mimo Francii 1851–1870",
+                    "V předmluvě k dramatu Cromwell 1827 formuloval zásady romantismu – hlavně proti klasicismu",
+                    "Legenda věků – cyklus básní, který měl zachytit celý vývoj lidstva směrem k pokroku a humanitě",
+                    "Chrám Matky boží v Paříži – Quasimodo hrbáč se zamiluje do krásné Esmeraldy",
+                    "Bídníci – Jean Valjean, bývalý galejník, se změní v moc dobrého člověka"
+                ]
+            },
+            {
+                name: "Alexandre Dumas",
+                facts: [
+                    "velmi populární autor pseudohistorických románů",
+                    "napsal jich přes 200 – říkali hanlivě Dumasova velkodílna – vymýšlel jen zápletky, zbytek psali najatí studenti",
+                    "Tři mušketýři – snad netřeba",
+                    "Hrabě Monte Cristo – mnoh o velké lásce, vězení, velkém pokladu a pomstě"
+                ]
+            },
+            {
+                name: "Edgar Allan Poe",
+                facts: [
+                    "první významný americký spisovatel, zařazený k romantismu",
+                    "syn kočovných herců, adoptován bohatou rodinou Allan",
+                    "dost divoký život plný alkoholu a drog",
+                    "zakladatel hororu (Jáma a kyvadlo – přivázaného odsouzence na smrt má rozpůlit velké kyvadlo) a detektivky (Vraždy v ulici Morgue)",
+                    "báseň Havran – básník čelí smrti své mladé milenky Lenory"
+                ]
+            },
+            {
+                name: "Nikolaj Vasiljevič Gogol",
+                facts: [
+                    "ruský spisovatel a dramatik pocházející z Ukrajiny",
+                    "něco se řadí k romantismu Taras Bulba, žil v 1. pol. 19. stol., ale většina zařazena k realismu, ukazoval realisticky ruskou společnost, pro nás je to satira",
+                    "ke konci života duševní choroba",
+                    "Revizor – bezvýznamný úředník je omylem považován za revizora z hlavního města, všichni ho podplácí a on pak uteče",
+                    "Mrtvé duše"
+                ]
+            },
+            {
+                name: "Charles Dickens",
+                facts: [
+                    "nejznámější představitel anglického realismu",
+                    "otec seděl dva roky ve vězení pro dlužníky",
+                    "musel se živit sám a postupně se vypracoval z dělnických povolání až k postavení úspěšného spisovatele",
+                    "často ve svých dílech zachycuje částečně autobiograficky těžký život sirotků a opuštěných dětí",
+                    "Oliver Twist – malý sirotek musí loupit pro zlodějskou bandu, ale je zachráněn hodnými lidmi"
+                ]
+            },
+            {
+                name: "Walt Whitman",
+                facts: [
+                    "nejvýznamnější americký básník 19. století",
+                    "tvůrce volného verše, rozhodně ho nejprecizněji používal",
+                    "Stébla trávy – jediná jeho básnická sbírka, kterou neustále doplňoval a obměňoval"
+                ]
+            },
+            {
+                name: "Gustave Flaubert",
+                facts: [
+                    "francouzský realista",
+                    "znám díky románu Paní Bovaryová s podtitulem Mravy francouzského venkova, který vzbudil kvůli vyložené nevěře hlavní hrdinky značný rozruch, a dokonce soudní žalobu",
+                    "Bouvard a Pecuchet Dva psací – na svém venkovském statku pořádají pseudovědecké výzkumy k ovci a kozu"
+                ]
+            },
+            {
+                name: "Fjodor Michajlovič Dostojevskij",
+                facts: [
+                    "zakladatel psychologické prózy",
+                    "ruský šlechtic a významný realista",
+                    "za proticarskou činnost odsouzen k trestu smrti a těsně před popravou omilostněn na 10 let na Sibiři",
+                    "Zločin a trest – Raskolnikov zabije a okrade lichvářku, aby mohl vystudovat medicínu, morálně si chce vraždu obhájit, je to pro dobro, bude léčit chudé, ale nakonec se přizná",
+                    "Idiot – o člověku, který viděl v druhých lidech jen dobro"
+                ]
+            },
+            {
+                name: "Charles Baudelaire",
+                facts: [
+                    "zařazen k prokletým básníkům, ale byl o generaci starší",
+                    "dost divoký život – alkohol, hašiš, opium, veřejně žil s mulatkou",
+                    "překladatel E. A. Poea",
+                    "nejdůležitější sbírka Květy zla – snaží se najít krásu i v ošklivých věcech",
+                    "báseň Zdechlina – při rande s dívkou uvidí mršinu koně a opěvuje ji"
+                ]
+            },
+            {
+                name: "Lev Nikolajevič Tolstoj",
+                facts: [
+                    "známý ruský intelektuál a humanista - dopisoval si s Gándhím, navštívil ho T. G. M.",
+                    "v Jasné Poljaně žil s mužiky a snažil se je vzdělávat",
+                    "dost kritický ke společnosti – zachycoval bídu, násilí, negramotnost – kritický realismus",
+                    "Vojna a mír – o vojenském vpádu Napoleona do Ruska a o jeho porážce",
+                    "Anna Karenina – najde si milence, odejde od svého muže a nevydrží tlak společnosti, spáchá sebevraždu"
+                ]
+            },
+            {
+                name: "Henrik Ibsen",
+                facts: [
+                    "norský dramatik, jeho hry vyvolávaly pobouření potrefená husa se vždycky ozve",
+                    "dlouho pobýval v Německu a Itálii",
+                    "Peer Gynt – hodně pod vlivem romantismu, potulista a snílek P. Gynt prožije divoký život, až před smrtí zjistí, že jediná hodnota je láska",
+                    "Nora Domeček pro panenky – realismus, kdy hlavní hrdinka zjistí, že je pro svého manžela něčím méněcenným, tak odchází z manželství",
+                    "v posledních hrách vliv symbolismu a expresionismu"
+                ]
+            },
+            {
+                name: "Jules Verne",
+                facts: [
+                    "francouzský spisovatel",
+                    "zařazen k dobrodružné literatuře, populární literatuře, dětské literatuře",
+                    "jeden ze zakladatelů vědeckofantastické literatury science-fiction",
+                    "Pět neděl v balonu",
+                    "20 tisíc mil pod mořem",
+                    "Cesta kolem světa za 80 dnů",
+                    "Tajuplný ostrov"
+                ]
+            },
+            {
+                name: "Émile Zola",
+                facts: [
+                    "zakladatel naturalismu – člověk je výsledek dědičnosti a prostředí",
+                    "rád zachycoval lidi z okraje společnosti opilce, prostitutky, vrahy",
+                    "upozornil na antisemitský podtext Dreyfusovy aféry pamfletem Žaluji!",
+                    "Tereza Raquinová – s milencem zabijí manžela, ale pak se navzájem obviňují, kdo je víc vinen, spáchají sebevraždu",
+                    "Zabiják – přes upřímnou snahu neskončit jako alpa, se nakonec Gervaisa upije",
+                    "Nana"
+                ]
+            },
+            {
+                name: "Oscar Wilde",
+                facts: [
+                    "irský dramatik, básník a prozaik",
+                    "zařazen k dekadenci",
+                    "typ dandyho",
+                    "zveřejnil svůj homosexuální vztah – odsouzen k dvěma letům žaláře, tehdy to byl trestný čin",
+                    "Obraz Doriana Graye – hlavní hrdina zůstává stále krásný a mladý a místo něj se mění obraz, o touze nestárnout"
+                ]
+            },
+            {
+                name: "Jean Arthur Rimbaud",
+                facts: [
+                    "dost divoký život – hašiš, alkohol, útěky z domu",
+                    "nějakou dobu žil s Verlainem – ten ho v milenecké hádce postřelil",
+                    "básnické dílo vytvořil mezi patnáctým a devatenáctým rokem života",
+                    "ve své době plně nová poezie – neobyčejné obrazy – dost šokující, halucinace představ",
+                    "sbírka Iluminace",
+                    "báseň Opilý koráb",
+                    "podívej se na film plné zatmění"
+                ]
+            },
+            {
+                name: "Anton Pavlovič Čechov",
+                facts: [
+                    "významný ruský představitel realismu",
+                    "nejdřív povídky",
+                    "později dramata – Strýček Váňa, Višňový sad, Tři sestry, Racek – dohromady se jim říká hry o nenaplněném snu"
+                ]
+            }
+        ];
+
+
+        let currentDirection = null;
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let selectedDirections = directions; // Výchozí seznam směrů
+        let previousDirectionsQueue = []; // Fronta pro sledování předchozích směrů
+        let factCount = 2;
+
+        // Přidáno: Nastavení rozsahu směrů
+        function setDirectionRange() {
+            const start = parseInt(document.getElementById("startRange").value, 10);
+            const end = parseInt(document.getElementById("endRange").value, 10);
+
+            if (start >= 1 && end <= directions.length && start < end) {
+                selectedDirections = directions.slice(start - 1, end);
+                currentDirection = getNextDirection();
+                displayDirectionInfo(currentDirection);
+            } else if (start === end) {
+                alert("Začátek a konec rozsahu se nesmí rovnat!");
+            } else {
+                alert("Zadejte platný rozsah!");
+            }
+        }
+
+        function updateRangeNames() {
+            const start = parseInt(document.getElementById("startRange").value, 10);
+            const end = parseInt(document.getElementById("endRange").value, 10);
+            const startName = (directions[start-1] && directions[start-1].name) ? directions[start-1].name : "";
+            const endName = (directions[end-1] && directions[end-1].name) ? directions[end-1].name : "";
+            document.getElementById("startName").textContent = startName ? `${startName}` : "";
+            document.getElementById("endName").textContent = endName ? `${endName}` : "";
+        }
+        document.getElementById("startRange").addEventListener("input", updateRangeNames);
+        document.getElementById("endRange").addEventListener("input", updateRangeNames);
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("maxDirections").textContent = directions.length;
+            updateRangeNames();
+        });
+
+        function getNextDirection() {
+            const maxQueueLength = Math.ceil(selectedDirections.length / 2); // Dynamická délka fronty
+            let dir;
+            do {
+                dir = selectedDirections[Math.floor(Math.random() * selectedDirections.length)];
+            } while (previousDirectionsQueue.includes(dir) && selectedDirections.length > 4);
+
+            // Přidáme směr do fronty a udržujeme maximální délku
+            previousDirectionsQueue.push(dir);
+            if (previousDirectionsQueue.length > maxQueueLength) {
+                previousDirectionsQueue.shift(); // Odstraní nejstarší směr z fronty
+            }
+
+            return dir;
+        }
+
+        function getRandomFacts(facts, count) {
+            const shuffled = facts.slice().sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        document.getElementById("factCount").addEventListener("input", function (e) {
+            let val = parseInt(e.target.value, 10);
+            if (val >= 1 && val <= 10) {
+                factCount = val;
+                displayDirectionInfo(currentDirection);
+            }
+        });
+
+        function displayDirectionInfo(dir) {
+            const factElement = document.getElementById("fact");
+            factElement.innerHTML = "";
+            const factList = document.createElement("ul");
+            const randomFacts = getRandomFacts(dir.facts, factCount);
+            randomFacts.forEach(fact => {
+                const listItem = document.createElement("li");
+                listItem.textContent = fact;
+                factList.appendChild(listItem);
+            });
+            if (dir.mainWorks) {
+                const mainWorksItem = document.createElement("li");
+                mainWorksItem.textContent = dir.mainWorks;
+                factList.appendChild(mainWorksItem);
+            }
+            factElement.appendChild(factList);
+        }
+
+        function checkAnswer() {
+            const userAnswer = normalizeString(document.getElementById("directionInput").value.trim());
+            const correctAnswer = normalizeString(currentDirection.name);
+            const alternativeAnswer = normalizeString(currentDirection.name.split(" (")[0]); // Jméno bez závorky
+            const result = document.getElementById("result");
+
+            if (userAnswer === correctAnswer || userAnswer === alternativeAnswer) {
+                result.textContent = "Správně!";
+                result.className = "correct";
+                correctCount++;
+                document.getElementById("correctCount").textContent = correctCount;
+
+                // --- Změna: přidání/aktualizace počtu správných odpovědí ---
+                const correctList = document.getElementById("correctAnswersList");
+                let found = false;
+                for (let li of correctList.children) {
+                    if (li.dataset.name === currentDirection.name) {
+                        let count = parseInt(li.dataset.count, 10) + 1;
+                        li.dataset.count = count;
+                        li.textContent = `${currentDirection.name} (${count}×)`;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `${currentDirection.name} (1×)`;
+                    listItem.dataset.name = currentDirection.name;
+                    listItem.dataset.count = "1";
+                    correctList.appendChild(listItem);
+                }
+                // --- konec změny ---
+            } else {
+                result.textContent = `Špatně! Správná odpověď: ${currentDirection.name}`;
+                result.className = "incorrect";
+                incorrectCount++;
+                document.getElementById("incorrectCount").textContent = incorrectCount;
+            }
+
+            document.getElementById("directionInput").value = "";
+            currentDirection = getNextDirection();
+            displayDirectionInfo(currentDirection);
+        }
+
+        function checkEnter(e) {
+            if (e.key === "Enter") checkAnswer();
+        }
+
+        // Načtení první otázky
+        currentDirection = getNextDirection();
+        displayDirectionInfo(currentDirection);
+    </script>
+</body>
+
+</html>
