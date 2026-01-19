@@ -296,202 +296,248 @@
             return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         }
         const directions = [
-    {
-        name: "Kompoziční postupy",
-        facts: [
-            "složení, sestavení, výstavba textu",
-            "uspořádaní lit. díla v celek"
-        ]
-    },
-    {
-        name: "Chronologický postup",
-        facts: [
-            "časově navazující",
-            "od minulosti přes přítomnost k budoucnosti",
-            "nejdůsledněji používán v kronikách"
-        ]
-    },
-    {
-        name: "Retrospektivní postup",
-        facts: [
-            "zpět, dozadu, tedy většinou z přítomnosti do minulosti",
-            "nejdříve se dozvíme konec, výsledek"
-        ]
-    },
-    {
-        name: "Figury",
-        facts: [
-            "jazykové prostředky ozvláštňující text pomocí odchylek od běžného jazyka",
-            "slouží k okrášlení textu"
-        ]
-    },
-    {
-        name: "Aliterace",
-        facts: [
-            "opakování hlásek na počátku slov následujících po sobě",
-            "příklad: potkal potkan potkana pod kamenem"
-        ]
-    },
-    {
-        name: "Anafora",
-        facts: [
-            "opakování stejných slov nebo sousloví na začátku veršů nebo slok",
-            "Tolik beden čaje. Tolik kakaových bobů. Posílá jí bílý tuan. V každou roční dobu."
-        ]
-    },
-    {
-        name: "Apostrofa",
-        facts: [
-            "oslovení neživé věci nebo nepřítomné osoby",
-            "příklad: Hospodine, ty to všechno vidíš!"
-        ]
-    },
-    {
-        name: "Elipsa",
-        facts: [
-            "výpustka",
-            "vynechaní něčeho, co je známé, takže neporušíme smysl",
-            "příklad: Kolik je hodin? Šest. - Nemusíme už opakovat slovo hodin."
-        ]
-    },
-    {
-        name: "Epifora",
-        facts: [
-            "opakování stejných slov nebo sousloví na konci veršů nebo slok",
-            "příklad: Co to máš na té tkaničce, na krku na té tkaničce."
-        ]
-    },
-    {
-        name: "Epizeuxis",
-        facts: [
-            "připojení",
-            "opakování stejných slov za sebou",
-            "Okolo pole lesa lán, hoj, jede, jede z lesa pán."
-        ]
-    },
-    {
-        name: "Gradace",
-        facts: [
-            "seřazení slov nebo slovních spojení podle intenzity",
-            "sestupná a vzestupná"
-        ]
-    },
-    {
-        name: "Inverze",
-        facts: [
-            "přehození pořadí slov",
-            "nejčastěji v případě shodného přívlastku, který má být před podstatným jménem",
-            "příklad: čas nový přichází"
-        ]
-    },
-    {
-        name: "Tropy",
-        facts: [
-            "přenesení významu slova na základě podobnosti"
-        ]
-    },
-    {
-        name: "Alegorie",
-        facts: [
-            "jinotaj",
-            "nesdělujeme přímo, ale obrazně",
-            "typická je bajka, vystupují zvířata, ale je o chování lidí"
-        ]
-    },
-    {
-        name: "Eufemismus",
-        facts: [
-            "zjemnění něčeho negativního",
-            "příklad: umřel – opustil nás, odešel, usnul, skončil životní pouť"
-        ]
-    },
-    {
-        name: "Dysfemismus",
-        facts: [
-            "opak eufemismu",
-            "silně negativně citově zabarvený",
-            "zhoršuje už tak nepříjemnou skutečnost",
-            "příklad: umřel- chcípl, pošel, tuhý jak rohlík, natáhnout brka"
-        ]
-    },
-    {
-        name: "Hyperbola",
-        facts: [
-            "nadsázka, zveličení",
-            "příklad:  Neviděl jsem tě sto let."
-        ]
-    },
-    {
-        name: "Metafora",
-        facts: [
-            "přenesení významu na základě vnější podobnosti, nejčastěji podobnosti vzhledu (barva, tvar, počet)",
-            "má blízko k hádance",
-            "příklad: borůvková tma, cvičit na koze, moře piva"
-        ]
-    },
-    {
-        name: "Metonymie",
-        facts: [
-            "přenesení významu na základě vnitřní podobnosti",
-            "vnitřní souvislosti, ne podobnosti vzhledu",
-            "příklad: hlava státu, čtu Viewegha, hoď na sebe nějaký hadr"
-        ]
-    },
-    {
-        name: "Oxymóron",
-        facts: [
-            "spojení slov, která si odporují, jsou ve významovém protikladu",
-            "příklad: svítání na západě, já na prameni jsem a žízní hynu"
-        ]
-    },
-    {
-        name: "Personifikace",
-        facts: [
-            "zosobnění",
-            "přenesení lidských vlastností na věci, zvířata a rostliny",
-            "příklad: slunce se smálo, potůček zpíval a stromy šeptaly"
-        ]
-    },
-    {
-        name: "Přirovnání",
-        facts: [
-            "vytváříme na základě podobné vlastnosti, na kterou upozorňujeme, a tato vlastnost musí být typická, obecně známá",
-            "často využíváme jak, jako",
-            "příklad: Jak lvové bijem o mříže."
-        ]
-    },
-    {
-        name: "Řečnická otázka",
-        facts: [
-            "ačkoliv jde o otázku, prakticky jde o citově zabarvenou (expresivní) větu oznamovací",
-            "neočekáváme odpověď",
-            "příklad: Co je to za člověka?"
-        ]
-    },
-    {
-        name: "Symbol",
-        facts: [
-            "znak, který zastupuje obecný pojem, jev",
-            "rozdělujeme na symboly konvenční (domluvené – vlajka, dopravní značky, číslice) a básnické (ruce – symbol pro práci nebo přátelství)"
-        ]
-    },
-    {
-        name: "Synekdocha",
-        facts: [
-            "záměna části za celek a naopak",
-            "příklad: jdu učit Samce – jdu učit do 4. B, nepřišla ani noha, Bílý dům ve významu USA"
-        ]
-    },
-    {
-        name: "Verš",
-        facts: [
-            "jeden řádek v básni",
-            "několik veršů tvoří sloku (strofu)",
-            "má rytmus",
-            "nemusí dodržovat gramatická pravidla"
-        ]
-    }
-];
+            {
+                name: "Anekdota",
+                facts: [
+                    "krátké vyprávění humorné příhody",
+                    "většinou jen v ústní formě",
+                    "zesměšňuje známou osobnost, událost, rasu, národ, skupinu",
+                    "anekdoty erotické, lékařské, politické, židovské",
+                    "v širším významu jiný název pro vtip"
+                ]
+            },
+            {
+                name: "Bajka",
+                facts: [
+                    "veršované nebo prozaické vypravování alegorického (skrytý význam) příběhu s cílem mravně poučit",
+                    "místo lidí v bajce většinou vystupují zvířata",
+                    "některá zvířata mají ustálené vlastnosti (osel-hloupý)",
+                    "autoři: Ezop, Jean de La Fontaine, Ivan Andrejevič Krylov"
+                ]
+            },
+            {
+                name: "Balada",
+                facts: [
+                    "epická (dějová) báseň s lyrickými prvky (popisy přírody, nálady)",
+                    "ponurý děj obvykle končí špatně",
+                    "u sociální balady vychází tragika z chudoby",
+                    "autoři: Jan Neruda, Petr Bezruč, Jiří Wolker"
+                ]
+            },
+            {
+                name: "Cestopis",
+                facts: [
+                    "tématem je popis nebo líčení autorovy cesty do cizí země",
+                    "představují se zeměpisné, národnostní, kulturní, sociální zajímavosti",
+                    "některé řadíme k publicistickému, jiné k uměleckému funkčnímu stylu"
+                ]
+            },
+            {
+                name: "Elegie",
+                facts: [
+                    "smutně laděný lyrický útvar",
+                    "nejčastějšími motivy jsou žal nad ztrátou blízkého, bolest ze zklamané lásky",
+                    "útvar vznikl ve starověkém Řecku"
+                ]
+            },
+            {
+                name: "Epigram",
+                facts: [
+                    "krátká satirická báseň s vtipnou pointou",
+                    "nejčastěji kritizuje společnost",
+                    "v českém prostředí nejvýrazněji spojen s tvorbou Karla Havlíčka Borovského",
+                    "Není nad původnost, každý po ní touží, lidé chodí přes most, to já půjdu louží. Co sám nerad, nečiň jinému! žáku pravil kantor kdesi, třepaje ho za pačesy"
+
+                ]
+            },
+            {
+                name: "Epos",
+                facts: [
+                    "rozsáhlý epický útvar, často veršovaný",
+                    "s jedním ústředním hrdinou, který zažívá mnohá dobrodružství",
+                    "rozdělení: hrdinský, rytířský, historický, duchovní, idylický",
+                    "nejznámější eposy: Epos o Gilgamešovi, Ilias, Odyssea, Alexandreida, Tristan a Izolda, Kalevala, Beowulf, Edda, Píseň o Rolandovi"
+                ]
+            },
+            {
+                name: "Fantasy",
+                facts: [
+                    "literární díla, která se odehrávají ve vymyšleném (nereálném) světě",
+                    "oproti sci-fi, pro kterou je typická budoucnost, se fantasy odehrává v minulosti",
+                    "nejvýznamnější představitelé: J.R. R. Tolkiena, R. E. Howard"
+                ]
+            },
+            {
+                name: "Kaligram",
+                facts: [
+                    "báseň, ve které je text upraven tak, aby tvořil nějaký obraz, který odpovídá obsahu",
+                ]
+            },
+            {
+                name: "Komedie",
+                facts: [
+                    "jeden ze základních dramatických žánrů",
+                    "konflikty, děj i postavy jsou líčeny s nadsázkou (směšně)",
+                    "měla by končit smírem",
+                    "hlavní představitelé: Aristofanes, T. M. Plautus, W. Shakespeare, C. Goldoni, V. Burian, Voskovec a Werich, V. Vorlíček"
+                ]
+            },
+            {
+                name: "Kronika",
+                facts: [
+                    "ve středověku veršovaný, ale dnes prozaický útvar",
+                    "zaznamenává historické události v chronologickém sledu",
+                    "většinou zachycuje větší časové úseky",
+                    "nejvýznamnější české kroniky: Kosmova Kronika česká, Dalimilova kronika, Kronika česká Václava Hájka z Libočan"
+                ]
+            },
+            {
+                name: "Legenda",
+                facts: [
+                    "veršovaná nebo prozaická epická skladba",
+                    "nejčastěji životopis svatých",
+                    "patří k náboženské literatuře",
+                    "nejznámější „čeští“ svatí: Václav, Ludmila, Anežka, Prokop, Cyril a Metoděj, Vojtěch, Jan z Nepomuku, Vintíř"
+                ]
+            },
+            {
+                name: "Mýtus",
+                facts: [
+                    "možno chápat jako synonymum pro slovo báje",
+                    "nejčastější náplní je vznik světa, bohů a člověka, vysvětlují se přírodní procesy",
+                    "Staré řecké báje a pověsti, biblické mýty"
+                ]
+            },
+            {
+                name: "Novela",
+                facts: [
+                    "epický žánr krátkého rozsahu zachycující jeden děj s omezeným počtem osob",
+                    "neobjevují se epizodické (vedlejší) děje",
+                    "často s výraznou pointou",
+                    "ještě kratší než povídka",
+                    "za zakladatele považován G. Boccaccio a jeho Dekameron",
+                    "příklad: V. Dyk -  Krysař"
+                ]
+            },
+            {
+                name: "Óda",
+                facts: [
+                    "lyrický útvar oslavného charakteru",
+                    "nejčastější náplní je oslava kladné abstraktní vlastnosti nebo citu (přátelství, láska, radost, hrdinství)",
+                    "např.: Óda na radost"
+                ]
+            },
+            {
+                name: "Pásmo",
+                facts: [
+                    "polytematická báseň (má mnoho témat)",
+                    "delšího rozsahu",
+                    "charakteristická asociativním řazením témat",
+                    "nejznámější pásma: Apollinaire – Pásmo, J. Wolker – Svatý Kopeček, V. Nezval - Edison"
+                ]
+            },
+            {
+                name: "Píseň",
+                facts: [
+                    "poezie spojená s hudbou, většinou rýmovaná",
+                    "rozdělujeme na verše a sloky, často využívá refrénu",
+                    "rozdělení: 1) podle vzniku: a) lidové b) umělé, 2) podle tématiky: a) duchovní b)světské c) vlastenecké d) milostné e) pijácké f) církevní"
+                ]
+            },
+            {
+                name: "Poema",
+                facts: [
+                    "rozsáhlá básnická skladba epického charakteru",
+                    "nejčastěji se týká jednoho tématu nebo postavy",
+                    "nejvíce užívaná v ruské literatuře"
+                ]
+            },
+            {
+                name: "Pohádka",
+                facts: [
+                    "původně žánr lidové slovesnosti s nadpřirozenými jevy",
+                    "bez udání konkrétního času a prostoru",
+                    "vystupují jednoznačné osoby (dobří, zlí)",
+                    "nadpřirozené bytosti",
+                    "bojuje dobro se zlem a zlo je poraženo",
+                    "rozdělení: lidové, umělé"
+                ]
+            },
+            {
+                name: "Pověst",
+                facts: [
+                    "řadí se k ústní lidové slovesnosti",
+                    "často byly vypravěči upravovány",
+                    "budí zdání věrohodnosti (postavy mají jména a vztahují se k určité lokalitě)",
+                    "často jsou spojeny s nadpřirozenými jevy",
+                    "rozdělení: a) pověsti místní b) pověsti historické c) pověsti erbovní a rodové",
+                    "Staré pověsti české A. Jiráska"
+                ]
+            },
+            {
+                name: "Povídka",
+                facts: [
+                    "kratší prozaický útvar",
+                    "delší než novela (jen jeden děj) a kratší než román (mnoho dějů za delší časový úsek)",
+                    "rozdělení: a) psychologická b) humorná c) autobiografická d) detektivní e) vědecko-fantastická",
+                    "nejvýznamnější autoři: Božena Němcová, Jan Neruda, J. Hašek, Karel Čapek, N. V. Gogol, F. S. Fitzgerald, E. Hemingway"
+                ]
+            },
+            {
+                name: "Román",
+                facts: [
+                    "rozsáhlý epický útvar",
+                    "hlavní děj doplňují časté vedlejší děje",
+                    "vystupuje mnoho postav",
+                    "zachycuje se delší časový úsek (často celý život)",
+                    "nejpoužívanější útvar realismu",
+                    "rozdělení: a) rytířský román b) historický román c) dobrodružný román d) humoristický román e) satirický román f) psychologický román g) válečný román h) filosofický román",
+                    "nejvýznamnější představitelé:  H. de Balzac, F. M. Dostojevský, L. N. Tolstoj"
+                ]
+            },
+            {
+                name: "Sci-fi",
+                facts: [
+                    "science fiction",
+                    "vědecko-fantastický román",
+                    "tematicky čerpá z poznatků moderní vědy a techniky",
+                    "autor pracuje s neexistujícími, ale hypoteticky možnými technickými vynálezy",
+                    "odehrává se většinou v budoucnosti",
+                    "představitelé: R. Bradbury, A. C. Clarke, L. Souček"
+                ]
+            },
+            {
+                name: "Sonet",
+                facts: [
+                    "útvar lyrické poezie",
+                    "nejčastěji s milostnou tematikou",
+                    "typický útvar pro renesanci",
+                    "nejvýznamnější představitelé: F. Petrarca, W. Shakespeare, 4 sloky o 4-4-3-3 verších"
+                ]
+            },
+            {
+                name: "Romance",
+                facts: [
+                    "lyricko-epická báseň",
+                    "nejčastěji milostná tematika",
+                    "většinou rozvíjí jednu zápletku většího epického útvaru (hrdinský epos)",
+                    "celkové vyznění skladby je optimistické"
+                ]
+            },
+            {
+                name: "Tragédie",
+                facts: [
+                    "jeden ze základních dramatických žánrů",
+                    "hlavní zápletka dnešní tragédie vychází ze střetu člověka s člověkem nebo společností",
+                    "pro antickou tragédii byl typický střet člověka s osudem",
+                    "vážný obsah",
+                    "pochmurný děj",
+                    "hlavní hrdina často umírá",
+                    "vznikla v antickém Řecku z oslav boha Dionýsa",
+                    "představitelé: Sofokles, Shakespeare, Mrštíkové, G. Preissová"
+                ]
+            }
+        ];
 
 
         let currentDirection = null;
